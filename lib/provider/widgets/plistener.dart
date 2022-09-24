@@ -1,0 +1,24 @@
+/// Created Date: Sunday, Jan 9th 2022
+/// Author: Brennan Ngo
+///
+/// Copyright (c) 2022 ThemePlace
+library fluttering;
+
+import 'package:flutter/material.dart';
+import 'package:fluttering/provider/provider.dart';
+
+class FlutteringProviderListener<T extends IFlutteringProvider> extends StatelessWidget {
+  const FlutteringProviderListener({super.key, required this.listenable, required this.builder, this.child});
+  final T listenable;
+  final Widget? child;
+  final Widget Function(BuildContext, Widget?, T listenable) builder;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: listenable,
+      builder: (_, __) => builder(_, __, listenable),
+      child: child,
+    );
+  }
+}

@@ -1,7 +1,10 @@
+/// Created Date: Sunday, Jan 9th 2022
+/// Author: Brennan Ngo
+///
+/// Copyright (c) 2022 ThemePlace
 library fluttering;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'package:fluttering/provider/typedef.dart';
+export 'package:fluttering/classes/typedef.dart';
+export 'fluttering_app.dart';
+export 'debuger/logs.dart';
