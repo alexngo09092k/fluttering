@@ -7,7 +7,6 @@ library fluttering;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/debugger/logs.dart';
 import 'package:fluttering/fluttering.dart';
 
 abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
@@ -27,7 +26,7 @@ abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> wit
   }
 }
 
-void runApp(
+void runFlutteringApp(
   Widget app, {
   List<Provider> providers = const [],
   Future<bool> Function()? onWillInitialize,
