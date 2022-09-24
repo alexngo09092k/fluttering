@@ -6,5 +6,5 @@ library fluttering;
 
 export 'package:fluttering/provider/typedef.dart';
 export 'package:fluttering/classes/typedef.dart';
-export 'fluttering_app.dart';
-export 'debuger/logs.dart';
+export 'package:fluttering/debugger/logs.dart';
+export 'package:fluttering/fluttering_app.dart';

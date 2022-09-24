@@ -5,6 +5,7 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
+import 'package:fluttering/provider/lifecycle_provider.dart';
 import 'package:fluttering/provider/manager_provider.dart';
 import 'package:fluttering/provider/provider.dart';
 import 'package:fluttering/provider/widgets/autoplistener.dart';
@@ -17,6 +18,8 @@ typedef ManagerProvider = FlutteringManagerProvider;
 typedef Provider = FlutteringProvider;
 
 typedef IProvider = IFlutteringProvider;
+
+typedef LifeCycleProvider = LCProvider;
 
 typedef BaseConsumer<T extends IProvider> = FlutteringProviderListener<T>;
 
