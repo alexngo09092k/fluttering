@@ -54,10 +54,14 @@ abstract class IFlutteringShared {
   /// Saves a list of strings [value] to persistent storage in the background.
   Future<bool> setStringList(String key, List<String> value);
 
+  /// Removes an entry from persistent storage.
+  Future<bool> remove(String key);
+
   /// Loads and parses the [SharedPreferences] for this app from disk.
   ///
   /// Because this is reading from disk, it shouldn't be awaited in
   /// performance-sensitive blocks.
+
   Future<bool> initial();
 
   /// Completes with true once the user preferences for the app has been closed.
@@ -187,6 +191,12 @@ class FlutteringShared extends IFlutteringShared {
   @override
   dispose() {
     _streamController.close();
+  }
+
+  @override
+  Future<bool> remove(String key) async {
+    if (!canStored) return false;
+    return _sharedPreferences!.remove(key);
   }
 }
 
