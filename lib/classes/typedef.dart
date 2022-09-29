@@ -6,6 +6,7 @@ library fluttering;
 
 import 'package:fluttering/classes/cache.dart';
 import 'package:fluttering/classes/device_info.dart';
+import 'package:fluttering/classes/http.dart';
 import 'package:fluttering/classes/internet.dart';
 import 'package:fluttering/classes/permission.dart';
 import 'package:fluttering/classes/platform.dart';
@@ -22,3 +23,7 @@ typedef CurrentPlatform = FlutteringPlatform;
 typedef DeviceInfo = FlutteringDeviceInfo;
 
 typedef ManagerCache = FlutteringCache;
+
+typedef ClientResponse = FlutteringResponse;
+
+typedef ClientHttp = FlutteringHttp;
