@@ -30,17 +30,18 @@ abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> wit
 
 void runFlutteringApp(
   Widget app, {
-  List<Provider> providers = const [],
+  List<IProvider> providers = const [],
+  List<IProvider Function()> lazyProviders = const [],
   Future<bool> Function()? onWillInitialize,
   Future<bool> Function()? onDidInitialize,
   Function(Object?)? onError,
 }) {
   Future<bool> initialize() async {
-    await DeviceInfo.instance.initial();
+    DeviceInfo.instance.initial();
 
-    await AsyncStorage.instance.initial();
+    AsyncStorage.instance.initial();
 
-    await ManagerCache.instance.initial();
+    ManagerCache.instance.initial();
 
     InternetConnection.instance.initial('google.com');
 
@@ -57,7 +58,10 @@ void runFlutteringApp(
 
       if (onDidInitialize != null) await onDidInitialize();
 
-      ManagerProvider.registerProviders(providers);
+      ManagerProvider.registerProviders(
+        providers: providers,
+        lazyProviders: lazyProviders,
+      );
 
       runApp(app);
     } catch (error) {

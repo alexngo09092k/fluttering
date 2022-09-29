@@ -8,8 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttering/provider/lifecycle_provider.dart';
 import 'package:fluttering/provider/provider.dart';
 
+typedef LazyCallback<T extends IFlutteringProvider> = T Function();
+
 abstract class IFlutteringManagerProvider {
   List<IFlutteringProvider> get providers;
+  List<LazyCallback> get lazyProviders;
 
   static T of<T extends IFlutteringProvider>([BuildContext? context]) {
     throw ErrorDescription("Not found provider");
@@ -51,13 +54,19 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   /// Defined your providers are used in app
   final List<IFlutteringProvider> _providers = [];
   @override
-  List<IFlutteringProvider> get providers {
-    return _providers;
-  }
+  List<IFlutteringProvider> get providers => _providers;
+
+  /// Defined your lazy providers are used in app
+  final List<IFlutteringProvider Function()> _lazyProviders = [];
+  @override
+  List<IFlutteringProvider Function()> get lazyProviders => _lazyProviders;
 
   static T of<T extends IFlutteringProvider>([BuildContext? context]) {
     for (var item in _instance.providers) {
       if (item is T) return item;
+    }
+    for (var item in _instance.lazyProviders) {
+      if (item is LazyCallback<T>) return item();
     }
     throw ErrorDescription("Not found provider");
   }
@@ -66,8 +75,15 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _instance.providers) {
-      if (item is LCProvider) {
-        _.add(await (item as LCProvider).willSplash());
+      if (item is IFlutteringProviderDelegate) {
+        _.add(await item.willSplash());
+      }
+    }
+
+    for (var item in _instance.lazyProviders) {
+      if (item is LazyCallback<IFlutteringProviderDelegate>) {
+        IFlutteringProviderDelegate p = item();
+        _.add(await p.willSplash());
       }
     }
 
@@ -80,8 +96,15 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _instance.providers) {
-      if (item is LCProvider) {
-        _.add(await (item as LCProvider).didSplash());
+      if (item is IFlutteringProviderDelegate) {
+        _.add(await item.didSplash());
+      }
+    }
+
+    for (var item in _instance.lazyProviders) {
+      if (item is LazyCallback<IFlutteringProviderDelegate>) {
+        IFlutteringProviderDelegate p = item();
+        _.add(await p.didSplash());
       }
     }
 
@@ -94,8 +117,15 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _instance.providers) {
-      if (item is LCProvider) {
-        _.add(await (item as LCProvider).willCloseApp());
+      if (item is IFlutteringProviderDelegate) {
+        _.add(await item.willCloseApp());
+      }
+    }
+
+    for (var item in _instance.lazyProviders) {
+      if (item is LazyCallback<IFlutteringProviderDelegate>) {
+        IFlutteringProviderDelegate p = item();
+        _.add(await p.willCloseApp());
       }
     }
 
@@ -104,9 +134,13 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     return !_.contains(false);
   }
 
-  static void registerProviders(List<IFlutteringProvider> providers) {
+  static void registerProviders({List<IFlutteringProvider> providers = const [], List<LazyCallback> lazyProviders = const []}) {
     _instance.providers.clear();
     _instance.providers.addAll(providers);
+
+    _instance.lazyProviders.clear();
+    _instance.lazyProviders.addAll(lazyProviders);
+
     _instance.onRegisted();
   }
 
@@ -115,8 +149,15 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _instance.providers) {
-      if (item is LCProvider) {
-        _.add(await (item as LCProvider).onRegisted());
+      if (item is IFlutteringProviderDelegate) {
+        _.add(await item.onRegisted());
+      }
+    }
+
+    for (var item in _instance.lazyProviders) {
+      if (item is LazyCallback<IFlutteringProviderDelegate>) {
+        IFlutteringProviderDelegate p = item();
+        _.add(await p.onRegisted());
       }
     }
 

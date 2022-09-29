@@ -15,11 +15,11 @@ import 'package:fluttering/provider/widgets/pplistener.dart';
 
 typedef ManagerProvider = FlutteringManagerProvider;
 
-typedef Provider = FlutteringProvider;
-
 typedef IProvider = IFlutteringProvider;
 
-typedef LifeCycleProvider = LCProvider;
+typedef IProviderDelegate = IFlutteringProviderDelegate;
+
+typedef Provider = FlutteringProvider;
 
 typedef BaseConsumer<T extends IProvider> = FlutteringProviderListener<T>;
 

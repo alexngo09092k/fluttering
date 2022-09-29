@@ -4,7 +4,9 @@
 /// Copyright (c) 2022 ThemePlace
 library fluttering;
 
-abstract class LCProvider {
+import 'package:fluttering/provider/provider.dart';
+
+abstract class IFlutteringProviderDelegate extends IFlutteringProvider {
   /// is called when provider is registed
   Future<bool> onRegisted();
 

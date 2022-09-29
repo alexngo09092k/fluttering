@@ -9,9 +9,9 @@ library fluttering;
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:http_parser/http_parser.dart';
-import 'package:path/path.dart';
-import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart' as http_parser;
+import 'package:path/path.dart' as path;
+import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:fluttering/debugger/logs.dart';
 
@@ -28,7 +28,18 @@ class MultipartBody {
   MultipartBody(this.key, this.file);
 }
 
-abstract class IFlutteringHttp {}
+abstract class IFlutteringHttp {
+  Future<FlutteringResponse> get(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+
+  Future<FlutteringResponse> post(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+
+  Future<FlutteringResponse> postMultipart(String url, Map<String, String> body, List<MultipartBody> multipartBody,
+      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+
+  Future<FlutteringResponse> put(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+
+  Future<FlutteringResponse> delete(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+}
 
 class FlutteringHttp extends IFlutteringHttp {
   static final IFlutteringHttp _instance = FlutteringHttp._internal();
@@ -40,67 +51,74 @@ class FlutteringHttp extends IFlutteringHttp {
 
   static const int timeoutInSeconds = 200;
 
-  static Future<FlutteringResponse> getData(String url, {Map<String, dynamic>? query, Map<String, String>? headers}) async {
+  @override
+  Future<FlutteringResponse> get(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
       Debug.log('====> API Call: $uriSend\nHeader: $headers');
-      Response response = await get(
-        uriSend,
-        headers: headers,
-      ).timeout(const Duration(seconds: timeoutInSeconds));
+      http.Response response = await http
+          .get(
+            uriSend,
+            headers: headers,
+          )
+          .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
       Debug.log('====> API Response: $response');
-      return handleResponse(response);
+      return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString());
     }
   }
 
-  static Future<FlutteringResponse> postData(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers}) async {
+  @override
+  Future<FlutteringResponse> post(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
       Debug.log('====> API Call: $uriSend\nHeader: $headers');
       Debug.log('====> API Body: $body');
-      Response response = await post(
-        uriSend,
-        body: jsonEncode(body),
-        headers: headers,
-      ).timeout(const Duration(seconds: timeoutInSeconds));
+      http.Response response = await http
+          .post(
+            uriSend,
+            body: jsonEncode(body),
+            headers: headers,
+          )
+          .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
       Debug.log('====> API Response: $response');
-      return handleResponse(response);
+      return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString());
     }
   }
 
-  static Future<FlutteringResponse> postMultipartData(String url, Map<String, String> body, List<MultipartBody> multipartBody,
-      {Map<String, dynamic>? query, Map<String, String>? headers}) async {
+  @override
+  Future<FlutteringResponse> postMultipart(String url, Map<String, String> body, List<MultipartBody> multipartBody,
+      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
       Debug.log('====> API Call: $uriSend\nHeader: $headers');
       Debug.log('====> API Body: $body');
-      MultipartRequest request = MultipartRequest('POST', uriSend);
+      http.MultipartRequest request = http.MultipartRequest('POST', uriSend);
       if (headers != null) {
         request.headers.addAll(headers);
       }
       for (MultipartBody multipart in multipartBody) {
         if (foundation.kIsWeb) {
           Uint8List list = await multipart.file.readAsBytes();
-          MultipartFile part = MultipartFile(
+          http.MultipartFile part = http.MultipartFile(
             multipart.key,
             multipart.file.readAsBytes().asStream(),
             list.length,
-            filename: basename(multipart.file.path),
-            contentType: MediaType('image', 'jpg'),
+            filename: path.basename(multipart.file.path),
+            contentType: http_parser.MediaType('image', 'jpg'),
           );
           request.files.add(part);
         } else {
           File file = File(multipart.file.path);
-          request.files.add(MultipartFile(
+          request.files.add(http.MultipartFile(
             multipart.key,
             file.readAsBytes().asStream(),
             file.lengthSync(),
@@ -109,49 +127,55 @@ class FlutteringHttp extends IFlutteringHttp {
         }
       }
       request.fields.addAll(body);
-      Response response = await Response.fromStream(await request.send());
-      return handleResponse(response);
+      http.Response response = await http.Response.fromStream(await request.send());
+      return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString());
     }
   }
 
-  static Future<FlutteringResponse> putData(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers}) async {
+  @override
+  Future<FlutteringResponse> put(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
       Debug.log('====> API Call: $uriSend\nHeader: $headers');
       Debug.log('====> API Body: $body');
-      Response response = await put(
-        uriSend,
-        body: jsonEncode(body),
-        headers: headers,
-      ).timeout(const Duration(seconds: timeoutInSeconds));
-      return handleResponse(response);
+      http.Response response = await http
+          .put(
+            uriSend,
+            body: jsonEncode(body),
+            headers: headers,
+          )
+          .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
+      return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString());
     }
   }
 
-  static Future<FlutteringResponse> deleteData(String url, {Map<String, dynamic>? query, Map<String, String>? headers}) async {
+  @override
+  Future<FlutteringResponse> delete(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
       Debug.log('====> API Call: $uriSend\nHeader: $headers');
-      Response response = await delete(
-        uriSend,
-        headers: headers ?? headers,
-      ).timeout(const Duration(seconds: timeoutInSeconds));
-      return handleResponse(response);
+      http.Response response = await http
+          .delete(
+            uriSend,
+            headers: headers ?? headers,
+          )
+          .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
+      return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString());
     }
   }
 
-  static FlutteringResponse handleResponse(Response response) {
+  FlutteringResponse _handleResponse(http.Response response) {
     try {
       Debug.log('======> status code ${response.statusCode}');
       final data = jsonDecode(response.body);
