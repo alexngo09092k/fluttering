@@ -6,7 +6,7 @@ library fluttering;
 
 import 'package:fluttering/provider/provider.dart';
 
-abstract class IFlutteringProviderDelegate extends IFlutteringProvider {
+abstract class IFlutteringProviderDelegate extends FlutteringProvider {
   /// is called when provider is registed
   Future<bool> onRegisted();
 

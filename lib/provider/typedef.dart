@@ -17,7 +17,7 @@ typedef ManagerProvider = FlutteringManagerProvider;
 
 typedef IProvider = IFlutteringProvider;
 
-typedef IProviderDelegate = IFlutteringProviderDelegate;
+typedef ProviderDelegate = IFlutteringProviderDelegate;
 
 typedef Provider = FlutteringProvider;
 
