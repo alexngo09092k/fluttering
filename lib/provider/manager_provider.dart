@@ -22,7 +22,7 @@ abstract class IFlutteringManagerProvider {
     return Future.value(true);
   }
 
-  static Future<bool> willCloseApp() {
+  static Future<bool> willCloseApp() async {
     return Future.value(true);
   }
 
@@ -30,17 +30,8 @@ abstract class IFlutteringManagerProvider {
     return Future.value(true);
   }
 
-  /// is called when registed providers
-  Future<bool> onRegisted();
-
-  /// is called before go to splash screen
-  Future<bool> onWillSplash();
-
-  /// is called when went to splash screen
-  Future<bool> onDidSplash();
-
   /// is called when closed app
-  Future<bool> onWillCloseApp();
+  void dispose();
 }
 
 class FlutteringManagerProvider extends IFlutteringManagerProvider {
@@ -98,8 +89,6 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
       }
     }
 
-    _instance.onWillSplash();
-
     return !_.contains(false);
   }
 
@@ -118,8 +107,6 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
         _.add(await p.didSplash());
       }
     }
-
-    _instance.onDidSplash();
 
     return !_.contains(false);
   }
@@ -140,23 +127,16 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
       }
     }
 
-    _instance.onWillCloseApp();
-
     return !_.contains(false);
   }
 
-  static void registerProviders({List<IFlutteringProvider> providers = const [], List<LazyCallback> lazyProviders = const []}) {
+  static Future<bool> registerProviders({List<IFlutteringProvider> providers = const [], List<LazyCallback> lazyProviders = const []}) async {
     _instance.providers.clear();
     _instance.providers.addAll(providers);
 
     _instance.lazyProviders.clear();
     _instance.lazyProviders.addAll(lazyProviders);
 
-    _instance.onRegisted();
-  }
-
-  @override
-  Future<bool> onRegisted() async {
     List<bool> _ = [];
 
     for (var item in _instance.providers) {
@@ -176,17 +156,12 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   }
 
   @override
-  Future<bool> onWillSplash() async {
-    return true;
-  }
-
-  @override
-  Future<bool> onDidSplash() async {
-    return true;
-  }
-
-  @override
-  Future<bool> onWillCloseApp() async {
-    return true;
+  void dispose() {
+    for (var item in _instance.providers) {
+      item.dispose();
+    }
+    for (var item in _instance.lazyProviders) {
+      item().dispose();
+    }
   }
 }

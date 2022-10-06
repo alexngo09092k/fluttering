@@ -21,9 +21,12 @@ abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> wit
 
   @override
   void dispose() {
-    ManagerCache.instance.clean();
-    AsyncStorage.instance.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    ManagerProvider.willCloseApp().then((_) {
+      ManagerCache.instance.clean();
+      AsyncStorage.instance.dispose();
+      WidgetsBinding.instance.removeObserver(this);
+      ManagerProvider.instance.dispose();
+    });
     super.dispose();
   }
 }
