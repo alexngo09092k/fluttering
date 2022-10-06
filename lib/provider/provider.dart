@@ -14,7 +14,7 @@ abstract class IFlutteringProvider implements Listenable {
   void dispose();
 }
 
-abstract class FlutteringProvider implements IFlutteringProvider {
+class FlutteringProvider implements IFlutteringProvider {
   int _count = 0;
 
   static final List<VoidCallback?> _emptyListeners = List<VoidCallback?>.filled(0, null);
@@ -195,4 +195,7 @@ abstract class FlutteringProvider implements IFlutteringProvider {
       _count = newLength;
     }
   }
+
+  @override
+  String get version => "";
 }
