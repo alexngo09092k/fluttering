@@ -11,8 +11,15 @@ import 'package:fluttering/provider/provider.dart';
 typedef LazyCallback<T extends IFlutteringProvider> = T Function();
 
 abstract class IFlutteringManagerProvider {
+  /// Providers were working on project on start app
+  /// Should be Delegate Provider
   List<IFlutteringProvider> get providers;
+
+  /// Providers will create on your project and remove after create a instance of it
+  /// Should'nt be Delegate Provider
   List<LazyCallback> get lazyProviders;
+
+  /// Providers were working on your project
   List<IFlutteringProvider> get activeProviders;
 
   static T of<T extends IFlutteringProvider>([BuildContext? context, String? version]) {
