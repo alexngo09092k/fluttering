@@ -15,16 +15,18 @@ class AutoPFlutteringProviderListener<T extends IFlutteringProvider, R> extends 
     required this.select,
     required this.builder,
     this.child,
+    this.version,
   });
 
   final R Function(T) select;
   final Widget Function(BuildContext, Widget?, T, R?) builder;
   final Widget? child;
+  final String? version;
 
   @override
   Widget build(BuildContext context) {
     return FlutteringPropProviderListener<T, R>(
-      listenable: FlutteringManagerProvider.of<T>(),
+      listenable: FlutteringManagerProvider.of<T>(context, version),
       select: select,
       builder: builder,
       child: child,
