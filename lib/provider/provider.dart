@@ -7,12 +7,14 @@ library fluttering;
 import 'package:flutter/foundation.dart';
 
 abstract class IFlutteringProvider implements Listenable {
+  String get version;
+
   void notifyListeners();
 
   void dispose();
 }
 
-class FlutteringProvider implements IFlutteringProvider {
+abstract class FlutteringProvider implements IFlutteringProvider {
   int _count = 0;
 
   static final List<VoidCallback?> _emptyListeners = List<VoidCallback?>.filled(0, null);

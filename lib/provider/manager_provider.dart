@@ -14,7 +14,7 @@ abstract class IFlutteringManagerProvider {
   List<IFlutteringProvider> get providers;
   List<LazyCallback> get lazyProviders;
 
-  static T of<T extends IFlutteringProvider>([BuildContext? context]) {
+  static T of<T extends IFlutteringProvider>([BuildContext? context, String? version]) {
     throw ErrorDescription("Not found provider");
   }
 
@@ -61,12 +61,23 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   @override
   List<IFlutteringProvider Function()> get lazyProviders => _lazyProviders;
 
-  static T of<T extends IFlutteringProvider>([BuildContext? context]) {
+  static T of<T extends IFlutteringProvider>([BuildContext? context, String? version]) {
     for (var item in _instance.providers) {
-      if (item is T) return item;
+      if (item is T) {
+        if (version != null && item.version == version) {
+          return item;
+        }
+        return item;
+      }
     }
     for (var item in _instance.lazyProviders) {
-      if (item is LazyCallback<T>) return item();
+      if (item is LazyCallback<T>) {
+        final p = item();
+        if (version != null && p.version == version) {
+          return p;
+        }
+        return p;
+      }
     }
     throw ErrorDescription("Not found provider");
   }

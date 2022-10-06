@@ -37,15 +37,16 @@ void runFlutteringApp(
   Function(Object?)? onError,
 }) {
   Future<bool> initialize() async {
-    DeviceInfo.instance.initial();
+    List<bool> result = [];
+    result.add(await DeviceInfo.instance.initial());
 
-    AsyncStorage.instance.initial();
+    result.add(await AsyncStorage.instance.initial());
 
-    ManagerCache.instance.initial();
+    result.add(await ManagerCache.instance.initial());
 
-    InternetConnection.instance.initial('google.com');
+    result.add(await InternetConnection.instance.initial('google.com'));
 
-    return true;
+    return !result.contains(false);
   }
 
   runZonedGuarded(() async {

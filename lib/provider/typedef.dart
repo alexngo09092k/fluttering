@@ -30,8 +30,8 @@ typedef Consumer<T extends IProvider> = AutoFlutteringProviderListener<T>;
 typedef PropConsumer<T extends IProvider, R> = AutoPFlutteringProviderListener<T, R>;
 
 extension ExProvider on Provider {
-  static T of<T extends IProvider>([BuildContext? context]) {
-    return ManagerProvider.of<T>();
+  static T of<T extends IProvider>([BuildContext? context, String? version]) {
+    return ManagerProvider.of<T>(context, version);
   }
 
   static Future<bool> willSplash() async {

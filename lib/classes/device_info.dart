@@ -19,7 +19,7 @@ abstract class IFlutteringDeviceInfo {
 
   Map<String, dynamic>? get info;
 
-  Future<void> initial();
+  Future<bool> initial();
 }
 
 class FlutteringDeviceInfo extends IFlutteringDeviceInfo {
@@ -64,7 +64,7 @@ class FlutteringDeviceInfo extends IFlutteringDeviceInfo {
   WebBrowserInfo? get web => _web;
 
   @override
-  Future<void> initial() async {
+  Future<bool> initial() async {
     if (FlutteringPlatform.instance.isIos) {
       _ios = await deviceInfoPlugin.iosInfo;
       Debug.log('device info ios $ios');
@@ -78,5 +78,7 @@ class FlutteringDeviceInfo extends IFlutteringDeviceInfo {
       Debug.log('device info web $web');
     }
     _info = (await deviceInfoPlugin.deviceInfo).toMap();
+
+    return true;
   }
 }
