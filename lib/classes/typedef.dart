@@ -16,6 +16,8 @@ typedef UserPermission = FlutteringPermission;
 
 typedef AsyncStorage = FlutteringShared;
 
+typedef AsyncStorageEvent = FlutteringSharedEvent;
+
 typedef InternetConnection = FlutteringInternet;
 
 typedef CurrentPlatform = FlutteringPlatform;
