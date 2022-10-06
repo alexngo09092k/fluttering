@@ -26,7 +26,7 @@ class AutoPFlutteringProviderListener<T extends IFlutteringProvider, R> extends 
   @override
   Widget build(BuildContext context) {
     return FlutteringPropProviderListener<T, R>(
-      listenable: FlutteringManagerProvider.of<T>(context, version),
+      listenable: FlutteringManagerProvider.of<T>(version),
       select: select,
       builder: builder,
       child: child,

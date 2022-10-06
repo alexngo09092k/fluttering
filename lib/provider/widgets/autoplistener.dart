@@ -18,7 +18,7 @@ class AutoFlutteringProviderListener<T extends IFlutteringProvider> extends Stat
   @override
   Widget build(BuildContext context) {
     return FlutteringProviderListener(
-      listenable: FlutteringManagerProvider.of<T>(context, version),
+      listenable: FlutteringManagerProvider.of<T>(version),
       builder: builder,
       child: child,
     );
