@@ -83,6 +83,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
           return p;
         }
         _instance.lazyProviders.remove(item);
+        _instance.activeProviders.add(p);
         return p;
       }
     }
