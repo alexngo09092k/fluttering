@@ -13,6 +13,7 @@ typedef LazyCallback<T extends IFlutteringProvider> = T Function();
 abstract class IFlutteringManagerProvider {
   List<IFlutteringProvider> get providers;
   List<LazyCallback> get lazyProviders;
+  List<IFlutteringProvider> get activeProviders;
 
   static T of<T extends IFlutteringProvider>([BuildContext? context, String? version]) {
     throw ErrorDescription("Not found provider");
@@ -47,13 +48,18 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   @override
   List<IFlutteringProvider> get providers => _providers;
 
+  /// create instance for provider;
+  final List<IFlutteringProvider> _activeProviders = [];
+  @override
+  List<IFlutteringProvider> get activeProviders => _activeProviders;
+
   /// Defined your lazy providers are used in app
   final List<IFlutteringProvider Function()> _lazyProviders = [];
   @override
   List<IFlutteringProvider Function()> get lazyProviders => _lazyProviders;
 
   static T of<T extends IFlutteringProvider>([BuildContext? context, String? version]) {
-    for (var item in _instance.providers) {
+    for (var item in _instance.activeProviders) {
       if (item is T) {
         if (version != null && item.version == version) {
           return item;
@@ -65,8 +71,11 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
       if (item is LazyCallback<T>) {
         final p = item();
         if (version != null && p.version == version) {
+          _instance.lazyProviders.remove(item);
+          _instance.activeProviders.add(p);
           return p;
         }
+        _instance.lazyProviders.remove(item);
         return p;
       }
     }
@@ -76,16 +85,9 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   static Future<bool> willSplash() async {
     List<bool> _ = [];
 
-    for (var item in _instance.providers) {
+    for (var item in _instance.activeProviders) {
       if (item is IFlutteringProviderDelegate) {
         _.add(await item.willSplash());
-      }
-    }
-
-    for (var item in _instance.lazyProviders) {
-      if (item is LazyCallback<IFlutteringProviderDelegate>) {
-        IFlutteringProviderDelegate p = item();
-        _.add(await p.willSplash());
       }
     }
 
@@ -95,16 +97,9 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   static Future<bool> didSplash() async {
     List<bool> _ = [];
 
-    for (var item in _instance.providers) {
+    for (var item in _instance.activeProviders) {
       if (item is IFlutteringProviderDelegate) {
         _.add(await item.didSplash());
-      }
-    }
-
-    for (var item in _instance.lazyProviders) {
-      if (item is LazyCallback<IFlutteringProviderDelegate>) {
-        IFlutteringProviderDelegate p = item();
-        _.add(await p.didSplash());
       }
     }
 
@@ -114,16 +109,9 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   static Future<bool> willCloseApp() async {
     List<bool> _ = [];
 
-    for (var item in _instance.providers) {
+    for (var item in _instance.activeProviders) {
       if (item is IFlutteringProviderDelegate) {
         _.add(await item.willCloseApp());
-      }
-    }
-
-    for (var item in _instance.lazyProviders) {
-      if (item is LazyCallback<IFlutteringProviderDelegate>) {
-        IFlutteringProviderDelegate p = item();
-        _.add(await p.willCloseApp());
       }
     }
 
@@ -137,31 +125,36 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     _instance.lazyProviders.clear();
     _instance.lazyProviders.addAll(lazyProviders);
 
+    _instance.activeProviders.clear();
+    _instance.activeProviders.addAll(providers);
+
     List<bool> _ = [];
 
-    for (var item in _instance.providers) {
+    await _delegateInLazyProviders();
+
+    for (var item in _instance.activeProviders) {
       if (item is IFlutteringProviderDelegate) {
         _.add(await item.onRegisted());
-      }
-    }
-
-    for (var item in _instance.lazyProviders) {
-      if (item is LazyCallback<IFlutteringProviderDelegate>) {
-        IFlutteringProviderDelegate p = item();
-        _.add(await p.onRegisted());
       }
     }
 
     return !_.contains(false);
   }
 
+  static Future<void> _delegateInLazyProviders() async {
+    for (var item in _instance.lazyProviders) {
+      if (item is LazyCallback<IFlutteringProviderDelegate>) {
+        IFlutteringProviderDelegate p = item();
+        _instance.lazyProviders.remove(item);
+        _instance.activeProviders.add(p);
+      }
+    }
+  }
+
   @override
   void dispose() {
-    for (var item in _instance.providers) {
+    for (var item in _instance.activeProviders) {
       item.dispose();
-    }
-    for (var item in _instance.lazyProviders) {
-      item().dispose();
     }
   }
 }
