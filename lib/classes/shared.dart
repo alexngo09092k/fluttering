@@ -67,7 +67,7 @@ abstract class IFlutteringShared {
   /// Completes with true once the user preferences for the app has been closed.
   dispose();
 
-  StreamSubscription addListener(Function(dynamic) listener);
+  StreamSubscription<FlutteringSharedEvent> addListener(Function(FlutteringSharedEvent) listener);
 }
 
 class FlutteringShared extends IFlutteringShared {
@@ -180,7 +180,7 @@ class FlutteringShared extends IFlutteringShared {
   }
 
   @override
-  StreamSubscription addListener(Function(dynamic) listener) {
+  StreamSubscription<FlutteringSharedEvent> addListener(Function(FlutteringSharedEvent) listener) {
     return _streamController.stream.listen(listener);
   }
 
