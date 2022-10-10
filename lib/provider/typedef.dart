@@ -12,6 +12,8 @@ import 'package:fluttering/provider/widgets/autopplistener.dart';
 import 'package:fluttering/provider/widgets/plistener.dart';
 import 'package:fluttering/provider/widgets/pplistener.dart';
 
+typedef LazyProviderCallback<T extends IProvider> = LazyFlutteringCallback<T>;
+
 typedef ManagerProvider = FlutteringManagerProvider;
 
 typedef IProvider = IFlutteringProvider;

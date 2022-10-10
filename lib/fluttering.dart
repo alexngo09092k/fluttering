@@ -18,7 +18,7 @@ export 'package:fluttering/fluttering_app.dart';
 void runAwesomeApp(
   Widget app, {
   List<IProvider> providers = const [],
-  List<IProvider Function()> lazyProviders = const [],
+  List<LazyProviderCallback> lazyProviders = const [],
   Future<bool> Function()? onWillInitialize,
   Future<bool> Function()? onDidInitialize,
   Function(Object?)? onError,
