@@ -9,7 +9,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttering/provider/typedef.dart';
 import 'package:fluttering/classes/typedef.dart';
-import 'package:fluttering/debugger/logs.dart';
 
 abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
   @override
