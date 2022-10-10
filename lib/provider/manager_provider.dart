@@ -6,6 +6,7 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
+import 'package:fluttering/fluttering.dart';
 
 import 'package:fluttering/provider/provider.dart';
 import 'package:fluttering/provider/provider_delegate.dart';
@@ -65,13 +66,15 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   T _of<T extends IFlutteringProvider>([String? version]) {
     for (var item in _activeProviders) {
       if (item is T) {
-        if (version != null && item.version == version) {
+        if (version != null && (item.version == version)) {
           return item;
         }
         return item;
       }
     }
     for (var item in _lazyProviders) {
+      Debug.log(T);
+      Debug.log(item is LazyFlutteringProvider<T>);
       if (item is LazyFlutteringProvider<T> && item.registered == false) {
         final p = item.lazyCallback();
         if (version != null && p.version == version) {
@@ -146,7 +149,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     _providers.addAll(providers);
 
     _lazyProviders.clear();
-    _lazyProviders.addAll(lazyProviders.map((e) => LazyFlutteringProvider(registered: false, lazyCallback: e)));
+    _lazyProviders.addAll(lazyProviders.map<LazyFlutteringProvider>((lc) => LazyFlutteringProvider(registered: false, lazyCallback: lc)));
 
     _activeProviders.clear();
     _activeProviders.addAll(providers);
@@ -233,6 +236,8 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
         _.add(_activeProviders.remove(item));
       }
     }
+
+    Debug.log("================= PROVIDER $provider HAVEN BEEN CANCELED REGISTRATION ===============");
 
     return !_.contains(false);
   }
