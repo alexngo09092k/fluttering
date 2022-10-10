@@ -6,6 +6,7 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
+import 'package:fluttering/fluttering.dart';
 
 import 'package:fluttering/provider/provider.dart';
 import 'package:fluttering/provider/provider_delegate.dart';
@@ -72,6 +73,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
       }
     }
     for (var item in _lazyProviders) {
+      Debug.log(item);
       if (item is LazyFlutteringProvider<T> && item.registered == false) {
         final p = item.lazyCallback();
         if (version != null && p.version == version) {
@@ -147,6 +149,8 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
     _lazyProviders.clear();
     _lazyProviders.addAll(lazyProviders.map<LazyFlutteringProvider>((lc) => LazyFlutteringProvider(registered: false, lazyCallback: lc)));
+
+    Debug.log(_lazyProviders);
 
     _activeProviders.clear();
     _activeProviders.addAll(providers);
