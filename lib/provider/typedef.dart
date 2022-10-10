@@ -4,7 +4,7 @@
 /// Copyright (c) 2022 ThemePlace
 library fluttering;
 
-import 'package:fluttering/provider/lifecycle_provider.dart';
+import 'package:fluttering/provider/provider_delegate.dart';
 import 'package:fluttering/provider/manager_provider.dart';
 import 'package:fluttering/provider/provider.dart';
 import 'package:fluttering/provider/widgets/autoplistener.dart';

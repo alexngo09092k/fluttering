@@ -15,7 +15,7 @@ abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> wit
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    ManagerProvider.willSplash();
+    ManagerProvider.willOpenApp();
     super.initState();
   }
 
@@ -27,6 +27,21 @@ abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> wit
       WidgetsBinding.instance.removeObserver(this);
       ManagerProvider.instance.dispose();
     });
+    super.dispose();
+  }
+}
+
+abstract class FlutteringSplashState<T extends StatefulWidget> extends State<T> {
+  @override
+  void initState() {
+    ManagerProvider.willSplash().then((_) => onSplash(_));
+    super.initState();
+  }
+
+  void onSplash(bool resultOnWillSplash);
+
+  @override
+  void dispose() {
     super.dispose();
   }
 }

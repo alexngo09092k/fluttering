@@ -5,7 +5,7 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/provider/lifecycle_provider.dart';
+import 'package:fluttering/provider/provider_delegate.dart';
 import 'package:fluttering/provider/provider.dart';
 
 typedef LazyCallback<T extends IFlutteringProvider> = T Function();
@@ -90,24 +90,24 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     throw ErrorDescription("Not found provider");
   }
 
-  static Future<bool> willSplash() async {
+  static Future<bool> willOpenApp() async {
     List<bool> _ = [];
 
     for (var item in _instance.activeProviders) {
       if (item is IFlutteringProviderDelegate) {
-        _.add(await item.willSplash());
+        _.add(await item.willOpenApp());
       }
     }
 
     return !_.contains(false);
   }
 
-  static Future<bool> didSplash() async {
+  static Future<bool> willSplash() async {
     List<bool> _ = [];
 
     for (var item in _instance.activeProviders) {
       if (item is IFlutteringProviderDelegate) {
-        _.add(await item.didSplash());
+        _.add(await item.willSplash());
       }
     }
 

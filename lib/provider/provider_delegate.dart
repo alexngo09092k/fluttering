@@ -10,12 +10,12 @@ abstract class IFlutteringProviderDelegate extends FlutteringProvider {
   /// is called when provider is registed
   Future<bool> onRegisted();
 
-  /// is called before go to splash screen
-  Future<bool> willSplash();
-
-  /// is called when went to splash screen
-  Future<bool> didSplash();
+  /// is called when open app
+  Future<bool> willOpenApp();
 
   /// is called when closed app
   Future<bool> willCloseApp();
+
+  /// is called when splash screen is opend
+  Future<bool> willSplash();
 }
