@@ -6,22 +6,11 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/fluttering.dart';
 
 import 'package:fluttering/provider/provider.dart';
 import 'package:fluttering/provider/provider_delegate.dart';
 
 typedef LazyFlutteringCallback<T extends IFlutteringProvider> = T Function();
-
-class LazyFlutteringProvider<T extends IFlutteringProvider> {
-  bool registered;
-  LazyFlutteringCallback<T> lazyCallback;
-
-  LazyFlutteringProvider({
-    required this.registered,
-    required this.lazyCallback,
-  });
-}
 
 abstract class IFlutteringManagerProvider {
   static T of<T extends IFlutteringProvider>([String? version]) {
@@ -58,8 +47,10 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   /// create instance for provider;
   final List<IFlutteringProvider> _activeProviders = [];
 
+  final List<LazyFlutteringCallback> _registeredLazyProviders = [];
+
   /// Defined your lazy providers are used in app
-  final List<LazyFlutteringProvider> _lazyProviders = [];
+  final List<LazyFlutteringCallback> _lazyProviders = [];
 
   static T of<T extends IFlutteringProvider>([String? version]) => _instance._of<T>(version);
 
@@ -73,15 +64,14 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
       }
     }
     for (var item in _lazyProviders) {
-      Debug.log(item);
-      if (item is LazyFlutteringProvider<T> && item.registered == false) {
-        final p = item.lazyCallback();
+      if (item is LazyFlutteringCallback<T> && !_registeredLazyProviders.contains(item)) {
+        final p = item();
         if (version != null && p.version == version) {
-          item.registered = true;
+          _registeredLazyProviders.add(item);
           _activeProviders.add(p);
           return p;
         }
-        item.registered = true;
+        _registeredLazyProviders.add(item);
         _activeProviders.add(p);
         return p;
       }
@@ -148,9 +138,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     _providers.addAll(providers);
 
     _lazyProviders.clear();
-    _lazyProviders.addAll(lazyProviders.map<LazyFlutteringProvider>((lc) => LazyFlutteringProvider(registered: false, lazyCallback: lc)));
-
-    Debug.log(_lazyProviders);
+    _lazyProviders.addAll(lazyProviders);
 
     _activeProviders.clear();
     _activeProviders.addAll(providers);
@@ -170,9 +158,9 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
   Future<void> _delegateInLazyProviders() async {
     for (var item in _lazyProviders) {
-      if (item is LazyFlutteringProvider<IFlutteringProviderDelegate> && item.registered == false) {
-        IFlutteringProviderDelegate p = item.lazyCallback();
-        item.registered = true;
+      if (item is LazyFlutteringCallback<IFlutteringProviderDelegate> && !_registeredLazyProviders.contains(item)) {
+        IFlutteringProviderDelegate p = item();
+        _registeredLazyProviders.add(item);
         _activeProviders.add(p);
       }
     }
@@ -226,9 +214,8 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _lazyProviders) {
-      if (item is LazyFlutteringProvider<T> && item.registered == true) {
-        item.registered = false;
-        break;
+      if (item is LazyFlutteringCallback<T> && _registeredLazyProviders.contains(item)) {
+        _.add(_registeredLazyProviders.remove(item));
       }
     }
 
