@@ -142,7 +142,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
     for (var item in _instance.activeProviders) {
       if (item is IFlutteringProviderDelegate) {
-        _.add(await item.onRegisted());
+        _.add(await item.registered());
       }
     }
 
@@ -157,6 +157,42 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
         _instance.activeProviders.add(p);
       }
     }
+  }
+
+  static Future<bool> changedAppLifecycleState(AppLifecycleState state) async {
+    List<bool> _ = [];
+
+    for (var item in _instance.activeProviders) {
+      if (item is IFlutteringProviderDelegate) {
+        _.add(await item.changedAppLifecycleState(state));
+      }
+    }
+
+    return !_.contains(false);
+  }
+
+  static Future<bool> didPopRoute() async {
+    List<bool> _ = [];
+
+    for (var item in _instance.activeProviders) {
+      if (item is IFlutteringProviderDelegate) {
+        _.add(await item.didPopRoute());
+      }
+    }
+
+    return !_.contains(false);
+  }
+
+  static Future<bool> didPushRoute(String route) async {
+    List<bool> _ = [];
+
+    for (var item in _instance.activeProviders) {
+      if (item is IFlutteringProviderDelegate) {
+        _.add(await item.didPushRoute(route));
+      }
+    }
+
+    return !_.contains(false);
   }
 
   @override

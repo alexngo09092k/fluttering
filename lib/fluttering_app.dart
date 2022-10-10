@@ -20,6 +20,24 @@ abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> wit
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    ManagerProvider.changedAppLifecycleState(state);
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  Future<bool> didPopRoute() {
+    ManagerProvider.didPopRoute();
+    return super.didPopRoute();
+  }
+
+  @override
+  Future<bool> didPushRoute(String route) {
+    ManagerProvider.didPushRoute(route);
+    return super.didPushRoute(route);
+  }
+
+  @override
   void dispose() {
     ManagerProvider.willCloseApp().then((_) {
       ManagerCache.instance.clean();
@@ -44,52 +62,4 @@ abstract class FlutteringSplashState<T extends StatefulWidget> extends State<T> 
   void dispose() {
     super.dispose();
   }
-}
-
-void runFlutteringApp(
-  Widget app, {
-  List<IProvider> providers = const [],
-  List<IProvider Function()> lazyProviders = const [],
-  Future<bool> Function()? onWillInitialize,
-  Future<bool> Function()? onDidInitialize,
-  Function(Object?)? onError,
-}) {
-  Future<bool> initialize() async {
-    List<bool> result = [];
-    result.add(await DeviceInfo.instance.initial());
-
-    result.add(await AsyncStorage.instance.initial());
-
-    result.add(await ManagerCache.instance.initial());
-
-    result.add(await InternetConnection.instance.initial('google.com'));
-
-    return !result.contains(false);
-  }
-
-  runZonedGuarded(() async {
-    try {
-      WidgetsFlutterBinding.ensureInitialized();
-
-      if (onWillInitialize != null) await onWillInitialize();
-
-      await initialize();
-
-      if (onDidInitialize != null) await onDidInitialize();
-
-      ManagerProvider.registerProviders(
-        providers: providers,
-        lazyProviders: lazyProviders,
-      );
-
-      runApp(app);
-    } catch (error) {
-      Debug.log(error);
-      if (onError != null) onError(error);
-    }
-  }, (e, stack) {
-    Debug.log(e);
-    Debug.log(stack);
-    if (onError != null) onError(e);
-  });
 }
