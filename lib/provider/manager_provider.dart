@@ -6,7 +6,6 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/fluttering.dart';
 
 import 'package:fluttering/provider/provider.dart';
 import 'package:fluttering/provider/provider_delegate.dart';
@@ -61,7 +60,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
   /// Defined your lazy providers are used in app
   final List<LazyFlutteringProvider> _lazyProviders = [];
 
-  static T of<T extends IFlutteringProvider>([String? version]) => _instance._of(version);
+  static T of<T extends IFlutteringProvider>([String? version]) => _instance._of<T>(version);
 
   T _of<T extends IFlutteringProvider>([String? version]) {
     for (var item in _activeProviders) {
@@ -73,8 +72,6 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
       }
     }
     for (var item in _lazyProviders) {
-      Debug.log(T);
-      Debug.log(item is LazyFlutteringProvider<T>);
       if (item is LazyFlutteringProvider<T> && item.registered == false) {
         final p = item.lazyCallback();
         if (version != null && p.version == version) {
@@ -219,7 +216,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     return !_.contains(false);
   }
 
-  static bool cancelRegistration<T extends IFlutteringProvider>(T provider, [String? version]) => _instance._cancelRegistration(provider, version);
+  static bool cancelRegistration<T extends IFlutteringProvider>(T provider, [String? version]) => _instance._cancelRegistration<T>(provider, version);
 
   bool _cancelRegistration<T extends IFlutteringProvider>(T provider, [String? version]) {
     List<bool> _ = [];
@@ -236,8 +233,6 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
         _.add(_activeProviders.remove(item));
       }
     }
-
-    Debug.log("================= PROVIDER $provider HAVEN BEEN CANCELED REGISTRATION ===============");
 
     return !_.contains(false);
   }
