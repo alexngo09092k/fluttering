@@ -13,7 +13,6 @@ import 'package:fluttering/debugger/logs.dart';
 
 export 'package:fluttering/typedef.dart';
 export 'package:fluttering/debugger/logs.dart';
-export 'package:fluttering/fluttering_app.dart';
 
 void runAwesomeApp(
   Widget app, {

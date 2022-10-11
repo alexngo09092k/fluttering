@@ -7,7 +7,7 @@ library fluttering;
 import 'package:flutter/material.dart';
 import 'package:fluttering/provider/provider.dart';
 
-abstract class IFlutteringProviderDelegate extends FlutteringProvider {
+class FlutteringProviderDelegate extends FlutteringProvider {
   /// is called when provider is registerd
   Future<bool> registered() => Future.value(true);
 
@@ -28,7 +28,9 @@ abstract class IFlutteringProviderDelegate extends FlutteringProvider {
   ///
   /// This method exposes notifications from [SystemChannels.lifecycle].
   Future<bool> changedAppLifecycleState(AppLifecycleState state) => Future.value(true);
+}
 
+class FlutteringProviderObserver {
   /// Called when the system tells the app to pop the current route.
   /// For example, on Android, this is called when the user presses
   /// the back button.

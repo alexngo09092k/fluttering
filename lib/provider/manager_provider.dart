@@ -85,7 +85,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _activeProviders) {
-      if (item is IFlutteringProviderDelegate) {
+      if (item is FlutteringProviderDelegate) {
         _.add(await item.willOpenApp());
       }
     }
@@ -99,7 +99,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _activeProviders) {
-      if (item is IFlutteringProviderDelegate) {
+      if (item is FlutteringProviderDelegate) {
         _.add(await item.willSplash());
       }
     }
@@ -113,7 +113,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _activeProviders) {
-      if (item is IFlutteringProviderDelegate) {
+      if (item is FlutteringProviderDelegate) {
         _.add(await item.willCloseApp());
       }
     }
@@ -148,7 +148,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     await _delegateInLazyProviders();
 
     for (var item in _activeProviders) {
-      if (item is IFlutteringProviderDelegate) {
+      if (item is FlutteringProviderDelegate) {
         _.add(await item.registered());
       }
     }
@@ -158,8 +158,8 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
   Future<void> _delegateInLazyProviders() async {
     for (var item in _lazyProviders) {
-      if (item is LazyFlutteringCallback<IFlutteringProviderDelegate> && !_registeredLazyProviders.contains(item)) {
-        IFlutteringProviderDelegate p = item();
+      if (item is LazyFlutteringCallback<FlutteringProviderDelegate> && !_registeredLazyProviders.contains(item)) {
+        FlutteringProviderDelegate p = item();
         _registeredLazyProviders.add(item);
         _activeProviders.add(p);
       }
@@ -172,7 +172,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _activeProviders) {
-      if (item is IFlutteringProviderDelegate) {
+      if (item is FlutteringProviderDelegate) {
         _.add(await item.changedAppLifecycleState(state));
       }
     }
@@ -186,8 +186,8 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _activeProviders) {
-      if (item is IFlutteringProviderDelegate) {
-        _.add(await item.didPopRoute());
+      if (item is FlutteringProviderObserver) {
+        _.add(await (item as FlutteringProviderObserver).didPopRoute());
       }
     }
 
@@ -200,8 +200,8 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     List<bool> _ = [];
 
     for (var item in _activeProviders) {
-      if (item is IFlutteringProviderDelegate) {
-        _.add(await item.didPushRoute(route));
+      if (item is FlutteringProviderObserver) {
+        _.add(await (item as FlutteringProviderObserver).didPushRoute(route));
       }
     }
 

@@ -7,8 +7,37 @@ library fluttering;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttering/provider/provider_delegate.dart';
 import 'package:fluttering/provider/typedef.dart';
 import 'package:fluttering/classes/typedef.dart';
+
+abstract class FlutteringProviderState<T extends StatefulWidget, R extends IProvider> extends State<T> with WidgetsBindingObserver {
+  late R provider;
+
+  @override
+  void initState() {
+    provider = ManagerProvider.of<R>();
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  Future<bool> didPopRoute() {
+    if (provider is FlutteringProviderObserver) (provider as FlutteringProviderObserver).didPopRoute();
+    return super.didPopRoute();
+  }
+
+  @override
+  Future<bool> didPushRoute(String route) {
+    if (provider is FlutteringProviderObserver) (provider as FlutteringProviderObserver).didPushRoute(route);
+    return super.didPushRoute(route);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
 
 abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
   @override
@@ -24,17 +53,17 @@ abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> wit
     super.didChangeAppLifecycleState(state);
   }
 
-  @override
-  Future<bool> didPopRoute() {
-    ManagerProvider.didPopRoute();
-    return super.didPopRoute();
-  }
+  // @override
+  // Future<bool> didPopRoute() {
+  //   ManagerProvider.didPopRoute();
+  //   return super.didPopRoute();
+  // }
 
-  @override
-  Future<bool> didPushRoute(String route) {
-    ManagerProvider.didPushRoute(route);
-    return super.didPushRoute(route);
-  }
+  // @override
+  // Future<bool> didPushRoute(String route) {
+  //   ManagerProvider.didPushRoute(route);
+  //   return super.didPushRoute(route);
+  // }
 
   @override
   void dispose() {
