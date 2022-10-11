@@ -208,24 +208,14 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     return !_.contains(false);
   }
 
-  static bool cancelRegistration<T extends IFlutteringProvider>(T provider, [String? version]) => _instance._cancelRegistration<T>(provider, version);
+  static void cancelRegistration<T extends IFlutteringProvider>(T provider, [String? version]) => _instance._cancelRegistration<T>(provider, version);
 
-  bool _cancelRegistration<T extends IFlutteringProvider>(T provider, [String? version]) {
-    List<bool> _ = [];
+  void _cancelRegistration<T extends IFlutteringProvider>(T provider, [String? version]) {
+    /// REMOVE IN RESGISTERED LAZY PROVIDERS
+    _registeredLazyProviders.removeWhere((item) => item is LazyFlutteringCallback<T> && _registeredLazyProviders.contains(item));
 
-    for (var item in _lazyProviders) {
-      if (item is LazyFlutteringCallback<T> && _registeredLazyProviders.contains(item)) {
-        _.add(_registeredLazyProviders.remove(item));
-      }
-    }
-
-    for (var item in _activeProviders) {
-      if (item is T && (version == null || item.version == version)) {
-        _.add(_activeProviders.remove(item));
-      }
-    }
-
-    return !_.contains(false);
+    /// REMOVE IN ACTIVE
+    _activeProviders.removeWhere((item) => item is T && (version == null || item.version == version));
   }
 
   @override
