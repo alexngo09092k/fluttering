@@ -35,6 +35,7 @@ abstract class FlutteringProviderState<T extends StatefulWidget, R extends IProv
 
   @override
   void dispose() {
+    if (provider is FlutteringProviderObserver) (provider as FlutteringProviderObserver).willPopRoute();
     super.dispose();
   }
 }

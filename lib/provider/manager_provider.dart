@@ -180,6 +180,20 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     return !_.contains(false);
   }
 
+  static Future<bool> willPopRoute() => _instance._willPopRoute();
+
+  Future<bool> _willPopRoute() async {
+    List<bool> _ = [];
+
+    for (var item in _activeProviders) {
+      if (item is FlutteringProviderObserver) {
+        _.add(await (item as FlutteringProviderObserver).willPopRoute());
+      }
+    }
+
+    return !_.contains(false);
+  }
+
   static Future<bool> didPopRoute() => _instance._didPopRoute();
 
   Future<bool> _didPopRoute() async {
