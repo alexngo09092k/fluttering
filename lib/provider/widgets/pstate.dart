@@ -20,12 +20,16 @@ abstract class FlutteringProviderState<T extends StatefulWidget, R extends IProv
   }
 }
 
-abstract class FlutteringProviderStateObserver<T extends StatefulWidget, R extends IProvider> extends FlutteringProviderState<T, R> with WidgetsBindingObserver {
+abstract class FlutteringProviderStateObserver<T extends StatefulWidget, R extends IProvider> extends FlutteringProviderState<T, R>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback(onNextFrame);
     super.initState();
   }
+
+  void onNextFrame(Duration timestamp) {}
 
   @override
   Future<bool> didPopRoute() {
@@ -42,6 +46,7 @@ abstract class FlutteringProviderStateObserver<T extends StatefulWidget, R exten
   @override
   void dispose() {
     if (provider is FlutteringProviderObserver) (provider as FlutteringProviderObserver).willPopRoute();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 }
