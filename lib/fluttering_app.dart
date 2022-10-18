@@ -4,7 +4,6 @@
 /// Copyright (c) 2022 ThemePlace
 library fluttering;
 
-
 import 'package:flutter/material.dart';
 import 'package:fluttering/provider/typedef.dart';
 import 'package:fluttering/classes/typedef.dart';
@@ -13,6 +12,7 @@ abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> wit
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback(onNextFrame);
     ManagerProvider.willOpenApp();
     super.initState();
   }
@@ -22,6 +22,8 @@ abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> wit
     ManagerProvider.changedAppLifecycleState(state);
     super.didChangeAppLifecycleState(state);
   }
+
+  void onNextFrame(Duration timestamp) {}
 
   // @override
   // Future<bool> didPopRoute() {
