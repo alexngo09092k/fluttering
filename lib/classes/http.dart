@@ -38,6 +38,8 @@ abstract class IFlutteringHttp {
 
   Future<FlutteringResponse> put(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
+  Future<FlutteringResponse> patch(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+
   Future<FlutteringResponse> delete(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 }
 
@@ -144,6 +146,27 @@ class FlutteringHttp extends IFlutteringHttp {
       Debug.log('====> API Body: $body');
       http.Response response = await http
           .put(
+            uriSend,
+            body: jsonEncode(body),
+            headers: headers,
+          )
+          .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
+      return _handleResponse(response);
+    } catch (e) {
+      Debug.log(e);
+      return FlutteringResponse(error: e.toString());
+    }
+  }
+
+  @override
+  Future<FlutteringResponse> patch(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+    try {
+      final Uri uriParse = Uri.parse(url);
+      final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
+      Debug.log('====> API Call: $uriSend\nHeader: $headers');
+      Debug.log('====> API Body: $body');
+      http.Response response = await http
+          .patch(
             uriSend,
             body: jsonEncode(body),
             headers: headers,
