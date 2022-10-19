@@ -5,6 +5,7 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
+import 'package:fluttering/fluttering.dart';
 import 'package:fluttering/provider/provider.dart';
 
 class FlutteringPropProviderListener<T extends IFlutteringProvider, R> extends StatefulWidget {
@@ -13,12 +14,14 @@ class FlutteringPropProviderListener<T extends IFlutteringProvider, R> extends S
     required this.listenable,
     required this.select,
     required this.builder,
+    required this.debugMode,
     this.child,
   });
   final T listenable;
   final R Function(T) select;
   final Widget Function(BuildContext, Widget?, T, R?) builder;
   final Widget? child;
+  final bool debugMode;
 
   @override
   State<FlutteringPropProviderListener<T, R>> createState() => _FlutteringPropProviderListenerState<T, R>();
@@ -37,6 +40,9 @@ class _FlutteringPropProviderListenerState<T extends IFlutteringProvider, R> ext
   _listen() {
     R value = widget.select(widget.listenable);
     if (_r != null && _r!.value != value) {
+      if (widget.debugMode) {
+        Debug.log("=====> value of $T changed from ${_r!.value} to $value");
+      }
       _r!.value = value;
     }
   }

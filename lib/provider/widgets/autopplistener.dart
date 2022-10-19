@@ -16,12 +16,14 @@ class AutoPFlutteringProviderListener<T extends IFlutteringProvider, R> extends 
     required this.builder,
     this.child,
     this.version,
+    this.debugMode = false,
   });
 
   final R Function(T) select;
   final Widget Function(BuildContext, Widget?, T, R?) builder;
   final Widget? child;
   final String? version;
+  final bool debugMode;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class AutoPFlutteringProviderListener<T extends IFlutteringProvider, R> extends 
       listenable: FlutteringManagerProvider.of<T>(version),
       select: select,
       builder: builder,
+      debugMode: debugMode,
       child: child,
     );
   }
