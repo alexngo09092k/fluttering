@@ -17,8 +17,9 @@ import 'package:fluttering/debugger/logs.dart';
 
 class FlutteringResponse<T> {
   String? error;
+  int statusCode;
   T? data;
-  FlutteringResponse({this.error, this.data});
+  FlutteringResponse({this.error, this.data, required this.statusCode});
 }
 
 class MultipartBody {
@@ -69,7 +70,7 @@ class FlutteringHttp extends IFlutteringHttp {
       return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
-      return FlutteringResponse(error: e.toString());
+      return FlutteringResponse(error: e.toString(), statusCode: 204);
     }
   }
 
@@ -91,7 +92,7 @@ class FlutteringHttp extends IFlutteringHttp {
       return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
-      return FlutteringResponse(error: e.toString());
+      return FlutteringResponse(error: e.toString(), statusCode: 204);
     }
   }
 
@@ -133,7 +134,7 @@ class FlutteringHttp extends IFlutteringHttp {
       return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
-      return FlutteringResponse(error: e.toString());
+      return FlutteringResponse(error: e.toString(), statusCode: 204);
     }
   }
 
@@ -154,7 +155,7 @@ class FlutteringHttp extends IFlutteringHttp {
       return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
-      return FlutteringResponse(error: e.toString());
+      return FlutteringResponse(error: e.toString(), statusCode: 204);
     }
   }
 
@@ -175,7 +176,7 @@ class FlutteringHttp extends IFlutteringHttp {
       return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
-      return FlutteringResponse(error: e.toString());
+      return FlutteringResponse(error: e.toString(), statusCode: 204);
     }
   }
 
@@ -194,7 +195,7 @@ class FlutteringHttp extends IFlutteringHttp {
       return _handleResponse(response);
     } catch (e) {
       Debug.log(e);
-      return FlutteringResponse(error: e.toString());
+      return FlutteringResponse(error: e.toString(), statusCode: 204);
     }
   }
 
@@ -206,9 +207,9 @@ class FlutteringHttp extends IFlutteringHttp {
       if (data['error'] != null) {
         throw data['error'];
       }
-      return FlutteringResponse(error: null, data: data);
+      return FlutteringResponse(error: null, data: data, statusCode: response.statusCode);
     } catch (e) {
-      return FlutteringResponse(error: e.toString());
+      return FlutteringResponse(error: e.toString(), statusCode: 204);
     }
   }
 }
