@@ -11,12 +11,12 @@ import 'package:permission_handler/permission_handler.dart';
 
 abstract class IFlutteringPermission {
   requestPermission({
-    required Permission permission,
+    required List<Permission> permission,
     Function? onHasPermisson,
     Function? onNoPermisson,
   });
 
-  checkingStatus({
+  bool checkingStatus({
     PermissionStatus? status,
     Function? onHasPermisson,
     Function? onNoPermisson,
@@ -33,21 +33,27 @@ class FlutteringPermission extends IFlutteringPermission {
 
   @override
   requestPermission({
-    required Permission permission,
+    required List<Permission> permission,
     Function? onHasPermisson,
     Function? onNoPermisson,
   }) async {
-    Map<Permission, PermissionStatus> statuses = await [permission].request();
-    final PermissionStatus? status = statuses[permission];
-    checkingStatus(
-      status: status,
-      onHasPermisson: onHasPermisson,
-      onNoPermisson: onNoPermisson,
-    );
+    Map<Permission, PermissionStatus> statuses = await permission.request();
+    final List<bool> _ = [];
+    for (var p in permission) {
+      if (statuses[p] != null) {
+        PermissionStatus status = statuses[p]!;
+        _.add(checkingStatus(status: status));
+      }
+    }
+    if (_.contains(false)) {
+      if (onNoPermisson != null) onNoPermisson();
+    } else {
+      if (onHasPermisson != null) onHasPermisson();
+    }
   }
 
   @override
-  checkingStatus({
+  bool checkingStatus({
     PermissionStatus? status,
     Function? onHasPermisson,
     Function? onNoPermisson,
@@ -69,7 +75,7 @@ class FlutteringPermission extends IFlutteringPermission {
       /// *Only supported on Android.*
       case PermissionStatus.permanentlyDenied:
         if (onNoPermisson != null) onNoPermisson();
-        break;
+        return false;
 
       /// The user granted access to the requested feature.
       case PermissionStatus.granted:
@@ -78,9 +84,9 @@ class FlutteringPermission extends IFlutteringPermission {
       /// *Only supported on iOS (iOS14+).*
       case PermissionStatus.limited:
         if (onHasPermisson != null) onHasPermisson();
-        break;
+        return true;
       default:
-        break;
+        return false;
     }
   }
 }
