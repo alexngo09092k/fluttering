@@ -14,7 +14,9 @@ import 'package:fluttering/debugger/logs.dart';
 export 'package:fluttering/typedef.dart';
 export 'package:fluttering/debugger/logs.dart';
 
-void runAwesomeApp(
+typedef RestartCallBack = Function();
+
+RestartCallBack? runAwesomeApp(
   Widget app, {
   List<IProvider> providers = const [],
   List<LazyProviderCallback> lazyProviders = const [],
@@ -38,22 +40,37 @@ void runAwesomeApp(
     return !result.contains(false);
   }
 
+  setup() async {
+    if (onWillInitialize != null) await onWillInitialize();
+
+    await initialize();
+
+    if (onDidInitialize != null) await onDidInitialize();
+
+    ManagerProvider.registerProviders(
+      providers: providers,
+      lazyProviders: lazyProviders,
+    );
+  }
+
   runZonedGuarded(() async {
     try {
       WidgetsFlutterBinding.ensureInitialized();
 
-      if (onWillInitialize != null) await onWillInitialize();
-
-      await initialize();
-
-      if (onDidInitialize != null) await onDidInitialize();
-
-      ManagerProvider.registerProviders(
-        providers: providers,
-        lazyProviders: lazyProviders,
-      );
+      await setup();
 
       runApp(app);
+
+      return () async {
+        /// reinitial app
+        await setup();
+
+        /// reopen app
+        await ManagerProvider.willOpenApp();
+
+        /// resplash app
+        ManagerProvider.willSplash();
+      };
     } catch (error) {
       Debug.log(error);
       if (onError != null) onError(error);
@@ -63,4 +80,5 @@ void runAwesomeApp(
     Debug.log(stack);
     if (onError != null) onError(e);
   });
+  return null;
 }
