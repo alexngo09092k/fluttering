@@ -4,62 +4,80 @@
 /// Copyright (c) 2022 ThemePlace
 library fluttering;
 
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttering/provider/typedef.dart';
+import 'package:fluttering/debugger/logs.dart';
 import 'package:fluttering/classes/typedef.dart';
+import 'package:fluttering/provider/typedef.dart';
 
-abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback(onNextFrame);
-    ManagerProvider.willOpenApp();
-    super.initState();
-  }
+abstract class FlutteringApp {
+  static void Function()? restartApp;
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    ManagerProvider.changedAppLifecycleState(state);
-    super.didChangeAppLifecycleState(state);
-  }
+  static void runAwesomeApp(
+    Widget app, {
+    List<IProvider> providers = const [],
+    List<LazyProviderCallback> lazyProviders = const [],
+    Future<bool> Function()? onWillInitialize,
+    Future<bool> Function()? onDidInitialize,
+    Function(Object?)? onError,
+    bool debugMode = kDebugMode,
+  }) {
+    Debug.debugMode = debugMode;
 
-  void onNextFrame(Duration timestamp) {}
+    Future<bool> initialize() async {
+      List<bool> result = [];
+      result.add(await DeviceInfo.instance.initial());
 
-  // @override
-  // Future<bool> didPopRoute() {
-  //   ManagerProvider.didPopRoute();
-  //   return super.didPopRoute();
-  // }
+      result.add(await AsyncStorage.instance.initial());
 
-  // @override
-  // Future<bool> didPushRoute(String route) {
-  //   ManagerProvider.didPushRoute(route);
-  //   return super.didPushRoute(route);
-  // }
+      result.add(await ManagerCache.instance.initial());
 
-  @override
-  void dispose() {
-    ManagerProvider.willCloseApp().then((_) {
-      ManagerCache.instance.clean();
-      AsyncStorage.instance.dispose();
-      WidgetsBinding.instance.removeObserver(this);
-      ManagerProvider.instance.dispose();
+      result.add(await InternetConnection.instance.initial('google.com'));
+
+      return !result.contains(false);
+    }
+
+    setup() async {
+      if (onWillInitialize != null) await onWillInitialize();
+
+      await initialize();
+
+      if (onDidInitialize != null) await onDidInitialize();
+
+      ManagerProvider.registerProviders(
+        providers: providers,
+        lazyProviders: lazyProviders,
+      );
+    }
+
+    restartApp = () async {
+      /// reinitial app
+      await setup();
+
+      /// reopen app
+      await ManagerProvider.willOpenApp();
+
+      /// resplash app
+      ManagerProvider.willSplash();
+    };
+
+    runZonedGuarded(() async {
+      try {
+        WidgetsFlutterBinding.ensureInitialized();
+
+        await setup();
+
+        runApp(app);
+      } catch (error) {
+        Debug.log(error);
+        if (onError != null) onError(error);
+      }
+    }, (e, stack) {
+      Debug.log(e);
+      Debug.log(stack);
+      if (onError != null) onError(e);
     });
-    super.dispose();
-  }
-}
-
-abstract class FlutteringSplashState<T extends StatefulWidget> extends State<T> {
-  @override
-  void initState() {
-    ManagerProvider.willSplash().then((_) => onSplash(_));
-    super.initState();
-  }
-
-  void onSplash(bool resultOnWillSplash);
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

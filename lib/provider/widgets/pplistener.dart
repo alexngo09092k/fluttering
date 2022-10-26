@@ -5,7 +5,7 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/fluttering.dart';
+import 'package:fluttering/debugger/logs.dart';
 import 'package:fluttering/provider/provider.dart';
 
 class FlutteringPropProviderListener<T extends IFlutteringProvider, R> extends StatefulWidget {

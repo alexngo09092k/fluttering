@@ -1,0 +1,23 @@
+/// Created Date: Sunday, Jan 9th 2022
+/// Author: Brennan Ngo
+///
+/// Copyright (c) 2022 ThemePlace
+library fluttering;
+
+import 'package:flutter/material.dart';
+import 'package:fluttering/provider/typedef.dart';
+
+abstract class FlutteringSplashState<T extends StatefulWidget> extends State<T> {
+  @override
+  void initState() {
+    ManagerProvider.willSplash().then((_) => onSplash(_));
+    super.initState();
+  }
+
+  void onSplash(bool resultOnWillSplash);
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
