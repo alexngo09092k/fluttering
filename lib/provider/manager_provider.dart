@@ -143,6 +143,8 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
     _activeProviders.clear();
     _activeProviders.addAll(providers);
 
+    _registeredLazyProviders.clear();
+
     List<bool> _ = [];
 
     await _delegateInLazyProviders();
