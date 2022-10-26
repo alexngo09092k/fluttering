@@ -13,7 +13,7 @@ import 'package:fluttering/classes/typedef.dart';
 import 'package:fluttering/provider/typedef.dart';
 
 abstract class FlutteringApp {
-  static void Function()? restartApp;
+  static Future<bool> Function()? restartApp;
 
   static void runAwesomeApp(
     Widget app, {
@@ -39,28 +39,32 @@ abstract class FlutteringApp {
       return !result.contains(false);
     }
 
-    setup() async {
+    Future<bool> setup() async {
       if (onWillInitialize != null) await onWillInitialize();
 
       await initialize();
 
       if (onDidInitialize != null) await onDidInitialize();
 
-      ManagerProvider.registerProviders(
+      return ManagerProvider.registerProviders(
         providers: providers,
         lazyProviders: lazyProviders,
       );
     }
 
     restartApp = () async {
+      List<bool> result = [];
+
       /// reinitial app
-      await setup();
+      result.add(await setup());
 
       /// reopen app
-      await ManagerProvider.willOpenApp();
+      result.add(await ManagerProvider.willOpenApp());
 
       /// resplash app
-      ManagerProvider.willSplash();
+      result.add(await ManagerProvider.willSplash());
+
+      return !result.contains(false);
     };
 
     runZonedGuarded(() async {
