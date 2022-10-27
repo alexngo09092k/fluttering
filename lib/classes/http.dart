@@ -223,8 +223,9 @@ class FlutteringHttp extends IFlutteringHttp {
   FlutteringResponse<T> _handleResponse<T>(http.Response response) {
     try {
       Debug.log('======> status code ${response.statusCode}');
+      Debug.log('======> data ${response.body}');
+
       final data = ({} is T || [] is T) ? jsonDecode(response.body) : response.body;
-      Debug.log('======> After json decoded $data');
       if (data is Map && data['error'] != null) {
         throw data['error'];
       }
@@ -232,9 +233,22 @@ class FlutteringHttp extends IFlutteringHttp {
         error: null,
         data: data,
         statusCode: response.statusCode,
+        headers: response.headers,
+        reasonPhrase: response.reasonPhrase,
+        isRedirect: response.isRedirect,
+        request: response.request,
+        persistentConnection: response.persistentConnection,
       );
     } catch (e) {
-      return FlutteringResponse<T>(error: e.toString(), statusCode: 204);
+      return FlutteringResponse<T>(
+        error: e.toString(),
+        statusCode: response.statusCode,
+        headers: response.headers,
+        reasonPhrase: response.reasonPhrase,
+        isRedirect: response.isRedirect,
+        request: response.request,
+        persistentConnection: response.persistentConnection,
+      );
     }
   }
 }
