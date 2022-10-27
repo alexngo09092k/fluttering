@@ -9,6 +9,8 @@ import 'package:fluttering/provider/typedef.dart';
 import 'package:fluttering/classes/typedef.dart';
 
 abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
+  static GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);

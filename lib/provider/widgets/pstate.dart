@@ -7,7 +7,7 @@ library fluttering;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/provider/provider_delegate.dart';
+import 'package:fluttering/provider/provider_observer.dart';
 import 'package:fluttering/provider/typedef.dart';
 
 abstract class FlutteringProviderState<T extends StatefulWidget, R extends IProvider> extends State<T> {

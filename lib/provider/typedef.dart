@@ -5,9 +5,11 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
+import 'package:fluttering/provider/provider_context.dart';
 import 'package:fluttering/provider/provider_delegate.dart';
 import 'package:fluttering/provider/manager_provider.dart';
 import 'package:fluttering/provider/provider.dart';
+import 'package:fluttering/provider/provider_observer.dart';
 import 'package:fluttering/provider/widgets/autoplistener.dart';
 import 'package:fluttering/provider/widgets/autopplistener.dart';
 import 'package:fluttering/provider/widgets/plistener.dart';
@@ -23,6 +25,8 @@ typedef IProvider = IFlutteringProvider;
 typedef ProviderDelegate = FlutteringProviderDelegate;
 
 typedef ProviderObserver = FlutteringProviderObserver;
+
+typedef ProviderContext = FlutteringProviderContext;
 
 typedef Provider = FlutteringProvider;
 

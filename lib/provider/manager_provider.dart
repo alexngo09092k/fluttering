@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'package:fluttering/provider/provider.dart';
 import 'package:fluttering/provider/provider_delegate.dart';
+import 'package:fluttering/provider/provider_observer.dart';
 
 typedef LazyFlutteringCallback<T extends IFlutteringProvider> = T Function();
 
@@ -86,7 +87,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
     for (var item in _activeProviders) {
       if (item is FlutteringProviderDelegate) {
-        _.add(await item.willOpenApp());
+        _.add(await (item as FlutteringProviderDelegate).willOpenApp());
       }
     }
 
@@ -100,7 +101,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
     for (var item in _activeProviders) {
       if (item is FlutteringProviderDelegate) {
-        _.add(await item.willSplash());
+        _.add(await (item as FlutteringProviderDelegate).willSplash());
       }
     }
 
@@ -114,7 +115,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
     for (var item in _activeProviders) {
       if (item is FlutteringProviderDelegate) {
-        _.add(await item.willCloseApp());
+        _.add(await (item as FlutteringProviderDelegate).willCloseApp());
       }
     }
 
@@ -151,7 +152,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
     for (var item in _activeProviders) {
       if (item is FlutteringProviderDelegate) {
-        _.add(await item.registered());
+        _.add(await (item as FlutteringProviderDelegate).registered());
       }
     }
 
@@ -160,8 +161,8 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
   Future<void> _delegateInLazyProviders() async {
     for (var item in _lazyProviders) {
-      if (item is LazyFlutteringCallback<FlutteringProviderDelegate> && !_registeredLazyProviders.contains(item)) {
-        FlutteringProviderDelegate p = item();
+      if (item is LazyFlutteringCallback<FlutteringProvider> && !_registeredLazyProviders.contains(item)) {
+        FlutteringProvider p = item();
         _registeredLazyProviders.add(item);
         _activeProviders.add(p);
       }
@@ -175,7 +176,7 @@ class FlutteringManagerProvider extends IFlutteringManagerProvider {
 
     for (var item in _activeProviders) {
       if (item is FlutteringProviderDelegate) {
-        _.add(await item.changedAppLifecycleState(state));
+        _.add(await (item as FlutteringProviderDelegate).changedAppLifecycleState(state));
       }
     }
 
