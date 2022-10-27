@@ -19,6 +19,10 @@ typedef AsyncStorage = FlutteringShared;
 
 typedef TemporaryStorage = FlutteringClipboard;
 
+typedef TemporaryStorageEvent<T> = FlutteringClipboardEvent<T>;
+
+typedef TemporaryStorageEventStatus = FlutteringClipboardEventStatus;
+
 typedef AsyncStorageEvent = FlutteringSharedEvent;
 
 typedef InternetConnection = FlutteringInternet;
@@ -29,6 +33,6 @@ typedef DeviceInfo = FlutteringDeviceInfo;
 
 typedef ManagerCache = FlutteringCache;
 
-typedef ClientResponse = FlutteringResponse;
+typedef ClientResponse<T> = FlutteringResponse<T>;
 
 typedef ClientHttp = FlutteringHttp;
