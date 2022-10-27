@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 /// Created Date: Sunday, Jan 9th 2022
 /// Author: Brennan Ngo
 ///
@@ -9,17 +10,34 @@ library fluttering;
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart' as foundation;
+import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart' as http_parser;
 import 'package:path/path.dart' as path;
-import 'package:http/http.dart' as http;
-import 'package:flutter/foundation.dart' as foundation;
+
 import 'package:fluttering/debugger/logs.dart';
 
 class FlutteringResponse<T> {
   String? error;
   int statusCode;
   T? data;
-  FlutteringResponse({this.error, this.data, required this.statusCode});
+  Map<String, String> headers;
+  bool isRedirect;
+  bool persistentConnection;
+  String? reasonPhrase;
+  http.BaseRequest? request;
+
+  FlutteringResponse({
+    this.error,
+    required this.statusCode,
+    this.data,
+    this.reasonPhrase,
+    this.request,
+    this.headers = const {},
+    this.isRedirect = false,
+    this.persistentConnection = false,
+  });
 }
 
 class MultipartBody {
