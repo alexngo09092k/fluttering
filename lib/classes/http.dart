@@ -223,9 +223,9 @@ class FlutteringHttp extends IFlutteringHttp {
   FlutteringResponse<T> _handleResponse<T>(http.Response response) {
     try {
       Debug.log('======> status code ${response.statusCode}');
-      final data = T is String || T is bool ? response.body : jsonDecode(response.body);
+      final data = T == String || T == bool ? response.body : jsonDecode(response.body);
       Debug.log('======> After json decoded $data');
-      if (data['error'] != null) {
+      if (data is Map && data['error'] != null) {
         throw data['error'];
       }
       return FlutteringResponse<T>(
