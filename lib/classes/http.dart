@@ -48,18 +48,18 @@ class MultipartBody {
 }
 
 abstract class IFlutteringHttp {
-  Future<FlutteringResponse> get(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<FlutteringResponse<T>> get<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse> post(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<FlutteringResponse<T>> post<T>(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse> postMultipart(String url, Map<String, String> body, List<MultipartBody> multipartBody,
+  Future<FlutteringResponse<T>> postMultipart<T>(String url, Map<String, String> body, List<MultipartBody> multipartBody,
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse> put(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<FlutteringResponse<T>> put<T>(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse> patch(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<FlutteringResponse<T>> patch<T>(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse> delete(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<FlutteringResponse<T>> delete<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 }
 
 class FlutteringHttp extends IFlutteringHttp {
@@ -73,7 +73,7 @@ class FlutteringHttp extends IFlutteringHttp {
   static const int timeoutInSeconds = 200;
 
   @override
-  Future<FlutteringResponse> get(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<FlutteringResponse<T>> get<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
@@ -85,7 +85,7 @@ class FlutteringHttp extends IFlutteringHttp {
           )
           .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
       Debug.log('====> API Response: $response');
-      return _handleResponse(response);
+      return _handleResponse<T>(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString(), statusCode: 204);
@@ -93,7 +93,8 @@ class FlutteringHttp extends IFlutteringHttp {
   }
 
   @override
-  Future<FlutteringResponse> post(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<FlutteringResponse<T>> post<T>(String url, dynamic body,
+      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
@@ -107,7 +108,7 @@ class FlutteringHttp extends IFlutteringHttp {
           )
           .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
       Debug.log('====> API Response: $response');
-      return _handleResponse(response);
+      return _handleResponse<T>(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString(), statusCode: 204);
@@ -115,7 +116,7 @@ class FlutteringHttp extends IFlutteringHttp {
   }
 
   @override
-  Future<FlutteringResponse> postMultipart(String url, Map<String, String> body, List<MultipartBody> multipartBody,
+  Future<FlutteringResponse<T>> postMultipart<T>(String url, Map<String, String> body, List<MultipartBody> multipartBody,
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
@@ -149,7 +150,7 @@ class FlutteringHttp extends IFlutteringHttp {
       }
       request.fields.addAll(body);
       http.Response response = await http.Response.fromStream(await request.send());
-      return _handleResponse(response);
+      return _handleResponse<T>(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString(), statusCode: 204);
@@ -157,7 +158,8 @@ class FlutteringHttp extends IFlutteringHttp {
   }
 
   @override
-  Future<FlutteringResponse> put(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<FlutteringResponse<T>> put<T>(String url, dynamic body,
+      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
@@ -170,7 +172,7 @@ class FlutteringHttp extends IFlutteringHttp {
             headers: headers,
           )
           .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
-      return _handleResponse(response);
+      return _handleResponse<T>(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString(), statusCode: 204);
@@ -178,7 +180,8 @@ class FlutteringHttp extends IFlutteringHttp {
   }
 
   @override
-  Future<FlutteringResponse> patch(String url, dynamic body, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<FlutteringResponse<T>> patch<T>(String url, dynamic body,
+      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
@@ -191,7 +194,7 @@ class FlutteringHttp extends IFlutteringHttp {
             headers: headers,
           )
           .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
-      return _handleResponse(response);
+      return _handleResponse<T>(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString(), statusCode: 204);
@@ -199,7 +202,7 @@ class FlutteringHttp extends IFlutteringHttp {
   }
 
   @override
-  Future<FlutteringResponse> delete(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<FlutteringResponse<T>> delete<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     try {
       final Uri uriParse = Uri.parse(url);
       final Uri uriSend = Uri.https(uriParse.authority, uriParse.path, query);
@@ -210,24 +213,28 @@ class FlutteringHttp extends IFlutteringHttp {
             headers: headers ?? headers,
           )
           .timeout(timeout ?? const Duration(seconds: timeoutInSeconds));
-      return _handleResponse(response);
+      return _handleResponse<T>(response);
     } catch (e) {
       Debug.log(e);
       return FlutteringResponse(error: e.toString(), statusCode: 204);
     }
   }
 
-  FlutteringResponse _handleResponse(http.Response response) {
+  FlutteringResponse<T> _handleResponse<T>(http.Response response) {
     try {
       Debug.log('======> status code ${response.statusCode}');
-      final data = jsonDecode(response.body);
+      final data = T is String || T is bool ? response.body : jsonDecode(response.body);
       Debug.log('======> After json decoded $data');
       if (data['error'] != null) {
         throw data['error'];
       }
-      return FlutteringResponse(error: null, data: data, statusCode: response.statusCode);
+      return FlutteringResponse<T>(
+        error: null,
+        data: data,
+        statusCode: response.statusCode,
+      );
     } catch (e) {
-      return FlutteringResponse(error: e.toString(), statusCode: 204);
+      return FlutteringResponse<T>(error: e.toString(), statusCode: 204);
     }
   }
 }
