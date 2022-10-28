@@ -133,7 +133,7 @@ class FlutteringHttp extends IFlutteringHttp {
     final Uri uriParse = Uri.parse(url);
 
     final Dio client = Dio(BaseOptions(
-      baseUrl: uriParse.authority,
+      baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
@@ -149,7 +149,7 @@ class FlutteringHttp extends IFlutteringHttp {
     final Uri uriParse = Uri.parse(url);
 
     final Dio client = Dio(BaseOptions(
-      baseUrl: uriParse.authority,
+      baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
@@ -173,7 +173,7 @@ class FlutteringHttp extends IFlutteringHttp {
     final Uri uriParse = Uri.parse(url);
 
     final Dio client = Dio(BaseOptions(
-      baseUrl: uriParse.authority,
+      baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
@@ -210,7 +210,7 @@ class FlutteringHttp extends IFlutteringHttp {
     final Uri uriParse = Uri.parse(url);
 
     final Dio client = Dio(BaseOptions(
-      baseUrl: uriParse.authority,
+      baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
@@ -230,7 +230,7 @@ class FlutteringHttp extends IFlutteringHttp {
     final Uri uriParse = Uri.parse(url);
 
     final Dio client = Dio(BaseOptions(
-      baseUrl: uriParse.authority,
+      baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
@@ -249,13 +249,13 @@ class FlutteringHttp extends IFlutteringHttp {
     final Uri uriParse = Uri.parse(url);
 
     final Dio client = Dio(BaseOptions(
-      baseUrl: uriParse.authority,
+      baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
 
     Response response = await client.delete(
-      uriParse.authority,
+      uriParse.origin,
       data: jsonEncode(data),
       queryParameters: query,
     );
