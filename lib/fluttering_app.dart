@@ -102,4 +102,10 @@ class FlutteringApp {
 
     return !result.contains(false);
   }
+
+  Future<void> dispose() async {
+    ManagerCache.instance.clean();
+    AsyncStorage.instance.dispose();
+    ManagerProvider.instance.dispose();
+  }
 }
