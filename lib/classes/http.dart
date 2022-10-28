@@ -283,7 +283,7 @@ class FlutteringHttp extends IFlutteringHttp {
     Debug.log('====> API Data: $data');
 
     Response response = await client.delete(
-      uriParse.origin,
+      uriParse.path,
       data: jsonEncode(data),
       queryParameters: query,
     );
