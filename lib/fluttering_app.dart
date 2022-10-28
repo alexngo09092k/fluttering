@@ -68,8 +68,6 @@ class FlutteringApp {
   }
 
   Future<bool> restart() async {
-    await dispose();
-
     List<bool> result = [];
 
     if (onWillInitialize != null) result.add(await onWillInitialize!());
