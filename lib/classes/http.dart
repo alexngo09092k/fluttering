@@ -132,14 +132,18 @@ class FlutteringHttp extends IFlutteringHttp {
   Future<FlutteringResponse<T>> get<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
+    Debug.log('====> API URL: $url');
+
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
+
     Response response = await client.get(uriParse.path, queryParameters: query);
 
     Debug.log('====> API Response: $response');
+
     return FlutteringResponse<T>.fromResponse(response);
   }
 
@@ -147,6 +151,8 @@ class FlutteringHttp extends IFlutteringHttp {
   Future<FlutteringResponse<T>> post<T>(String url, dynamic data,
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
+
+    Debug.log('====> API URL: $url');
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
@@ -172,6 +178,8 @@ class FlutteringHttp extends IFlutteringHttp {
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
+    Debug.log('====> API URL: $url');
+
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
@@ -195,11 +203,15 @@ class FlutteringHttp extends IFlutteringHttp {
       formData.files.add(MapEntry(multipart.key, part));
     }
 
+    // Debug.log('====> API Data: $formData');
+
     Response response = await client.post(
       uriParse.path,
       data: formData,
       queryParameters: query,
     );
+
+    Debug.log('====> API Response: $response');
 
     return FlutteringResponse<T>.fromResponse(response);
   }
@@ -209,17 +221,23 @@ class FlutteringHttp extends IFlutteringHttp {
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
+    Debug.log('====> API URL: $url');
+
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
 
+    Debug.log('====> API Data: $data');
+
     Response response = await client.put(
       uriParse.path,
       data: jsonEncode(data),
       queryParameters: query,
     );
+
+    Debug.log('====> API Response: $response');
 
     return FlutteringResponse<T>.fromResponse(response);
   }
@@ -229,16 +247,22 @@ class FlutteringHttp extends IFlutteringHttp {
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
+    Debug.log('====> API URL: $url');
+
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
 
+    Debug.log('====> API Data: $data');
+
     Response response = await client.patch(
       uriParse.path,
       data: jsonEncode(data),
     );
+
+    Debug.log('====> API Response: $response');
 
     return FlutteringResponse<T>.fromResponse(response);
   }
@@ -248,17 +272,23 @@ class FlutteringHttp extends IFlutteringHttp {
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
+    Debug.log('====> API URL: $url');
+
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
     ));
 
+    Debug.log('====> API Data: $data');
+
     Response response = await client.delete(
       uriParse.origin,
       data: jsonEncode(data),
       queryParameters: query,
     );
+
+    Debug.log('====> API Response: $response');
 
     return FlutteringResponse<T>.fromResponse(response);
   }
