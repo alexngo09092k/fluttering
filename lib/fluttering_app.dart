@@ -68,6 +68,8 @@ class FlutteringApp {
   }
 
   Future<bool> restart() async {
+    await dispose();
+
     List<bool> result = [];
 
     if (onWillInitialize != null) result.add(await onWillInitialize!());
@@ -103,9 +105,11 @@ class FlutteringApp {
     return !result.contains(false);
   }
 
-  Future<void> dispose() async {
+  Future<bool> dispose() async {
     ManagerCache.instance.clean();
     AsyncStorage.instance.dispose();
     ManagerProvider.instance.dispose();
+
+    return true;
   }
 }
