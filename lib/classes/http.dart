@@ -13,6 +13,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart' as http_parser;
+import 'package:native_flutter_proxy/native_proxy_reader.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:fluttering/debugger/logs.dart';
@@ -292,4 +293,29 @@ class FlutteringHttp extends IFlutteringHttp {
 
     return FlutteringResponse<T>.fromResponse(response);
   }
+}
+
+extension VPNIFlutteringHttp on IFlutteringHttp {
+  Future<bool> isVpnActive() async {
+    final vpnProtocolsKeysIdentifiers = ["tap", "tun", "ppp", "ipsec", "utun", "pptp"];
+    bool isVpnActive;
+    List<NetworkInterface> interfaces = await NetworkInterface.list(includeLoopback: false, type: InternetAddressType.any);
+    interfaces.isNotEmpty
+        ? isVpnActive = interfaces.any((interface) => vpnProtocolsKeysIdentifiers.any((id) => interface.name.startsWith(id)))
+        : isVpnActive = false;
+    return isVpnActive;
+  }
+}
+
+extension ProxyIFlutteringHttp on IFlutteringHttp {
+  Future<bool> isProxyEnabled() async {
+    try {
+      ProxySetting settings = await NativeProxyReader.proxySetting;
+      return settings.enabled;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<ProxySetting> get proxySetting => NativeProxyReader.proxySetting;
 }
