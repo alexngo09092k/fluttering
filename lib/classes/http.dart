@@ -119,6 +119,12 @@ abstract class IFlutteringHttp {
   Future<FlutteringResponse<T>> patch<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
   Future<FlutteringResponse<T>> delete<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+
+  Future<bool> isVpnActive();
+
+  Future<bool> isProxyEnabled();
+
+  Future<ProxySetting> get proxySetting;
 }
 
 class FlutteringHttp extends IFlutteringHttp {
@@ -293,9 +299,8 @@ class FlutteringHttp extends IFlutteringHttp {
 
     return FlutteringResponse<T>.fromResponse(response);
   }
-}
 
-extension VPNIFlutteringHttp on IFlutteringHttp {
+  @override
   Future<bool> isVpnActive() async {
     final vpnProtocolsKeysIdentifiers = ["tap", "tun", "ppp", "ipsec", "utun", "pptp"];
     bool isVpnActive;
@@ -305,9 +310,8 @@ extension VPNIFlutteringHttp on IFlutteringHttp {
         : isVpnActive = false;
     return isVpnActive;
   }
-}
 
-extension ProxyIFlutteringHttp on IFlutteringHttp {
+  @override
   Future<bool> isProxyEnabled() async {
     try {
       ProxySetting settings = await NativeProxyReader.proxySetting;
@@ -317,5 +321,6 @@ extension ProxyIFlutteringHttp on IFlutteringHttp {
     }
   }
 
+  @override
   Future<ProxySetting> get proxySetting => NativeProxyReader.proxySetting;
 }
