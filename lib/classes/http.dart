@@ -301,7 +301,7 @@ extension VPNIFlutteringHttp on IFlutteringHttp {
     bool isVpnActive;
     List<NetworkInterface> interfaces = await NetworkInterface.list(includeLoopback: false, type: InternetAddressType.any);
     interfaces.isNotEmpty
-        ? isVpnActive = interfaces.any((interface) => vpnProtocolsKeysIdentifiers.any((id) => interface.name.startsWith(id)))
+        ? isVpnActive = interfaces.any((interface) => vpnProtocolsKeysIdentifiers.any((id) => interface.name.contains(id)))
         : isVpnActive = false;
     return isVpnActive;
   }
