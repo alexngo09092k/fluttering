@@ -13,6 +13,8 @@ import 'package:fluttering/classes/permission.dart';
 import 'package:fluttering/classes/platform.dart';
 import 'package:fluttering/classes/shared.dart';
 
+export 'package:fluttering/classes/http.dart';
+
 typedef UserPermission = FlutteringPermission;
 
 typedef AsyncStorage = FlutteringShared;
