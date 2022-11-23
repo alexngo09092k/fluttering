@@ -1,6 +1,6 @@
 part of '../huawei_advertisement.dart';
 
-extension InterstitialEx on HuaweiAdvertisement {
+extension InterstitialAdEx on HuaweiAdvertisement {
   InterstitialAd _loadInterstitialAd(
     AdvertisementItem adItem, [
     Function(InterstitialAd)? onAd,

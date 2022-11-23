@@ -1,6 +1,6 @@
 part of '../google_advertisement.dart';
 
-extension Banner on GoogleAdvertisement {
+extension InterstitialEx on GoogleAdvertisement {
   void _loadInterstitialAd(
     AdvertisementItem adItem, [
     Function(InterstitialAd)? onAd,

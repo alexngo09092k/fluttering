@@ -1,6 +1,6 @@
 part of '../huawei_advertisement.dart';
 
-extension SplashAdEx on HuaweiAdvertisement {
+extension RewardAdEx on HuaweiAdvertisement {
   RewardAd _loadRewardAd(
     AdvertisementItem adItem, [
     Function(RewardAd)? onAd,

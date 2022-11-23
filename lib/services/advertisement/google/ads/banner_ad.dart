@@ -1,6 +1,6 @@
 part of '../google_advertisement.dart';
 
-extension Banner on GoogleAdvertisement {
+extension BannerEx on GoogleAdvertisement {
   BannerAd _loadBannerAd(
     AdvertisementItem adItem, [
     Function(BannerAd)? onAd,

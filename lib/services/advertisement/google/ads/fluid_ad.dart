@@ -1,6 +1,6 @@
 part of '../google_advertisement.dart';
 
-extension Banner on GoogleAdvertisement {
+extension FluidEx on GoogleAdvertisement {
   FluidAdManagerBannerAd _loadFluidAd(
     AdvertisementItem adItem, [
     Function(FluidAdManagerBannerAd)? onAd,
