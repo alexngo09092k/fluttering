@@ -7,12 +7,18 @@ library fluttering;
 
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gms_check/gms_check.dart';
 
 import '../utils/index.dart';
 import '../../debugger/index.dart';
 import '../../provider/index.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  Debug.log('=========== FIREBASE MESSAGE WITH ID ${message.messageId} ===========');
+}
 
 class AwesomeApp {
   static AwesomeApp? _instance;
@@ -44,6 +50,12 @@ class AwesomeApp {
     runZonedGuarded(() async {
       try {
         WidgetsFlutterBinding.ensureInitialized();
+
+        GmsCheck().checkGmsAvailability(enableLog: kDebugMode);
+
+        FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler,
+        );
 
         if (onWillInitialize != null) await onWillInitialize!();
 
