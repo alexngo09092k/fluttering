@@ -126,6 +126,7 @@ class AdsProvider extends IAdsProvider {
 
   @override
   Future<bool> changedAppLifecycleState(AppLifecycleState state) {
+    if (!config.enable) return super.changedAppLifecycleState(state);
     switch (state) {
       case AppLifecycleState.inactive:
         restore();
