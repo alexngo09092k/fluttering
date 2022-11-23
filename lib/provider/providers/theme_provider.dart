@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttering/fluttering.dart';
+import 'package:fluttering/utils/index.dart';
 
+import '../../provider/provider.dart';
+import '../../provider/provider_delegate.dart';
 abstract class IThemeProvider extends Provider with ProviderDelegate {
   ThemeMode get themeMode;
 
