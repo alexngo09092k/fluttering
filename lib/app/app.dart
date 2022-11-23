@@ -31,6 +31,7 @@ class AwesomeApp {
   final Future<bool> Function()? onDidInitialize;
   final Function(Object?)? onError;
   final bool debugMode;
+  final bool enableAdvertisement;
 
   AwesomeApp({
     required this.app,
@@ -40,6 +41,7 @@ class AwesomeApp {
     this.onDidInitialize,
     this.onError,
     this.debugMode = kDebugMode,
+    this.enableAdvertisement = true,
   }) {
     _instance = this;
   }
@@ -66,7 +68,7 @@ class AwesomeApp {
         ManagerProvider.registerProviders(
           providers: [
             ...providers,
-            AdsProvider.instance,
+            if (enableAdvertisement) AdsProvider.instance,
           ],
           lazyProviders: lazyProviders,
         );
