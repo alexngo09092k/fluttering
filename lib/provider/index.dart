@@ -11,6 +11,7 @@ export 'provider_observer.dart';
 export 'manager_provider.dart';
 
 export 'providers/ads_provider.dart';
+export 'providers/theme_provider.dart';
 
 export 'widgets/autoplistener.dart';
 export 'widgets/autopplistener.dart';

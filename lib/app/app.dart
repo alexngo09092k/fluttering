@@ -32,6 +32,7 @@ class AwesomeApp {
   final Function(Object?)? onError;
   final bool debugMode;
   final bool enableAdvertisement;
+  final bool enableLightDark;
 
   AwesomeApp({
     required this.app,
@@ -42,6 +43,7 @@ class AwesomeApp {
     this.onError,
     this.debugMode = kDebugMode,
     this.enableAdvertisement = true,
+    this.enableLightDark = true,
   }) {
     _instance = this;
   }
@@ -68,6 +70,7 @@ class AwesomeApp {
         ManagerProvider.registerProviders(
           providers: [
             ...providers,
+            if (enableLightDark) ThemeProvider.instance,
             if (enableAdvertisement) AdsProvider.instance,
           ],
           lazyProviders: lazyProviders,
