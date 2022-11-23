@@ -5,10 +5,11 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/provider/provider.dart';
 
-class FlutteringProviderListener<T extends IFlutteringProvider> extends StatelessWidget {
-  const FlutteringProviderListener({super.key, required this.listenable, required this.builder, this.child});
+import '../provider.dart';
+
+class BaseConsumer<T extends IProvider> extends StatelessWidget {
+  const BaseConsumer({super.key, required this.listenable, required this.builder, this.child});
   final T listenable;
   final Widget? child;
   final Widget Function(BuildContext, Widget?, T listenable) builder;

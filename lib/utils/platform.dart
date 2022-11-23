@@ -6,13 +6,13 @@ library fluttering;
 
 import 'package:flutter/foundation.dart' as foundation;
 
-class FlutteringPlatform {
-  static final FlutteringPlatform _instance = FlutteringPlatform._internal();
-  static FlutteringPlatform get instance => _instance;
+class CurrentPlatform {
+  static final CurrentPlatform _instance = CurrentPlatform._internal();
+  static CurrentPlatform get instance => _instance;
 
-  factory FlutteringPlatform() => _instance;
+  factory CurrentPlatform() => _instance;
 
-  FlutteringPlatform._internal();
+  CurrentPlatform._internal();
 
   bool get kIsWeb => foundation.kIsWeb;
   bool get isIos => foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS;

@@ -8,12 +8,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:fluttering/debugger/logs.dart';
+import 'package:fluttering/debugger/index.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// ================== MANAGER CACHE ================
 
-abstract class IFlutteringCache {
+abstract class IManagerCache {
   Directory? get cacheDirectory;
 
   Directory? get appDirectory;
@@ -29,13 +29,13 @@ abstract class IFlutteringCache {
   void addFiles(List<File?> files);
 }
 
-class FlutteringCache extends IFlutteringCache {
-  static final IFlutteringCache _instance = FlutteringCache._internal();
-  static IFlutteringCache get instance => _instance;
+class ManagerCache extends IManagerCache {
+  static final IManagerCache _instance = ManagerCache._internal();
+  static IManagerCache get instance => _instance;
 
-  factory FlutteringCache() => _instance as FlutteringCache;
+  factory ManagerCache() => _instance as ManagerCache;
 
-  FlutteringCache._internal();
+  ManagerCache._internal();
 
   final List<File> _fileCaches = [];
 

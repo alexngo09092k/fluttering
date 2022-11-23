@@ -5,10 +5,11 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/provider/typedef.dart';
-import 'package:fluttering/classes/typedef.dart';
 
-abstract class FlutteringAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
+import '../utils/index.dart';
+import '../provider/index.dart';
+
+abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
   static GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
 
   @override

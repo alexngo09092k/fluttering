@@ -16,10 +16,10 @@ import 'package:http_parser/http_parser.dart' as http_parser;
 import 'package:native_flutter_proxy/native_proxy_reader.dart';
 import 'package:path/path.dart' as path;
 
-import 'package:fluttering/debugger/logs.dart';
+import 'package:fluttering/debugger/index.dart';
 
-class FlutteringResponse<T> {
-  FlutteringResponse({
+class ClientResponse<T> {
+  ClientResponse({
     this.error,
     this.data,
     Headers? headers,
@@ -35,8 +35,8 @@ class FlutteringResponse<T> {
     this.redirects = redirects ?? [];
   }
 
-  factory FlutteringResponse.fromResponse(Response response) {
-    return FlutteringResponse<T>(
+  factory ClientResponse.fromResponse(Response response) {
+    return ClientResponse<T>(
       data: response.data,
       headers: response.headers,
       requestOptions: response.requestOptions,
@@ -106,31 +106,31 @@ class MultipartBody {
   MultipartBody(this.key, this.file);
 }
 
-abstract class IFlutteringHttp {
-  Future<FlutteringResponse<T>> get<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+abstract class IClientHttp {
+  Future<ClientResponse<T>> get<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse<T>> post<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> post<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse<T>> postMultipart<T>(String url, Map<String, String> body, List<MultipartBody> multipartBody,
+  Future<ClientResponse<T>> postMultipart<T>(String url, Map<String, String> body, List<MultipartBody> multipartBody,
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse<T>> put<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> put<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse<T>> patch<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> patch<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 
-  Future<FlutteringResponse<T>> delete<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> delete<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
 }
 
-class FlutteringHttp extends IFlutteringHttp {
-  static final IFlutteringHttp _instance = FlutteringHttp._internal();
-  static IFlutteringHttp get instance => _instance;
+class ClientHttp extends IClientHttp {
+  static final IClientHttp _instance = ClientHttp._internal();
+  static IClientHttp get instance => _instance;
 
-  factory FlutteringHttp() => _instance as FlutteringHttp;
+  factory ClientHttp() => _instance as ClientHttp;
 
-  FlutteringHttp._internal();
+  ClientHttp._internal();
 
   @override
-  Future<FlutteringResponse<T>> get<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<ClientResponse<T>> get<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
     Debug.log('====> API URL: $url');
@@ -145,11 +145,11 @@ class FlutteringHttp extends IFlutteringHttp {
 
     Debug.log('====> API Response: $response');
 
-    return FlutteringResponse<T>.fromResponse(response);
+    return ClientResponse<T>.fromResponse(response);
   }
 
   @override
-  Future<FlutteringResponse<T>> post<T>(String url, dynamic data,
+  Future<ClientResponse<T>> post<T>(String url, dynamic data,
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -171,11 +171,11 @@ class FlutteringHttp extends IFlutteringHttp {
 
     Debug.log('====> API Response: $response');
 
-    return FlutteringResponse<T>.fromResponse(response);
+    return ClientResponse<T>.fromResponse(response);
   }
 
   @override
-  Future<FlutteringResponse<T>> postMultipart<T>(String url, Map<String, String> data, List<MultipartBody> multipartBody,
+  Future<ClientResponse<T>> postMultipart<T>(String url, Map<String, String> data, List<MultipartBody> multipartBody,
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -214,11 +214,11 @@ class FlutteringHttp extends IFlutteringHttp {
 
     Debug.log('====> API Response: $response');
 
-    return FlutteringResponse<T>.fromResponse(response);
+    return ClientResponse<T>.fromResponse(response);
   }
 
   @override
-  Future<FlutteringResponse<T>> put<T>(String url, dynamic data,
+  Future<ClientResponse<T>> put<T>(String url, dynamic data,
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -240,11 +240,11 @@ class FlutteringHttp extends IFlutteringHttp {
 
     Debug.log('====> API Response: $response');
 
-    return FlutteringResponse<T>.fromResponse(response);
+    return ClientResponse<T>.fromResponse(response);
   }
 
   @override
-  Future<FlutteringResponse<T>> patch<T>(String url, dynamic data,
+  Future<ClientResponse<T>> patch<T>(String url, dynamic data,
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -265,11 +265,11 @@ class FlutteringHttp extends IFlutteringHttp {
 
     Debug.log('====> API Response: $response');
 
-    return FlutteringResponse<T>.fromResponse(response);
+    return ClientResponse<T>.fromResponse(response);
   }
 
   @override
-  Future<FlutteringResponse<T>> delete<T>(String url, dynamic data,
+  Future<ClientResponse<T>> delete<T>(String url, dynamic data,
       {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -291,11 +291,11 @@ class FlutteringHttp extends IFlutteringHttp {
 
     Debug.log('====> API Response: $response');
 
-    return FlutteringResponse<T>.fromResponse(response);
+    return ClientResponse<T>.fromResponse(response);
   }
 }
 
-extension VPNIFlutteringHttp on IFlutteringHttp {
+extension VPNIClientHttp on IClientHttp {
   Future<bool> isVpnActive() async {
     final vpnProtocolsKeysIdentifiers = ["tap", "tun", "ppp", "ipsec", "utun", "pptp"];
     bool isVpnActive;
@@ -307,7 +307,7 @@ extension VPNIFlutteringHttp on IFlutteringHttp {
   }
 }
 
-extension ProxyIFlutteringHttp on IFlutteringHttp {
+extension ProxyIClientHttp on IClientHttp {
   Future<bool> isProxyEnabled() async {
     try {
       ProxySetting settings = await NativeProxyReader.proxySetting;

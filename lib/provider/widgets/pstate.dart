@@ -7,10 +7,12 @@ library fluttering;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/provider/provider_observer.dart';
-import 'package:fluttering/provider/typedef.dart';
 
-abstract class FlutteringProviderState<T extends StatefulWidget, R extends IProvider> extends State<T> {
+import '../manager_provider.dart';
+import '../provider.dart';
+import '../provider_observer.dart';
+
+abstract class ProviderState<T extends StatefulWidget, R extends IProvider> extends State<T> {
   late R provider;
 
   @override
@@ -20,8 +22,7 @@ abstract class FlutteringProviderState<T extends StatefulWidget, R extends IProv
   }
 }
 
-abstract class FlutteringProviderStateObserver<T extends StatefulWidget, R extends IProvider> extends FlutteringProviderState<T, R>
-    with WidgetsBindingObserver {
+abstract class ProviderStateObserver<T extends StatefulWidget, R extends IProvider> extends ProviderState<T, R> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
@@ -33,19 +34,19 @@ abstract class FlutteringProviderStateObserver<T extends StatefulWidget, R exten
 
   @override
   Future<bool> didPopRoute() {
-    if (provider is FlutteringProviderObserver) (provider as FlutteringProviderObserver).didPopRoute();
+    if (provider is ProviderObserver) (provider as ProviderObserver).didPopRoute();
     return super.didPopRoute();
   }
 
   @override
   Future<bool> didPushRoute(String route) {
-    if (provider is FlutteringProviderObserver) (provider as FlutteringProviderObserver).didPushRoute(route);
+    if (provider is ProviderObserver) (provider as ProviderObserver).didPushRoute(route);
     return super.didPushRoute(route);
   }
 
   @override
   void dispose() {
-    if (provider is FlutteringProviderObserver) (provider as FlutteringProviderObserver).willPopRoute();
+    if (provider is ProviderObserver) (provider as ProviderObserver).willPopRoute();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }

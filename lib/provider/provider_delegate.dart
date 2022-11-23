@@ -6,7 +6,7 @@ library fluttering;
 
 import 'package:flutter/material.dart';
 
-class FlutteringProviderDelegate {
+class ProviderDelegate {
   /// is called when provider is registerd
   Future<bool> registered() => Future.value(true);
 

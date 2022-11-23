@@ -4,12 +4,12 @@
 /// Copyright (c) 2022 ThemePlace
 library fluttering;
 
-import 'package:fluttering/debugger/logs.dart';
+import 'package:fluttering/debugger/index.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /// ================== MANAGER PERMISSION ================
 
-abstract class IFlutteringPermission {
+abstract class IUserPermission {
   requestPermission({
     required List<Permission> permission,
     Function? onHasPermisson,
@@ -23,13 +23,13 @@ abstract class IFlutteringPermission {
   });
 }
 
-class FlutteringPermission extends IFlutteringPermission {
-  static final FlutteringPermission _instance = FlutteringPermission._internal();
-  static FlutteringPermission get instance => _instance;
+class UserPermission extends IUserPermission {
+  static final UserPermission _instance = UserPermission._internal();
+  static UserPermission get instance => _instance;
 
-  factory FlutteringPermission() => _instance;
+  factory UserPermission() => _instance;
 
-  FlutteringPermission._internal();
+  UserPermission._internal();
 
   @override
   requestPermission({

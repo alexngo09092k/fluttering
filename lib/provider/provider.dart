@@ -6,7 +6,7 @@ library fluttering;
 
 import 'package:flutter/foundation.dart';
 
-abstract class IFlutteringProvider implements Listenable {
+abstract class IProvider implements Listenable {
   String get version;
 
   void notifyListeners();
@@ -14,7 +14,7 @@ abstract class IFlutteringProvider implements Listenable {
   void dispose();
 }
 
-class FlutteringProvider implements IFlutteringProvider {
+class Provider implements IProvider {
   int _count = 0;
 
   static final List<VoidCallback?> _emptyListeners = List<VoidCallback?>.filled(0, null);
@@ -23,7 +23,7 @@ class FlutteringProvider implements IFlutteringProvider {
   int _reentrantlyRemovedListeners = 0;
   bool _debugDisposed = false;
 
-  static bool _debugAssert(FlutteringProvider notifier) {
+  static bool _debugAssert(Provider notifier) {
     assert(() {
       if (notifier._debugDisposed) {
         throw FlutterError(
@@ -39,13 +39,13 @@ class FlutteringProvider implements IFlutteringProvider {
 
   @protected
   bool get hasListeners {
-    assert(FlutteringProvider._debugAssert(this));
+    assert(Provider._debugAssert(this));
     return _count > 0;
   }
 
   @override
   void addListener(VoidCallback listener) {
-    assert(FlutteringProvider._debugAssert(this));
+    assert(Provider._debugAssert(this));
     if (_count == _listeners.length) {
       if (_count == 0) {
         _listeners = List<VoidCallback?>.filled(1, null);
@@ -112,7 +112,7 @@ class FlutteringProvider implements IFlutteringProvider {
   @override
   @mustCallSuper
   void dispose() {
-    assert(FlutteringProvider._debugAssert(this));
+    assert(Provider._debugAssert(this));
     assert(() {
       _debugDisposed = true;
       return true;
@@ -129,7 +129,7 @@ class FlutteringProvider implements IFlutteringProvider {
   @visibleForTesting
   @pragma('vm:notify-debugger-on-exception')
   void notifyListeners() {
-    assert(FlutteringProvider._debugAssert(this));
+    assert(Provider._debugAssert(this));
     if (_count == 0) {
       return;
     }
@@ -147,7 +147,7 @@ class FlutteringProvider implements IFlutteringProvider {
           library: 'foundation library',
           context: ErrorDescription('while dispatching notifications for $runtimeType'),
           informationCollector: () => <DiagnosticsNode>[
-            DiagnosticsProperty<FlutteringProvider>(
+            DiagnosticsProperty<Provider>(
               'The $runtimeType sending notification was',
               this,
               style: DiagnosticsTreeStyle.errorProperty,

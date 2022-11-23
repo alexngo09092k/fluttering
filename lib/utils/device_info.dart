@@ -5,12 +5,12 @@
 library fluttering;
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:fluttering/classes/platform.dart';
-import 'package:fluttering/debugger/logs.dart';
+import 'package:fluttering/utils/platform.dart';
+import 'package:fluttering/debugger/index.dart';
 
 /// ================== DEVICE INFO ================
 
-abstract class IFlutteringDeviceInfo {
+abstract class IDeviceInfo {
   IosDeviceInfo? get ios;
 
   AndroidDeviceInfo? get android;
@@ -22,13 +22,13 @@ abstract class IFlutteringDeviceInfo {
   Future<bool> initial();
 }
 
-class FlutteringDeviceInfo extends IFlutteringDeviceInfo {
-  static final IFlutteringDeviceInfo _instance = FlutteringDeviceInfo._internal();
-  static IFlutteringDeviceInfo get instance => _instance;
+class DeviceInfo extends IDeviceInfo {
+  static final IDeviceInfo _instance = DeviceInfo._internal();
+  static IDeviceInfo get instance => _instance;
 
-  factory FlutteringDeviceInfo() => _instance as FlutteringDeviceInfo;
+  factory DeviceInfo() => _instance as DeviceInfo;
 
-  FlutteringDeviceInfo._internal() {
+  DeviceInfo._internal() {
     deviceInfoPlugin = DeviceInfoPlugin();
   }
 
@@ -65,15 +65,15 @@ class FlutteringDeviceInfo extends IFlutteringDeviceInfo {
 
   @override
   Future<bool> initial() async {
-    if (FlutteringPlatform.instance.isIos) {
+    if (CurrentPlatform.instance.isIos) {
       _ios = await deviceInfoPlugin.iosInfo;
       Debug.log('device info ios $ios');
     }
-    if (FlutteringPlatform.instance.isAndroid) {
+    if (CurrentPlatform.instance.isAndroid) {
       _android = await deviceInfoPlugin.androidInfo;
       Debug.log('device info android $android');
     }
-    if (FlutteringPlatform.instance.kIsWeb) {
+    if (CurrentPlatform.instance.kIsWeb) {
       _web = await deviceInfoPlugin.webBrowserInfo;
       Debug.log('device info web $web');
     }

@@ -6,7 +6,7 @@ library fluttering;
 
 import 'dart:async';
 
-import 'package:fluttering/debugger/logs.dart';
+import 'package:fluttering/debugger/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// ================== MANAGER SHARED ================
@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 /// Data is persisted to disk asynchronously.
 
-abstract class IFlutteringShared {
+abstract class IAsyncStorage {
   bool get canStored;
 
   /// Saves a string [value] to persistent storage in the background.
@@ -67,21 +67,21 @@ abstract class IFlutteringShared {
   /// Completes with true once the user preferences for the app has been closed.
   dispose();
 
-  StreamSubscription<FlutteringSharedEvent> addListener(Function(FlutteringSharedEvent) listener);
+  StreamSubscription<AsyncStorageEvent> addListener(Function(AsyncStorageEvent) listener);
 }
 
-class FlutteringShared extends IFlutteringShared {
-  static final IFlutteringShared _instance = FlutteringShared._internal();
-  static IFlutteringShared get instance => _instance;
+class AsyncStorage extends IAsyncStorage {
+  static final IAsyncStorage _instance = AsyncStorage._internal();
+  static IAsyncStorage get instance => _instance;
 
-  factory FlutteringShared() => _instance as FlutteringShared;
+  factory AsyncStorage() => _instance as AsyncStorage;
 
   SharedPreferences? _sharedPreferences;
 
-  late StreamController<FlutteringSharedEvent> _streamController;
+  late StreamController<AsyncStorageEvent> _streamController;
 
-  FlutteringShared._internal() {
-    _streamController = StreamController<FlutteringSharedEvent>.broadcast();
+  AsyncStorage._internal() {
+    _streamController = StreamController<AsyncStorageEvent>.broadcast();
     initial();
   }
 
@@ -92,7 +92,7 @@ class FlutteringShared extends IFlutteringShared {
   Future<bool> setString(String key, String value) async {
     if (!canStored) return false;
     bool result = await _sharedPreferences!.setString(key, value);
-    if (result) _publishEvent(FlutteringSharedEvent<String>(key, value));
+    if (result) _publishEvent(AsyncStorageEvent<String>(key, value));
     return result;
   }
 
@@ -107,7 +107,7 @@ class FlutteringShared extends IFlutteringShared {
   Future<bool> setInt(String key, int value) async {
     if (!canStored) return false;
     bool result = await _sharedPreferences!.setInt(key, value);
-    if (result) _publishEvent(FlutteringSharedEvent<int>(key, value));
+    if (result) _publishEvent(AsyncStorageEvent<int>(key, value));
     return result;
   }
 
@@ -122,7 +122,7 @@ class FlutteringShared extends IFlutteringShared {
   Future<bool> setBool(String key, bool value) async {
     if (!canStored) return false;
     bool result = await _sharedPreferences!.setBool(key, value);
-    if (result) _publishEvent(FlutteringSharedEvent<bool>(key, value));
+    if (result) _publishEvent(AsyncStorageEvent<bool>(key, value));
     return result;
   }
 
@@ -137,7 +137,7 @@ class FlutteringShared extends IFlutteringShared {
   Future<bool> setStringList(String key, List<String> value) async {
     if (!canStored) return false;
     bool result = await _sharedPreferences!.setStringList(key, value);
-    if (result) _publishEvent(FlutteringSharedEvent<List<String>>(key, value));
+    if (result) _publishEvent(AsyncStorageEvent<List<String>>(key, value));
     return result;
   }
 
@@ -151,7 +151,7 @@ class FlutteringShared extends IFlutteringShared {
   Future<bool> setDouble(String key, double value) async {
     if (!canStored) return false;
     bool result = await _sharedPreferences!.setDouble(key, value);
-    if (result) _publishEvent(FlutteringSharedEvent<double>(key, value));
+    if (result) _publishEvent(AsyncStorageEvent<double>(key, value));
     return result;
   }
 
@@ -180,11 +180,11 @@ class FlutteringShared extends IFlutteringShared {
   }
 
   @override
-  StreamSubscription<FlutteringSharedEvent> addListener(Function(FlutteringSharedEvent) listener) {
+  StreamSubscription<AsyncStorageEvent> addListener(Function(AsyncStorageEvent) listener) {
     return _streamController.stream.listen(listener);
   }
 
-  _publishEvent(FlutteringSharedEvent event) {
+  _publishEvent(AsyncStorageEvent event) {
     _streamController.sink.add(event);
   }
 
@@ -200,9 +200,9 @@ class FlutteringShared extends IFlutteringShared {
   }
 }
 
-class FlutteringSharedEvent<T> {
+class AsyncStorageEvent<T> {
   final String key;
   final T value;
 
-  FlutteringSharedEvent(this.key, this.value);
+  AsyncStorageEvent(this.key, this.value);
 }

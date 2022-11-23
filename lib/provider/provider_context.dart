@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttering/widgets/app_state.dart';
 
-abstract class FlutteringProviderContext {
-  BuildContext? get context => FlutteringAppState.navigatorKey?.currentContext;
+import '../app/app_state.dart';
+
+abstract class ProviderContext {
+  BuildContext? get context => AwesomeAppState.navigatorKey?.currentContext;
 }

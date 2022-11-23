@@ -5,11 +5,12 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/debugger/logs.dart';
-import 'package:fluttering/provider/provider.dart';
 
-class FlutteringPropProviderListener<T extends IFlutteringProvider, R> extends StatefulWidget {
-  const FlutteringPropProviderListener({
+import '../../debugger/index.dart';
+import '../provider.dart';
+
+class BasePropConsumer<T extends IProvider, R> extends StatefulWidget {
+  const BasePropConsumer({
     super.key,
     required this.listenable,
     required this.select,
@@ -24,10 +25,10 @@ class FlutteringPropProviderListener<T extends IFlutteringProvider, R> extends S
   final bool debugMode;
 
   @override
-  State<FlutteringPropProviderListener<T, R>> createState() => _FlutteringPropProviderListenerState<T, R>();
+  State<BasePropConsumer<T, R>> createState() => _BasePropConsumerState<T, R>();
 }
 
-class _FlutteringPropProviderListenerState<T extends IFlutteringProvider, R> extends State<FlutteringPropProviderListener<T, R>> {
+class _BasePropConsumerState<T extends IProvider, R> extends State<BasePropConsumer<T, R>> {
   ValueNotifier<R>? _r;
 
   @override

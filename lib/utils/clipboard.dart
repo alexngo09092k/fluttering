@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-abstract class IFlutteringClipboard {
-  static final FlutteringClipboard _instance = FlutteringClipboard._internal();
-  static FlutteringClipboard get instance => _instance;
+abstract class ITemporaryStorage {
+  static final TemporaryStorage _instance = TemporaryStorage._internal();
+  static TemporaryStorage get instance => _instance;
 
   /// copy receives a string text and saves to Clipboard
   /// returns void
@@ -26,17 +26,17 @@ abstract class IFlutteringClipboard {
 }
 
 /// A Flutter Clipboard Plugin.
-class FlutteringClipboard extends IFlutteringClipboard {
-  static final IFlutteringClipboard _instance = FlutteringClipboard._internal();
-  static IFlutteringClipboard get instance => _instance;
+class TemporaryStorage extends ITemporaryStorage {
+  static final ITemporaryStorage _instance = TemporaryStorage._internal();
+  static ITemporaryStorage get instance => _instance;
 
-  factory FlutteringClipboard() => _instance as FlutteringClipboard;
+  factory TemporaryStorage() => _instance as TemporaryStorage;
 
-  FlutteringClipboard._internal() {
-    _controller = StreamController<FlutteringClipboardEvent>.broadcast();
+  TemporaryStorage._internal() {
+    _controller = StreamController<TemporaryStorageEvent>.broadcast();
   }
 
-  late final StreamController<FlutteringClipboardEvent> _controller;
+  late final StreamController<TemporaryStorageEvent> _controller;
 
   /// copy receives a string text and saves to Clipboard
   /// returns void
@@ -44,7 +44,7 @@ class FlutteringClipboard extends IFlutteringClipboard {
   Future<void> copy(String text) async {
     Clipboard.setData(ClipboardData(text: text));
     _controller.sink.add(
-      FlutteringClipboardEvent<String>(FlutteringClipboardEventStatus.copy, text),
+      TemporaryStorageEvent<String>(TemporaryStorageEventStatus.copy, text),
     );
   }
 
@@ -53,8 +53,8 @@ class FlutteringClipboard extends IFlutteringClipboard {
   Future<String> paste() async {
     ClipboardData? data = await Clipboard.getData('text/plain');
     _controller.sink.add(
-      FlutteringClipboardEvent<String>(
-        FlutteringClipboardEventStatus.paste,
+      TemporaryStorageEvent<String>(
+        TemporaryStorageEventStatus.paste,
         data?.text?.toString() ?? "",
       ),
     );
@@ -88,14 +88,14 @@ class FlutteringClipboard extends IFlutteringClipboard {
   }
 }
 
-class FlutteringClipboardEvent<T> {
-  final FlutteringClipboardEventStatus status;
+class TemporaryStorageEvent<T> {
+  final TemporaryStorageEventStatus status;
   final T value;
 
-  FlutteringClipboardEvent(this.status, this.value);
+  TemporaryStorageEvent(this.status, this.value);
 }
 
-enum FlutteringClipboardEventStatus {
+enum TemporaryStorageEventStatus {
   copy,
   paste,
 }

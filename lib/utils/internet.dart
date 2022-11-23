@@ -10,7 +10,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 /// ================== MANAGER INTERNET ================
 
-abstract class IFlutteringInternet {
+abstract class IInternetConnection {
   Stream<bool> get connectionChange;
   bool get hasConnection;
 
@@ -21,14 +21,14 @@ abstract class IFlutteringInternet {
   Future<bool> checkConnection();
 }
 
-class FlutteringInternet extends IFlutteringInternet {
+class InternetConnection extends IInternetConnection {
   String? _lookUpAddress;
-  static final IFlutteringInternet _instance = FlutteringInternet._internal();
-  static IFlutteringInternet get instance => _instance;
+  static final IInternetConnection _instance = InternetConnection._internal();
+  static IInternetConnection get instance => _instance;
 
-  FlutteringInternet._internal();
+  InternetConnection._internal();
 
-  static FlutteringInternet getInstance() => _instance as FlutteringInternet;
+  static InternetConnection getInstance() => _instance as InternetConnection;
 
   bool _hasConnection = true;
 

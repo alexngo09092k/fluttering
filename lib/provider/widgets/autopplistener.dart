@@ -5,12 +5,13 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/provider/provider.dart';
-import 'package:fluttering/provider/widgets/pplistener.dart';
-import 'package:fluttering/provider/manager_provider.dart';
 
-class AutoPFlutteringProviderListener<T extends IFlutteringProvider, R> extends StatelessWidget {
-  const AutoPFlutteringProviderListener({
+import '../provider.dart';
+import '../widgets/pplistener.dart';
+import '../manager_provider.dart';
+
+class PropConsumer<T extends IProvider, R> extends StatelessWidget {
+  const PropConsumer({
     super.key,
     required this.select,
     required this.builder,
@@ -27,8 +28,8 @@ class AutoPFlutteringProviderListener<T extends IFlutteringProvider, R> extends 
 
   @override
   Widget build(BuildContext context) {
-    return FlutteringPropProviderListener<T, R>(
-      listenable: FlutteringManagerProvider.of<T>(version),
+    return BasePropConsumer<T, R>(
+      listenable: ManagerProvider.of<T>(version),
       select: select,
       builder: builder,
       debugMode: debugMode,

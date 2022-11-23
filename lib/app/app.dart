@@ -9,11 +9,14 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttering/typedef.dart';
 
-class FlutteringApp {
-  static FlutteringApp? _instance;
-  static FlutteringApp? get instance => _instance;
+import '../utils/index.dart';
+import '../../debugger/index.dart';
+import '../../provider/index.dart';
+
+class AwesomeApp {
+  static AwesomeApp? _instance;
+  static AwesomeApp? get instance => _instance;
 
   final Widget app;
   final List<IProvider> providers;
@@ -23,7 +26,7 @@ class FlutteringApp {
   final Function(Object?)? onError;
   final bool debugMode;
 
-  FlutteringApp({
+  AwesomeApp({
     required this.app,
     this.providers = const [],
     this.lazyProviders = const [],
@@ -49,7 +52,10 @@ class FlutteringApp {
         if (onDidInitialize != null) await onDidInitialize!();
 
         ManagerProvider.registerProviders(
-          providers: providers,
+          providers: [
+            ...providers,
+            AdsProvider.instance,
+          ],
           lazyProviders: lazyProviders,
         );
 

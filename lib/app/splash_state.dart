@@ -5,9 +5,9 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/provider/typedef.dart';
+import 'package:fluttering/provider/index.dart';
 
-abstract class FlutteringSplashState<T extends StatefulWidget> extends State<T> {
+abstract class AwesomeSplashState<T extends StatefulWidget> extends State<T> {
   @override
   void initState() {
     ManagerProvider.willSplash().then((_) => onSplash(_));

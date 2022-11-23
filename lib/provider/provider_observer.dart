@@ -6,7 +6,7 @@ library fluttering;
 
 import 'package:flutter/material.dart';
 
-class FlutteringProviderObserver {
+class ProviderObserver {
   /// Called when the system tells the app to pop the current route.
   /// For example, on Android, this is called when the user presses
   /// the back button.
