@@ -9,8 +9,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttering/debugger/logs.dart';
-
 import 'package:fluttering/typedef.dart';
 
 class FlutteringApp {
