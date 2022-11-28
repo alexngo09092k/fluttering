@@ -12,9 +12,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gms_check/gms_check.dart';
 
-import '../utils/index.dart';
-import '../../debugger/index.dart';
-import '../../provider/index.dart';
+import 'utils/index.dart';
+import 'debugger/index.dart';
+import 'provider/index.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   Debug.log('=========== FIREBASE MESSAGE WITH ID ${message.messageId} ===========');
