@@ -1,7 +1,8 @@
-import 'package:fluttering/fluttering.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttering/widgets/alert.dart';
+
+import '../provider/index.dart';
+import 'alert.dart';
 
 Future<T?> showPopup<T>(BuildContext context, Widget popup, {bool barrierDismissible = true}) {
   return showCupertinoModalPopup<T>(

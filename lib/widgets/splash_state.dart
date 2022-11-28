@@ -5,7 +5,7 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
-import 'package:fluttering/provider/index.dart';
+import '../provider/index.dart';
 
 abstract class AwesomeSplashState<T extends StatefulWidget> extends State<T> {
   @override

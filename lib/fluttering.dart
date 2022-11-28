@@ -5,11 +5,11 @@
 library fluttering;
 
 /// Main
-export 'package:fluttering/provider/index.dart';
-export 'package:fluttering/utils/index.dart';
-export 'package:fluttering/widgets/index.dart';
-export 'package:fluttering/debugger/index.dart';
-export 'package:fluttering/services/index.dart';
+export 'provider/index.dart';
+export 'utils/index.dart';
+export 'widgets/index.dart';
+export 'debugger/index.dart';
+export 'services/index.dart';
 
 /// Library
 export 'package:path_provider/path_provider.dart';
