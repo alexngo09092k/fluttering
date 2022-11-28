@@ -7,7 +7,7 @@ library fluttering;
 /// Main
 export 'package:fluttering/provider/index.dart';
 export 'package:fluttering/utils/index.dart';
-export 'package:fluttering/app/index.dart';
+export 'package:fluttering/widgets/index.dart';
 export 'package:fluttering/debugger/index.dart';
 export 'package:fluttering/services/index.dart';
 

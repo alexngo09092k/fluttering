@@ -69,9 +69,10 @@ class AwesomeApp {
 
         ManagerProvider.registerProviders(
           providers: [
-            ...providers,
+            // StorageProvider.instance,
             if (enableLightDark) ThemeProvider.instance,
             if (enableAdvertisement) AdsProvider.instance,
+            ...providers,
           ],
           lazyProviders: lazyProviders,
         );
@@ -98,7 +99,12 @@ class AwesomeApp {
     if (onDidInitialize != null) result.add(await onDidInitialize!());
 
     ManagerProvider.registerProviders(
-      providers: providers,
+      providers: [
+        // StorageProvider.instance,
+        if (enableLightDark) ThemeProvider.instance,
+        if (enableAdvertisement) AdsProvider.instance,
+        ...providers,
+      ],
       lazyProviders: lazyProviders,
     );
 
