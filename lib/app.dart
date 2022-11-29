@@ -31,7 +31,6 @@ class AwesomeApp {
   final Future<bool> Function()? onDidInitialize;
   final Function(Object?)? onError;
   final bool debugMode;
-  final bool enableAdvertisement;
   final bool enableLightDark;
 
   AwesomeApp({
@@ -42,7 +41,6 @@ class AwesomeApp {
     this.onDidInitialize,
     this.onError,
     this.debugMode = kDebugMode,
-    this.enableAdvertisement = true,
     this.enableLightDark = true,
   }) {
     _instance = this;
