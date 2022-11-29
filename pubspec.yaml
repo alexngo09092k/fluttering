@@ -23,8 +23,6 @@ dependencies:
   firebase_remote_config: ^3.0.6
   firebase_messaging: ^14.1.1
   gms_check: ^1.0.1
-  google_mobile_ads: ^2.3.0
-  huawei_ads: ^13.4.55+301
 
 dev_dependencies:
   flutter_test:

@@ -71,7 +71,6 @@ class AwesomeApp {
           providers: [
             // StorageProvider.instance,
             if (enableLightDark) ThemeProvider.instance,
-            if (enableAdvertisement) AdsProvider.instance,
             ...providers,
           ],
           lazyProviders: lazyProviders,
@@ -102,7 +101,6 @@ class AwesomeApp {
       providers: [
         // StorageProvider.instance,
         if (enableLightDark) ThemeProvider.instance,
-        if (enableAdvertisement) AdsProvider.instance,
         ...providers,
       ],
       lazyProviders: lazyProviders,
