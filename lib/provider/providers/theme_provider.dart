@@ -29,7 +29,7 @@ class ThemeProvider extends IThemeProvider {
   String get version => "v0.0.1";
 
   /// sh1 theme_mode
-  String get _themeModeKey => 'ed3931f52bc9022d761c5325f624e9264158498b';
+  String get _themeModeKey => 'fluttering_theme_mode';
 
   static final IThemeProvider _instance = ThemeProvider._internal();
   static IThemeProvider get instance => _instance;
