@@ -5,21 +5,30 @@
 library fluttering;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../utils/index.dart';
 import '../provider/index.dart';
 
-abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
+abstract class AwesomeAppState<T extends StatefulWidget, R extends IProvider> extends ProviderState<T, R> with WidgetsBindingObserver {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   static Size screen = const Size(0, 0);
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback(onNextFrame);
+
     _caculateScreen();
+
     ManagerProvider.willOpenApp();
+
     super.initState();
   }
 
