@@ -107,18 +107,59 @@ class MultipartBody {
 }
 
 abstract class IClientHttp {
-  Future<ClientResponse<T>> get<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> get<T>(
+    String url, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  });
 
-  Future<ClientResponse<T>> post<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> post<T>(
+    String url,
+    dynamic data, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  });
 
-  Future<ClientResponse<T>> postMultipart<T>(String url, Map<String, String> body, List<MultipartBody> multipartBody,
-      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> postMultipart<T>(
+    String url,
+    Map<String, String> data,
+    List<MultipartBody> multipartBody, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  });
 
-  Future<ClientResponse<T>> put<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> put<T>(
+    String url,
+    dynamic data, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  });
 
-  Future<ClientResponse<T>> patch<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> patch<T>(
+    String url,
+    dynamic data, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  });
 
-  Future<ClientResponse<T>> delete<T>(String url, dynamic data, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout});
+  Future<ClientResponse<T>> delete<T>(
+    String url,
+    dynamic data, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  });
 }
 
 class ClientHttp extends IClientHttp {
@@ -130,7 +171,13 @@ class ClientHttp extends IClientHttp {
   ClientHttp._internal();
 
   @override
-  Future<ClientResponse<T>> get<T>(String url, {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<ClientResponse<T>> get<T>(
+    String url, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  }) async {
     final Uri uriParse = Uri.parse(url);
 
     Debug.log('====> API URL: $url');
@@ -139,6 +186,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
+      validateStatus: validateStatus ?? (_) => false,
     ));
 
     Response response = await client.get(uriParse.path, queryParameters: query);
@@ -149,8 +197,14 @@ class ClientHttp extends IClientHttp {
   }
 
   @override
-  Future<ClientResponse<T>> post<T>(String url, dynamic data,
-      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<ClientResponse<T>> post<T>(
+    String url,
+    dynamic data, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  }) async {
     final Uri uriParse = Uri.parse(url);
 
     Debug.log('====> API URL: $url');
@@ -159,6 +213,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
+      validateStatus: validateStatus ?? (_) => false,
     ));
 
     Debug.log('====> API Data: $data');
@@ -175,8 +230,15 @@ class ClientHttp extends IClientHttp {
   }
 
   @override
-  Future<ClientResponse<T>> postMultipart<T>(String url, Map<String, String> data, List<MultipartBody> multipartBody,
-      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<ClientResponse<T>> postMultipart<T>(
+    String url,
+    Map<String, String> data,
+    List<MultipartBody> multipartBody, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  }) async {
     final Uri uriParse = Uri.parse(url);
 
     Debug.log('====> API URL: $url');
@@ -185,6 +247,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
+      validateStatus: validateStatus ?? (_) => false,
     ));
 
     final formData = FormData();
@@ -218,8 +281,14 @@ class ClientHttp extends IClientHttp {
   }
 
   @override
-  Future<ClientResponse<T>> put<T>(String url, dynamic data,
-      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<ClientResponse<T>> put<T>(
+    String url,
+    dynamic data, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  }) async {
     final Uri uriParse = Uri.parse(url);
 
     Debug.log('====> API URL: $url');
@@ -228,6 +297,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
+      validateStatus: validateStatus,
     ));
 
     Debug.log('====> API Data: $data');
@@ -244,8 +314,14 @@ class ClientHttp extends IClientHttp {
   }
 
   @override
-  Future<ClientResponse<T>> patch<T>(String url, dynamic data,
-      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<ClientResponse<T>> patch<T>(
+    String url,
+    dynamic data, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  }) async {
     final Uri uriParse = Uri.parse(url);
 
     Debug.log('====> API URL: $url');
@@ -254,6 +330,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
+      validateStatus: validateStatus,
     ));
 
     Debug.log('====> API Data: $data');
@@ -269,8 +346,14 @@ class ClientHttp extends IClientHttp {
   }
 
   @override
-  Future<ClientResponse<T>> delete<T>(String url, dynamic data,
-      {Map<String, dynamic>? query, Map<String, String>? headers, Duration? timeout}) async {
+  Future<ClientResponse<T>> delete<T>(
+    String url,
+    dynamic data, {
+    Map<String, dynamic>? query,
+    Map<String, String>? headers,
+    Duration? timeout,
+    bool Function(int?)? validateStatus,
+  }) async {
     final Uri uriParse = Uri.parse(url);
 
     Debug.log('====> API URL: $url');
@@ -279,6 +362,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
+      validateStatus: validateStatus,
     ));
 
     Debug.log('====> API Data: $data');
