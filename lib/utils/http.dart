@@ -186,7 +186,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus ?? (_) => false,
+      validateStatus: validateStatus ?? (_) => true,
     ));
 
     Response response = await client.get(uriParse.path, queryParameters: query);
@@ -213,7 +213,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus ?? (_) => false,
+      validateStatus: validateStatus ?? (_) => true,
     ));
 
     Debug.log('====> API Data: $data');
@@ -247,7 +247,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus ?? (_) => false,
+      validateStatus: validateStatus ?? (_) => true,
     ));
 
     final formData = FormData();
