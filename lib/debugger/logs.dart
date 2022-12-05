@@ -9,8 +9,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
+bool _flutteringDebugMode = kDebugMode;
+
 class Debug {
-  static bool debugMode = kDebugMode;
+  static set debugMode(value) {
+    _flutteringDebugMode = value;
+  }
+
+  static bool get debugMode => _flutteringDebugMode;
 
   static void log([dynamic data, DateTime? startTime]) {
     if (!Debug.debugMode) return;
