@@ -8,8 +8,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:fluttering/debugger/index.dart';
 import 'package:path_provider/path_provider.dart';
+import './logs.dart';
 
 /// ================== MANAGER CACHE ================
 

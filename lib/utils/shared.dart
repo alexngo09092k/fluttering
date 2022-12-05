@@ -6,8 +6,9 @@ library fluttering;
 
 import 'dart:async';
 
-import 'package:fluttering/debugger/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import './logs.dart';
 
 /// ================== MANAGER SHARED ================
 /// Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android), providing

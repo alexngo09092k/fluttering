@@ -4,8 +4,9 @@
 /// Copyright (c) 2022 ThemePlace
 library fluttering;
 
-import 'package:fluttering/debugger/index.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import './logs.dart';
 
 /// ================== MANAGER PERMISSION ================
 

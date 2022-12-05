@@ -8,7 +8,6 @@ library fluttering;
 export 'provider/index.dart';
 export 'utils/index.dart';
 export 'widgets/index.dart';
-export 'debugger/index.dart';
 export 'services/index.dart';
 
 /// Library

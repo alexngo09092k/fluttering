@@ -6,8 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:gms_check/gms_check.dart';
 
-import '../../debugger/index.dart';
-import '../../utils/internet.dart';
+import '../../utils/index.dart';
 import 'models/firebase_config.dart';
 
 abstract class IFirebaseService {

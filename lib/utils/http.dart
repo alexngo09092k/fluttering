@@ -16,7 +16,7 @@ import 'package:http_parser/http_parser.dart' as http_parser;
 import 'package:native_flutter_proxy/native_proxy_reader.dart';
 import 'package:path/path.dart' as path;
 
-import 'package:fluttering/debugger/index.dart';
+import './logs.dart';
 
 class ClientResponse<T> {
   ClientResponse({

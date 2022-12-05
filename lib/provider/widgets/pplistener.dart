@@ -6,7 +6,7 @@ library fluttering;
 
 import 'package:flutter/material.dart';
 
-import '../../debugger/index.dart';
+import '../../utils/index.dart';
 import '../provider.dart';
 
 class BasePropConsumer<T extends IProvider, R> extends StatefulWidget {

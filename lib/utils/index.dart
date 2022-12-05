@@ -7,3 +7,4 @@ export 'internet.dart';
 export 'permission.dart';
 export 'platform.dart';
 export 'shared.dart';
+export 'logs.dart';
