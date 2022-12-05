@@ -13,7 +13,7 @@ class Debug {
   static bool debugMode = kDebugMode;
 
   static void log([dynamic data, DateTime? startTime]) {
-    if (!debugMode) return;
+    if (!Debug.debugMode) return;
     var time = '';
     if (startTime != null) {
       final endTime = DateTime.now().difference(startTime);
