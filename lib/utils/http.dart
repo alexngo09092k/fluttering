@@ -297,7 +297,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus,
+      validateStatus: validateStatus ?? (_) => true,
     ));
 
     Debug.log('====> API Data: $data');
@@ -330,7 +330,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus,
+      validateStatus: validateStatus ?? (_) => true,
     ));
 
     Debug.log('====> API Data: $data');
@@ -362,7 +362,7 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus,
+      validateStatus: validateStatus ?? (_) => true,
     ));
 
     Debug.log('====> API Data: $data');
