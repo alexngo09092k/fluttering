@@ -127,7 +127,7 @@ abstract class IClientHttp {
 
   Future<ClientResponse<T>> postMultipart<T>(
     String url,
-    Map<String, String> data,
+    Map<String, dynamic> data,
     List<MultipartBody> multipartBody, {
     Map<String, dynamic>? query,
     Map<String, String>? headers,
