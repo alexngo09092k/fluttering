@@ -6,5 +6,5 @@ export 'http.dart';
 export 'internet.dart';
 export 'permission.dart';
 export 'platform.dart';
-export 'shared.dart';
+export 'async_storage.dart';
 export 'logs.dart';

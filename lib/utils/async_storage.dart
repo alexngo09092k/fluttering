@@ -55,6 +55,9 @@ abstract class IAsyncStorage {
   /// Saves a list of strings [value] to persistent storage in the background.
   Future<bool> setStringList(String key, List<String> value);
 
+  /// Reads a list of strings [value] to persistent storage in the background.
+  List<String>? getStringList(String key);
+
   /// Removes an entry from persistent storage.
   Future<bool> remove(String key);
 
@@ -142,6 +145,7 @@ class AsyncStorage extends IAsyncStorage {
     return result;
   }
 
+  @override
   List<String>? getStringList(String key) {
     if (!canStored) return null;
     List<String>? value = _sharedPreferences!.getStringList(key);
