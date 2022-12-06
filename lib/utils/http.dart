@@ -258,11 +258,11 @@ class ClientHttp extends IClientHttp {
     }
 
     for (MultipartBody multipart in multipartBody) {
-      Uint8List list = await multipart.file.readAsBytes();
+      Future<Uint8List> list = multipart.file.readAsBytes();
       String fileName = path.basename(multipart.file.path);
       MultipartFile part = MultipartFile(
-        multipart.file.readAsBytes().asStream(),
-        list.length,
+        list.asStream(),
+        (await list).length,
         filename: fileName,
         contentType: MediaType.parse(mime(fileName) ?? ''),
       );
