@@ -103,9 +103,8 @@ class ClientResponse<T> {
 class MultipartBody {
   String key;
   File file;
-  String contentType;
 
-  MultipartBody(this.key, this.file, this.contentType);
+  MultipartBody(this.key, this.file);
 }
 
 abstract class IClientHttp {
