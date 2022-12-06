@@ -30,7 +30,7 @@ class AwesomeApp {
   final Future<bool> Function()? onDidInitialize;
   final Function(Object?)? onError;
   final bool debugMode;
-  final bool enableLightDark;
+  final bool lightDark;
 
   AwesomeApp({
     required this.app,
@@ -40,7 +40,7 @@ class AwesomeApp {
     this.onDidInitialize,
     this.onError,
     this.debugMode = kDebugMode,
-    this.enableLightDark = true,
+    this.lightDark = true,
   }) {
     _instance = this;
   }
@@ -67,7 +67,7 @@ class AwesomeApp {
         ManagerProvider.registerProviders(
           providers: [
             // StorageProvider.instance,
-            if (enableLightDark) ThemeProvider.instance,
+            if (lightDark) ThemeProvider.instance,
             ...providers,
           ],
           lazyProviders: lazyProviders,
@@ -97,7 +97,7 @@ class AwesomeApp {
     ManagerProvider.registerProviders(
       providers: [
         // StorageProvider.instance,
-        if (enableLightDark) ThemeProvider.instance,
+        if (lightDark) ThemeProvider.instance,
         ...providers,
       ],
       lazyProviders: lazyProviders,

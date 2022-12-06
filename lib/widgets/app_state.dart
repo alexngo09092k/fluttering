@@ -6,14 +6,21 @@ library fluttering;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttering/fluttering.dart';
 
-import '../utils/index.dart';
-import '../provider/index.dart';
-
-abstract class AwesomeAppState<T extends StatefulWidget, R extends IProvider> extends ProviderState<T, R> with WidgetsBindingObserver {
+abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   static Size screen = const Size(0, 0);
+
+  late final ThemeProvider _provider;
+
+  ThemeProvider get provider {
+    if (AwesomeApp.instance != null && AwesomeApp.instance!.lightDark) {
+      return _provider;
+    }
+    throw ErrorDescription('The LighDark mode is not enabled, are you sure set lightDark to true');
+  }
 
   @override
   void initState() {
@@ -28,6 +35,10 @@ abstract class AwesomeAppState<T extends StatefulWidget, R extends IProvider> ex
     _caculateScreen();
 
     ManagerProvider.willOpenApp();
+
+    if (AwesomeApp.instance != null && AwesomeApp.instance!.lightDark) {
+      _provider = ManagerProvider.of<ThemeProvider>();
+    }
 
     super.initState();
   }
