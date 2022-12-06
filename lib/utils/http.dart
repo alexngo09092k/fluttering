@@ -12,9 +12,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:http_parser/http_parser.dart' as http_parser;
+import 'package:mime_type/mime_type.dart';
 import 'package:native_flutter_proxy/native_proxy_reader.dart';
 import 'package:path/path.dart' as path;
+import 'package:http_parser/http_parser.dart';
 
 import './logs.dart';
 
@@ -102,8 +103,9 @@ class ClientResponse<T> {
 class MultipartBody {
   String key;
   File file;
+  String contentType;
 
-  MultipartBody(this.key, this.file);
+  MultipartBody(this.key, this.file, this.contentType);
 }
 
 abstract class IClientHttp {
@@ -258,11 +260,12 @@ class ClientHttp extends IClientHttp {
 
     for (MultipartBody multipart in multipartBody) {
       Uint8List list = await multipart.file.readAsBytes();
+      String fileName = path.basename(multipart.file.path);
       MultipartFile part = MultipartFile(
         multipart.file.readAsBytes().asStream(),
         list.length,
-        filename: path.basename(multipart.file.path),
-        contentType: http_parser.MediaType('image', 'jpg'),
+        filename: fileName,
+        contentType: MediaType.parse(mime(fileName) ?? ''),
       );
       formData.files.add(MapEntry(multipart.key, part));
     }

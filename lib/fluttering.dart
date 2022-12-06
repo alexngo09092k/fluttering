@@ -18,6 +18,7 @@ export 'package:native_flutter_proxy/native_proxy_reader.dart';
 export 'package:permission_handler/permission_handler.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
+export 'package:mime_type/mime_type.dart';
 
 /// Awesome App
 export 'app.dart';
