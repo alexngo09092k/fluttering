@@ -4,6 +4,7 @@ import 'package:fluttering/utils/index.dart';
 
 import '../../provider/provider.dart';
 import '../../provider/provider_delegate.dart';
+
 abstract class IThemeProvider extends Provider with ProviderDelegate {
   ThemeMode get themeMode;
 
@@ -99,6 +100,7 @@ class ThemeProvider extends IThemeProvider {
     clean();
 
     String? themeMode = AsyncStorage.instance.getString(_themeModeKey);
+    Debug.log("============ THEME MODE FROM ASYNCE STORAGE $themeMode ============");
     if (themeMode == null) return;
     _useSystem = false;
     if (themeMode == ThemeMode.dark.name) {
