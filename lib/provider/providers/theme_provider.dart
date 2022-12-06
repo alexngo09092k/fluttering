@@ -66,6 +66,7 @@ class ThemeProvider extends IThemeProvider {
     if (!_useSystem) return;
     final brightness = WidgetsBinding.instance.window.platformBrightness;
     _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+    Debug.log("============ THEME MODE FROM SYSTEM $themeMode ============");
     setStatusBarByTheme(_themeMode);
     notifyListeners();
   }
@@ -121,7 +122,8 @@ class ThemeProvider extends IThemeProvider {
 
   void clean([bool notify = false]) {
     _useSystem = false;
-    _themeMode = ThemeMode.dark;
+    final brightness = WidgetsBinding.instance.window.platformBrightness;
+    _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
     setStatusBarByTheme(_themeMode);
 
     if (notify) notifyListeners();

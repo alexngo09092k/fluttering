@@ -19,7 +19,7 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     if (AwesomeApp.instance != null && AwesomeApp.instance!.lightDark) {
       return _provider;
     }
-    throw ErrorDescription('The LighDark mode is not enabled, are you sure set lightDark to true');
+    throw ErrorDescription('The LighDark mode is not enabled, are you sure set lightDark to true? see AwesomeApp');
   }
 
   @override
