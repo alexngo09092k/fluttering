@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import './logs.dart';
 
@@ -22,11 +23,17 @@ abstract class IManagerCache {
 
   Future<void> clean();
 
-  Future<File?> cacheImage(String imageBase64);
+  Future<File?> cacheImageBase64(String imageBase64);
 
-  void addFile(File? file);
+  Future<File?> cacheImageNetwork(String src);
 
-  void addFiles(List<File?> files);
+  Future<bool> addFile(File file);
+
+  Future<void> removeFile(File file);
+
+  Future<void> addFiles(List<File> files);
+
+  Future<void> removeFiles(List<File> files);
 }
 
 class ManagerCache extends IManagerCache {
@@ -51,10 +58,12 @@ class ManagerCache extends IManagerCache {
   Future<bool> initial() async {
     try {
       _appDirectory = await getApplicationDocumentsDirectory();
-      Debug.log('create cache directory');
+      Debug.log('====== CREATE CACHE DIRECTORY =====');
       Directory cacheDir = (await getTemporaryDirectory());
+      Debug.log('====== CACHE DIRECTORY $cacheDir =====');
       if (!await cacheDir.exists()) {
         cacheDir = await cacheDir.create(recursive: true);
+        Debug.log('====== CACHE DIRECTORY $cacheDir =====');
       }
       _cacheDirectory = cacheDir;
       return true;
@@ -69,23 +78,26 @@ class ManagerCache extends IManagerCache {
     try {
       if (_cacheDirectory != null && await _cacheDirectory!.exists()) {
         await _cacheDirectory!.delete(recursive: true);
-        Debug.log('deleted cache dictory');
+        Debug.log('===== DELETE ALL CACHE =====');
       }
-      Debug.log('total cache files ${_fileCaches.length}');
-      await _clearFileCache();
-      Debug.log('deleted all cache files');
+      Debug.log('===== TOTAL CACHE LENGTH ${_fileCaches.length} =====');
+      for (var file in _fileCaches) {
+        file.delete();
+      }
+      Debug.log('===== DELETE ALL FILE CACHE =====');
     } catch (error) {
       Debug.log(error);
     }
   }
 
   @override
-  Future<File?> cacheImage(String imageBase64) async {
+  Future<File?> cacheImageBase64(String imageBase64) async {
     try {
       final Uint8List imageBytes = base64.decode(imageBase64);
       final File imageFile = File('${_cacheDirectory!.path}/${DateTime.now().millisecondsSinceEpoch}.jpg');
       imageFile.writeAsBytesSync(List.from(imageBytes));
       if (await imageFile.exists()) {
+        _fileCaches.add(imageFile);
         return imageFile;
       }
     } catch (error) {
@@ -96,26 +108,49 @@ class ManagerCache extends IManagerCache {
   }
 
   @override
-  void addFile(File? file) async {
-    if (file != null && await file.exists()) {
-      _fileCaches.add(file);
-    }
+  Future<File?> cacheImageNetwork(String src) async {
+    throw ErrorDescription('Dont support, you should use ImageCachedNetwork library');
   }
 
   @override
-  void addFiles(List<File?> files) {
+  Future<bool> addFile(File file) async {
+    try {
+      if (await file.exists()) {
+        _fileCaches.add(file);
+        return true;
+      }
+    } catch (e) {
+      Debug.log(e);
+    }
+    return false;
+  }
+
+  @override
+  Future<void> addFiles(List<File> files) async {
     for (var file in files) {
       addFile(file);
     }
   }
 
-  _clearFileCache() async {
+  @override
+  Future<void> removeFile(File file) async {
     try {
-      for (var file in _fileCaches) {
-        await file.delete();
+      _fileCaches.remove(file);
+      file.delete();
+    } catch (e) {
+      Debug.log(e);
+    }
+  }
+
+  @override
+  Future<void> removeFiles(List<File> files) async {
+    try {
+      for (var file in files) {
+        _fileCaches.remove(file);
+        file.delete();
       }
-    } catch (error) {
-      Debug.log(error);
+    } catch (e) {
+      Debug.log(e);
     }
   }
 }
