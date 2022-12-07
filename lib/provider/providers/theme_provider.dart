@@ -4,6 +4,7 @@ import 'package:fluttering/utils/index.dart';
 
 import '../../provider/provider.dart';
 import '../../provider/provider_delegate.dart';
+import '../../app.dart';
 
 abstract class IThemeProvider extends Provider with ProviderDelegate {
   ThemeMode get themeMode;
@@ -102,13 +103,16 @@ class ThemeProvider extends IThemeProvider {
 
     String? themeMode = AsyncStorage.instance.getString(_themeModeKey);
     Debug.log("============ THEME MODE FROM ASYNCE STORAGE $themeMode ============");
+
     if (themeMode == null) return;
+
     _useSystem = false;
     if (themeMode == ThemeMode.dark.name) {
       _themeMode = ThemeMode.dark;
     } else if (themeMode == ThemeMode.light.name) {
       _themeMode = ThemeMode.light;
     }
+
     setStatusBarByTheme(_themeMode);
 
     if (notify) notifyListeners();
@@ -122,8 +126,14 @@ class ThemeProvider extends IThemeProvider {
 
   void clean([bool notify = false]) {
     _useSystem = false;
-    final brightness = WidgetsBinding.instance.window.platformBrightness;
-    _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+
+    if (AwesomeApp.instance != null) {
+      _themeMode = AwesomeApp.instance!.theme;
+    } else {
+      final brightness = WidgetsBinding.instance.window.platformBrightness;
+      _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+    }
+
     setStatusBarByTheme(_themeMode);
 
     if (notify) notifyListeners();

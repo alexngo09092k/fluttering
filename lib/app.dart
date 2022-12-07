@@ -31,6 +31,7 @@ class AwesomeApp {
   final Function(Object?)? onError;
   final bool debugMode;
   final bool lightDark;
+  final ThemeMode theme;
 
   AwesomeApp({
     required this.app,
@@ -41,6 +42,7 @@ class AwesomeApp {
     this.onError,
     this.debugMode = kDebugMode,
     this.lightDark = true,
+    this.theme = ThemeMode.light,
   }) {
     _instance = this;
   }
