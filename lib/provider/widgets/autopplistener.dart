@@ -4,6 +4,7 @@
 /// Copyright (c) 2022 ThemePlace
 library fluttering;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../provider.dart';
@@ -17,7 +18,7 @@ class PropConsumer<T extends IProvider, R> extends StatelessWidget {
     required this.builder,
     this.child,
     this.version,
-    this.debugMode = false,
+    this.debugMode = kDebugMode,
   });
 
   final R Function(T) select;
