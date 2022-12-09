@@ -4,6 +4,7 @@
 /// Copyright (c) 2022 ThemePlace
 library fluttering;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/index.dart';
@@ -15,7 +16,7 @@ class BasePropConsumer<T extends IProvider, R> extends StatefulWidget {
     required this.listenable,
     required this.select,
     required this.builder,
-    required this.debugMode,
+    this.debugMode = kDebugMode,
     this.child,
   });
   final T listenable;
