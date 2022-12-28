@@ -4,11 +4,8 @@
 /// Copyright (c) 2022 ThemePlace
 library fluttering;
 
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import './logs.dart';
 
@@ -22,10 +19,6 @@ abstract class IManagerCache {
   Future<bool> initial();
 
   Future<void> clean();
-
-  Future<File?> cacheImageBase64(String imageBase64);
-
-  Future<File?> cacheImageNetwork(String src);
 
   Future<bool> addFile(File file);
 
@@ -88,28 +81,6 @@ class ManagerCache extends IManagerCache {
     } catch (error) {
       Debug.log(error);
     }
-  }
-
-  @override
-  Future<File?> cacheImageBase64(String imageBase64) async {
-    try {
-      final Uint8List imageBytes = base64.decode(imageBase64);
-      final File imageFile = File('${_cacheDirectory!.path}/${DateTime.now().millisecondsSinceEpoch}.jpg');
-      imageFile.writeAsBytesSync(List.from(imageBytes));
-      if (await imageFile.exists()) {
-        _fileCaches.add(imageFile);
-        return imageFile;
-      }
-    } catch (error) {
-      Debug.log(error);
-      return null;
-    }
-    return null;
-  }
-
-  @override
-  Future<File?> cacheImageNetwork(String src) async {
-    throw ErrorDescription('Dont support, you should use ImageCachedNetwork library');
   }
 
   @override
