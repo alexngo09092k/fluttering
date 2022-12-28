@@ -1,4 +1,3 @@
-export 'cache.dart';
 export 'clipboard.dart';
 export 'device_info.dart';
 export 'http.dart';

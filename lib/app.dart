@@ -120,15 +120,12 @@ class AwesomeApp {
 
     result.add(await AsyncStorage.instance.initial());
 
-    result.add(await ManagerCache.instance.initial());
-
     result.add(await InternetConnection.instance.initial('google.com'));
 
     return !result.contains(false);
   }
 
   Future<bool> dispose() async {
-    ManagerCache.instance.clean();
     AsyncStorage.instance.dispose();
     ManagerProvider.instance.dispose();
 

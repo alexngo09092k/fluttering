@@ -74,7 +74,6 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
   @override
   void dispose() {
     ManagerProvider.willCloseApp().then((_) {
-      ManagerCache.instance.clean();
       AsyncStorage.instance.dispose();
       WidgetsBinding.instance.removeObserver(this);
       ManagerProvider.instance.dispose();
