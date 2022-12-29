@@ -9,7 +9,6 @@ library fluttering;
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:mime_type/mime_type.dart';
@@ -100,11 +99,36 @@ class ClientResponse<T> {
   }
 }
 
-class MultipartBody {
-  String key;
-  File file;
+class MultipartBody<T> {
+  final String key;
+  final T data;
+  late final String? _fileName;
+  late final MediaType? _contentType;
 
-  MultipartBody(this.key, this.file);
+  MultipartBody({
+    required this.key,
+    required this.data,
+    String? fileName,
+    MediaType? contentType,
+  }) {
+    _fileName = fileName;
+  }
+
+  String? get fileName {
+    if (_fileName != null) return _fileName;
+    if (data is File) {
+      return path.basename((data as File).path);
+    }
+    return null;
+  }
+
+  MediaType? get contentType {
+    if (_contentType != null) return _contentType;
+    if (data is File) {
+      return MediaType.parse(mime(fileName) ?? '');
+    }
+    return null;
+  }
 }
 
 abstract class IClientHttp {
@@ -258,15 +282,27 @@ class ClientHttp extends IClientHttp {
     }
 
     for (MultipartBody multipart in multipartBody) {
-      Future<Uint8List> list = multipart.file.readAsBytes();
-      String fileName = path.basename(multipart.file.path);
-      MultipartFile part = MultipartFile(
-        list.asStream(),
-        (await list).length,
-        filename: fileName,
-        contentType: MediaType.parse(mime(fileName) ?? ''),
-      );
-      formData.files.add(MapEntry(multipart.key, part));
+      MultipartFile? part;
+
+      if (multipart.data is File) {
+        final file = multipart.data as File;
+        part = await MultipartFile.fromFile(
+          file.path,
+          filename: multipart.fileName,
+          contentType: multipart.contentType,
+        );
+      } else if (multipart.data is List<int>) {
+        final bytes = multipart as List<int>;
+        part = MultipartFile.fromBytes(
+          bytes,
+          filename: multipart.fileName,
+          contentType: multipart.contentType,
+        );
+      }
+
+      if (part != null) {
+        formData.files.add(MapEntry(multipart.key, part));
+      }
     }
 
     // Debug.log('====> API Data: $formData');
