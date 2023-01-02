@@ -306,7 +306,7 @@ class ClientHttp extends IClientHttp {
       }
     }
 
-    // Debug.log('====> API Data: $formData');
+    Debug.log('====> API Data: $formData');
 
     Response response = await client.post(
       uriParse.path,
