@@ -102,8 +102,8 @@ class ClientResponse<T> {
 class MultipartBody<T> {
   final String key;
   final T data;
-  late final String? _fileName;
-  late final MediaType? _contentType;
+  String? _fileName;
+  MediaType? _contentType;
 
   MultipartBody({
     required this.key,
@@ -112,6 +112,7 @@ class MultipartBody<T> {
     MediaType? contentType,
   }) {
     _fileName = fileName;
+    _contentType = contentType;
   }
 
   String? get fileName {
