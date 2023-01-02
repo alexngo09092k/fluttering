@@ -292,7 +292,7 @@ class ClientHttp extends IClientHttp {
           contentType: multipart.contentType,
         );
       } else if (multipart.data is List<int>) {
-        final bytes = multipart as List<int>;
+        final bytes = multipart.data as List<int>;
         part = MultipartFile.fromBytes(
           bytes,
           filename: multipart.fileName,
