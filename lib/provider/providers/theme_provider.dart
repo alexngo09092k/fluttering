@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttering/utils/index.dart';
+import 'package:intl/intl.dart';
 
 import '../../provider/provider.dart';
 import '../../provider/provider_delegate.dart';
@@ -12,6 +13,8 @@ abstract class IThemeProvider extends Provider with ProviderDelegate {
   Brightness get brightness;
 
   Locale get currentLocale;
+
+  NumberFormat get format;
 
   void onChangePlatformBrightness();
 
@@ -52,6 +55,9 @@ class ThemeProvider extends IThemeProvider {
 
   @override
   Locale get currentLocale => _currentLocale;
+
+  @override
+  NumberFormat get format => NumberFormat.simpleCurrency(locale: _currentLocale.toString());
 
   bool _useSystem = true;
 
