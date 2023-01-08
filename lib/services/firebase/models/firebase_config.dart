@@ -36,8 +36,8 @@ class FirebaseConfig {
       'enableFirebase': enableFirebase,
       'enableCrashAnalytics': enableCrashAnalytics,
       'enableRemoteConfigFirebase': enableRemoteConfigFirebase,
-      'fetchTimeout': fetchTimeout.inSeconds,
-      'minimumFetchInterval': minimumFetchInterval.inSeconds,
+      'fetchTimeout': fetchTimeout.inMilliseconds,
+      'minimumFetchInterval': minimumFetchInterval.inMilliseconds,
     };
   }
 
@@ -46,8 +46,8 @@ class FirebaseConfig {
       enableFirebase: map['enableFirebase'] ?? false,
       enableCrashAnalytics: map['enableCrashAnalytics'] ?? false,
       enableRemoteConfigFirebase: map['enableRemoteConfigFirebase'] ?? false,
-      fetchTimeout: Duration(seconds: map['fetchTimeout']?.toInt() ?? 0),
-      minimumFetchInterval: Duration(seconds: map['minimumFetchInterval']?.toInt() ?? 0),
+      fetchTimeout: Duration(milliseconds: map['fetchTimeout'] ?? 0),
+      minimumFetchInterval: Duration(milliseconds: map['minimumFetchInterval'] ?? 0),
     );
   }
 
