@@ -13,7 +13,7 @@ import 'provider_observer.dart';
 
 typedef LazyProviderCallback<T extends IProvider> = T Function();
 
-abstract class IManagerProvider {
+abstract class IManagerProvider extends RouteObserver<PageRoute<dynamic>> {
   static T of<T extends IProvider>([String? version]) {
     throw ErrorDescription("Not found provider");
   }
@@ -78,6 +78,36 @@ class ManagerProvider extends IManagerProvider {
       }
     }
     throw ErrorDescription("Not found provider");
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) async {
+    super.didPop(route, previousRoute);
+    for (var item in _activeProviders) {
+      if (item is ProviderObserver) {
+        (item as ProviderObserver).didPop(route, previousRoute);
+      }
+    }
+  }
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPush(route, previousRoute);
+    for (var item in _activeProviders) {
+      if (item is ProviderObserver) {
+        (item as ProviderObserver).didPush(route, previousRoute);
+      }
+    }
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    for (var item in _activeProviders) {
+      if (item is ProviderObserver) {
+        (item as ProviderObserver).didReplace(newRoute: newRoute, oldRoute: oldRoute);
+      }
+    }
   }
 
   static Future<bool> willOpenApp() => _instance._willOpenApp();
@@ -177,48 +207,6 @@ class ManagerProvider extends IManagerProvider {
     for (var item in _activeProviders) {
       if (item is ProviderDelegate) {
         _.add(await (item as ProviderDelegate).changedAppLifecycleState(state));
-      }
-    }
-
-    return !_.contains(false);
-  }
-
-  static Future<bool> willPopRoute() => _instance._willPopRoute();
-
-  Future<bool> _willPopRoute() async {
-    List<bool> _ = [];
-
-    for (var item in _activeProviders) {
-      if (item is ProviderObserver) {
-        _.add(await (item as ProviderObserver).willPopRoute());
-      }
-    }
-
-    return !_.contains(false);
-  }
-
-  static Future<bool> didPopRoute() => _instance._didPopRoute();
-
-  Future<bool> _didPopRoute() async {
-    List<bool> _ = [];
-
-    for (var item in _activeProviders) {
-      if (item is ProviderObserver) {
-        _.add(await (item as ProviderObserver).didPopRoute());
-      }
-    }
-
-    return !_.contains(false);
-  }
-
-  static Future<bool> didPushRoute(String route) => _instance._didPushRoute(route);
-
-  Future<bool> _didPushRoute(String route) async {
-    List<bool> _ = [];
-
-    for (var item in _activeProviders) {
-      if (item is ProviderObserver) {
-        _.add(await (item as ProviderObserver).didPushRoute(route));
       }
     }
 
