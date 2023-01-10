@@ -37,6 +37,7 @@ abstract class IManagerProvider extends RouteObserver<PageRoute<dynamic>> {
 class ManagerProvider extends IManagerProvider {
   static final ManagerProvider _instance = ManagerProvider._internal();
   static ManagerProvider get instance => _instance;
+  static RouteObserver get observer => _instance;
 
   factory ManagerProvider() => _instance;
 

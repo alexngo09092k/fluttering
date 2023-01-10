@@ -23,6 +23,8 @@ class AwesomeApp {
   static AwesomeApp? _instance;
   static AwesomeApp? get instance => _instance;
 
+  static RouteObserver get observer => ManagerProvider.observer;
+
   final Widget app;
   final List<IProvider> providers;
   final List<LazyProviderCallback> lazyProviders;
