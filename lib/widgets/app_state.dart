@@ -13,15 +13,6 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
 
   static Size screen = const Size(0, 0);
 
-  late final ThemeProvider _provider;
-
-  ThemeProvider get provider {
-    if (AwesomeApp.instance != null && AwesomeApp.instance!.lightDark) {
-      return _provider;
-    }
-    throw ErrorDescription('The LighDark mode is not enabled, are you sure set lightDark to true? see AwesomeApp');
-  }
-
   @override
   void initState() {
     SystemChrome.setPreferredOrientations([
@@ -35,10 +26,6 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     _caculateScreen();
 
     ManagerProvider.willOpenApp();
-
-    if (AwesomeApp.instance != null && AwesomeApp.instance!.lightDark) {
-      _provider = ManagerProvider.of<ThemeProvider>();
-    }
 
     super.initState();
   }

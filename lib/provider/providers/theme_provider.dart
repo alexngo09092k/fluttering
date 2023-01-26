@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 
 import '../../provider/provider.dart';
 import '../../provider/provider_delegate.dart';
-import '../../app.dart';
 
 abstract class IThemeProvider extends Provider with ProviderDelegate {
   ThemeMode get themeMode;
@@ -133,12 +132,8 @@ class ThemeProvider extends IThemeProvider {
   void clean([bool notify = false]) {
     _useSystem = false;
 
-    if (AwesomeApp.instance != null) {
-      _themeMode = AwesomeApp.instance!.theme;
-    } else {
-      final brightness = WidgetsBinding.instance.window.platformBrightness;
-      _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
-    }
+    final brightness = WidgetsBinding.instance.window.platformBrightness;
+    _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
 
     setStatusBarByTheme(_themeMode);
 

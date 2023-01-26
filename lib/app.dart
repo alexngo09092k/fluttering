@@ -32,8 +32,6 @@ class AwesomeApp {
   final Future<bool> Function()? onDidInitialize;
   final Function(Object?)? onError;
   final bool debugMode;
-  final bool lightDark;
-  final ThemeMode theme;
 
   AwesomeApp({
     required this.app,
@@ -43,8 +41,6 @@ class AwesomeApp {
     this.onDidInitialize,
     this.onError,
     this.debugMode = kDebugMode,
-    this.lightDark = true,
-    this.theme = ThemeMode.light,
   }) {
     _instance = this;
   }
@@ -69,11 +65,7 @@ class AwesomeApp {
         if (onDidInitialize != null) await onDidInitialize!();
 
         ManagerProvider.registerProviders(
-          providers: [
-            // StorageProvider.instance,
-            if (lightDark) ThemeProvider.instance,
-            ...providers,
-          ],
+          providers: providers,
           lazyProviders: lazyProviders,
         );
 
@@ -99,11 +91,7 @@ class AwesomeApp {
     if (onDidInitialize != null) result.add(await onDidInitialize!());
 
     ManagerProvider.registerProviders(
-      providers: [
-        // StorageProvider.instance,
-        if (lightDark) ThemeProvider.instance,
-        ...providers,
-      ],
+      providers: providers,
       lazyProviders: lazyProviders,
     );
 
