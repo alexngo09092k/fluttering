@@ -1,4 +1,5 @@
 import '../../utils/async_storage.dart';
+import '../../utils/logs.dart';
 import 'package:in_app_review/in_app_review.dart';
 
 class InAppReviewManager {
@@ -29,6 +30,7 @@ class InAppReviewManager {
 
   Future<bool> showRateDialogIfMeetsConditions() async {
     bool isMeetsConditions = await _shouldShowRateDialog();
+    Debug.log("In App Review show $isMeetsConditions");
     if (isMeetsConditions) {
       _showDialog();
     }
@@ -127,7 +129,6 @@ class InAppReviewManager {
   }
 
   void _setRemindTimestamp() async {
-    AsyncStorage.instance.remove(_prefKeyRemindInterval);
     AsyncStorage.instance.setInt(_prefKeyRemindInterval, DateTime.now().millisecondsSinceEpoch);
   }
 }
