@@ -46,17 +46,37 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     screen = Size(physicalSizeWidth / devicePixelRatio, physicalSizeHeight / devicePixelRatio);
   }
 
-  // @override
-  // Future<bool> didPopRoute() {
-  //   ManagerProvider.didPopRoute();
-  //   return super.didPopRoute();
-  // }
+  static Future<T?> dialog<T>({
+    required Widget Function(BuildContext) builder,
+    bool barrierDismissible = true,
+    Color? barrierColor = Colors.black54,
+    String? barrierLabel,
+    bool useSafeArea = true,
+    bool useRootNavigator = true,
+    RouteSettings? routeSettings,
+    Offset? anchorPoint,
+  }) async {
+    if (navigatorKey.currentContext != null) {
+      return showDialog<T>(
+        context: navigatorKey.currentContext!,
+        builder: builder,
+        barrierDismissible: barrierDismissible,
+        barrierColor: barrierColor,
+        barrierLabel: barrierLabel,
+        useRootNavigator: useRootNavigator,
+        useSafeArea: useSafeArea,
+        routeSettings: routeSettings,
+        anchorPoint: anchorPoint,
+      );
+    }
+    return null;
+  }
 
-  // @override
-  // Future<bool> didPushRoute(String route) {
-  //   ManagerProvider.didPushRoute(route);
-  //   return super.didPushRoute(route);
-  // }
+  static dimiss() {
+    if (navigatorKey.currentContext != null) {
+      Navigator.of(navigatorKey.currentContext!).pop();
+    }
+  }
 
   @override
   void dispose() {
