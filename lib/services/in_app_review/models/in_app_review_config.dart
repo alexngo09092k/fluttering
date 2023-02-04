@@ -10,9 +10,9 @@ class InAppReviewConfig {
 
   const InAppReviewConfig({
     this.enable = false,
-    this.minLaunchTimes,
-    this.minDaysAfterInstall,
-    this.minDaysBeforeRemind,
+    this.minLaunchTimes = 0,
+    this.minDaysAfterInstall = 0,
+    this.minDaysBeforeRemind = 0,
   });
 
   InAppReviewConfig copyWith({
