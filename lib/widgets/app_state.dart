@@ -23,6 +23,8 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback(onNextFrame);
 
+    _shouldEnablednAppReview();
+
     _caculateScreen();
 
     ManagerProvider.willOpenApp();
@@ -37,6 +39,17 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
   }
 
   void onNextFrame(Duration timestamp) {}
+
+  _shouldEnablednAppReview() {
+    try {
+      if(AwesomeApp.instance != null && AwesomeApp.instance!.inAppReview.enable) {
+        final inAppReviewService = InAppReviewService();
+        inAppReviewService.monitor(config: AwesomeApp.instance!.inAppReview);
+      }
+    }catch(error){
+      Debug.log('shouldEnablednAppReview $error');
+    }
+  }
 
   _caculateScreen() {
     double devicePixelRatio = WidgetsBinding.instance.window.devicePixelRatio;

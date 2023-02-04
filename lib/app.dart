@@ -9,8 +9,10 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import './services/in_app_review/index.dart';
 import 'utils/index.dart';
 import 'provider/index.dart';
+
 class AwesomeApp {
   static AwesomeApp? _instance;
   static AwesomeApp? get instance => _instance;
@@ -24,6 +26,7 @@ class AwesomeApp {
   final Future<bool> Function()? onDidInitialize;
   final Function(Object?)? onError;
   final bool debugMode;
+  final InAppReviewConfig inAppReview;
 
   AwesomeApp({
     required this.app,
@@ -33,6 +36,7 @@ class AwesomeApp {
     this.onDidInitialize,
     this.onError,
     this.debugMode = kDebugMode,
+    this.inAppReview = const InAppReviewConfig(),
   }) {
     _instance = this;
   }
