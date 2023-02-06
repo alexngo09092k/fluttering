@@ -11,10 +11,17 @@ import '../provider.dart';
 
 abstract class ProviderState<T extends StatefulWidget, R extends IProvider> extends State<T> {
   late R provider;
-
+  
+  bool listen() => false;
+  
   @override
   void initState() {
     provider = ManagerProvider.of<R>();
+    if(listen()) {
+      provider.addListener(() {
+        setState(() {});
+      });
+    }
     super.initState();
   }
 }
