@@ -21,7 +21,7 @@ class BasePropConsumer<T extends IProvider, R> extends StatefulWidget {
   });
   final T listenable;
   final R Function(T) select;
-  final Widget Function(BuildContext, Widget?, T, R?) builder;
+  final Widget Function(BuildContext, Widget?, T, R) builder;
   final Widget? child;
   final bool debugMode;
 
@@ -30,7 +30,7 @@ class BasePropConsumer<T extends IProvider, R> extends StatefulWidget {
 }
 
 class _BasePropConsumerState<T extends IProvider, R> extends State<BasePropConsumer<T, R>> {
-  ValueNotifier<R>? _r;
+  late ValueNotifier<R> _r;
 
   @override
   void initState() {
@@ -41,21 +41,20 @@ class _BasePropConsumerState<T extends IProvider, R> extends State<BasePropConsu
 
   _listen() {
     R value = widget.select(widget.listenable);
-    if (_r != null && _r!.value != value) {
+    if (_r.value != value) {
       if (widget.debugMode) {
-        Debug.log("=====> value of $T changed from ${_r!.value} to $value");
+        Debug.log("=====> value of $T changed from ${_r.value} to $value");
       }
-      _r!.value = value;
+      _r.value = value;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_r == null) return widget.builder(context, widget.child, widget.listenable, null);
     return AnimatedBuilder(
-      animation: _r!,
+      animation: _r,
       child: widget.child,
-      builder: (_, __) => widget.builder(_, __, widget.listenable, _r!.value),
+      builder: (_, __) => widget.builder(_, __, widget.listenable, _r.value),
     );
   }
 

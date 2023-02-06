@@ -22,7 +22,7 @@ class PropConsumer<T extends IProvider, R> extends StatelessWidget {
   });
 
   final R Function(T) select;
-  final Widget Function(BuildContext, Widget?, T, R?) builder;
+  final Widget Function(BuildContext, Widget?, T, R) builder;
   final Widget? child;
   final String? version;
   final bool debugMode;
