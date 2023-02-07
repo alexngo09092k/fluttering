@@ -91,8 +91,7 @@ class ThemeProvider extends IThemeProvider {
     if (locale == null) return _currentLocale;
 
     for (var supportedLocale in supportedLocales) {
-      if (supportedLocale.languageCode == locale.languageCode ||
-          supportedLocale.countryCode == locale.countryCode) {
+      if (supportedLocale.languageCode == locale.languageCode || supportedLocale.countryCode == locale.countryCode) {
         _currentLocale = supportedLocale;
         return _currentLocale;
       }
