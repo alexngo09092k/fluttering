@@ -150,7 +150,7 @@ class ThemeProvider extends IThemeProvider {
     Brightness? systemNavigationBarIconBrightness,
   }) {
     switch (themeMode) {
-      case ThemeMode.dark:
+      case ThemeMode.light:
         SystemChrome.setSystemUIOverlayStyle(
           SystemUiOverlayStyle.dark.copyWith(
             systemNavigationBarColor: systemNavigationBarColor,
@@ -164,7 +164,7 @@ class ThemeProvider extends IThemeProvider {
           ),
         );
         break;
-      case ThemeMode.light:
+      case ThemeMode.dark:
         SystemChrome.setSystemUIOverlayStyle(
           SystemUiOverlayStyle.light.copyWith(
             systemNavigationBarColor: systemNavigationBarColor,
