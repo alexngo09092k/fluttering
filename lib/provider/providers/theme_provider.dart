@@ -26,6 +26,18 @@ abstract class IThemeProvider extends Provider with ProviderDelegate {
   static Color colorByTheme({required Color light, required Color dark}) {
     throw ErrorDescription("Not found Theme Provider");
   }
+
+  void setStatusBarByTheme(
+   {
+    Color? systemNavigationBarColor = Colors.white,
+    Color? systemNavigationBarDividerColor,
+    bool? systemNavigationBarContrastEnforced,
+    Color statusBarColor = Colors.transparent,
+    Brightness? statusBarBrightness,
+    Brightness? statusBarIconBrightness,
+    bool? systemStatusBarContrastEnforced,
+    Brightness? systemNavigationBarIconBrightness,
+  });
 }
 
 class ThemeProvider extends IThemeProvider {
@@ -73,7 +85,7 @@ class ThemeProvider extends IThemeProvider {
     final brightness = WidgetsBinding.instance.window.platformBrightness;
     _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
     Debug.log("============ THEME MODE FROM SYSTEM $themeMode ============");
-    setStatusBarByTheme(_themeMode);
+    setStatusBarByTheme();
     notifyListeners();
   }
 
@@ -82,7 +94,7 @@ class ThemeProvider extends IThemeProvider {
     _themeMode = themeMode;
     _useSystem = false;
     AsyncStorage.instance.setString(_themeModeKey, _themeMode.name);
-    setStatusBarByTheme(_themeMode);
+    setStatusBarByTheme();
     notifyListeners();
   }
 
@@ -116,7 +128,7 @@ class ThemeProvider extends IThemeProvider {
       _themeMode = ThemeMode.light;
     }
 
-    setStatusBarByTheme(_themeMode);
+    setStatusBarByTheme();
 
     if (notify) notifyListeners();
   }
@@ -133,23 +145,24 @@ class ThemeProvider extends IThemeProvider {
     final brightness = WidgetsBinding.instance.window.platformBrightness;
     _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
 
-    setStatusBarByTheme(_themeMode);
+    setStatusBarByTheme();
 
     if (notify) notifyListeners();
   }
 
+  @override
   void setStatusBarByTheme(
-    ThemeMode themeMode, {
-    Color? systemNavigationBarColor,
+   {
+    Color? systemNavigationBarColor = Colors.white,
     Color? systemNavigationBarDividerColor,
     bool? systemNavigationBarContrastEnforced,
-    Color? statusBarColor,
+    Color statusBarColor = Colors.transparent,
     Brightness? statusBarBrightness,
     Brightness? statusBarIconBrightness,
     bool? systemStatusBarContrastEnforced,
     Brightness? systemNavigationBarIconBrightness,
   }) {
-    switch (themeMode) {
+    switch (_themeMode) {
       case ThemeMode.light:
         SystemChrome.setSystemUIOverlayStyle(
           SystemUiOverlayStyle.dark.copyWith(
