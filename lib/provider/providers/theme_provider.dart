@@ -91,14 +91,13 @@ class ThemeProvider extends IThemeProvider {
     if (locale == null) return _currentLocale;
 
     for (var supportedLocale in supportedLocales) {
-      if (supportedLocale.languageCode == locale.languageCode || supportedLocale.countryCode == locale.countryCode) {
+      if (supportedLocale.languageCode == locale.languageCode ||
+          supportedLocale.countryCode == locale.countryCode) {
         _currentLocale = supportedLocale;
         return _currentLocale;
       }
     }
-    _currentLocale = supportedLocales.firstWhere(
-      (supportedLocale) => supportedLocale.languageCode == 'en',
-    );
+    _currentLocale = supportedLocales.firstWhere((supportedLocale) => supportedLocale.languageCode == 'en');
 
     return _currentLocale;
   }
@@ -139,44 +138,48 @@ class ThemeProvider extends IThemeProvider {
 
     if (notify) notifyListeners();
   }
-}
 
-extension StatusBarThemeProviderEx on ThemeProvider {
-  void setStatusBarByTheme(ThemeMode themeMode) {
+  void setStatusBarByTheme(
+    ThemeMode themeMode, {
+    Color? systemNavigationBarColor,
+    Color? systemNavigationBarDividerColor,
+    bool? systemNavigationBarContrastEnforced,
+    Color? statusBarColor,
+    Brightness? statusBarBrightness,
+    Brightness? statusBarIconBrightness,
+    bool? systemStatusBarContrastEnforced,
+    Brightness? systemNavigationBarIconBrightness,
+  }) {
     switch (themeMode) {
       case ThemeMode.dark:
-        setLightStatusBar();
+        SystemChrome.setSystemUIOverlayStyle(
+          SystemUiOverlayStyle.dark.copyWith(
+            systemNavigationBarColor: systemNavigationBarColor,
+            systemNavigationBarDividerColor: systemNavigationBarDividerColor,
+            systemNavigationBarContrastEnforced: systemNavigationBarContrastEnforced,
+            statusBarColor: statusBarColor,
+            statusBarIconBrightness: statusBarIconBrightness,
+            statusBarBrightness: statusBarBrightness,
+            systemStatusBarContrastEnforced: systemStatusBarContrastEnforced,
+            systemNavigationBarIconBrightness: systemNavigationBarIconBrightness,
+          ),
+        );
         break;
       case ThemeMode.light:
-        setDarkStatusBar();
+        SystemChrome.setSystemUIOverlayStyle(
+          SystemUiOverlayStyle.light.copyWith(
+            systemNavigationBarColor: systemNavigationBarColor,
+            systemNavigationBarDividerColor: systemNavigationBarDividerColor,
+            systemNavigationBarContrastEnforced: systemNavigationBarContrastEnforced,
+            statusBarColor: statusBarColor,
+            statusBarIconBrightness: statusBarIconBrightness,
+            statusBarBrightness: statusBarBrightness,
+            systemStatusBarContrastEnforced: systemStatusBarContrastEnforced,
+            systemNavigationBarIconBrightness: systemNavigationBarIconBrightness,
+          ),
+        );
         break;
       default:
     }
   }
-
-  /// Changes the text and icon color on the statusbar to a dark color
-  void setDarkStatusBar() {
-    SystemChrome.setSystemUIOverlayStyle(getDarkStatusBar());
-  }
-
-  /// Changes the text and icon color on the statusbar to a light color
-  void setLightStatusBar() {
-    SystemChrome.setSystemUIOverlayStyle(getLightStatusBar());
-  }
-
-  SystemUiOverlayStyle getLightStatusBar() => const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.light,
-      );
-
-  SystemUiOverlayStyle getDarkStatusBar() => const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.light,
-        statusBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
-      );
 }
