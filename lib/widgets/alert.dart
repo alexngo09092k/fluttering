@@ -18,7 +18,7 @@ class AwesomeAlert extends StatelessWidget {
       child: CupertinoAlertDialog(
         title: Text(
           title,
-          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
                 fontWeight: FontWeight.w600,
               ),
         ),
@@ -30,7 +30,7 @@ class AwesomeAlert extends StatelessWidget {
             onPressed: () => buttons[index].action(context),
             child: Text(
               buttons[index].name,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: buttons[index].color,
                   ),
             ),
