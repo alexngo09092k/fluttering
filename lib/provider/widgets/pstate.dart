@@ -18,11 +18,21 @@ abstract class ProviderState<T extends StatefulWidget, R extends IProvider> exte
   void initState() {
     provider = ManagerProvider.of<R>();
     if(listen()) {
-      provider.addListener(() {
-        setState(() {});
-      });
+      provider.addListener(_listenChanged);
     }
     super.initState();
+  }
+
+  _listenChanged() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    if(listen()) {
+      provider.removeListener(_listenChanged);
+    }
+    super.dispose();
   }
 }
 
