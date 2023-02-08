@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttering/utils/index.dart';
+import 'package:fluttering/fluttering.dart';
 import 'package:intl/intl.dart';
-
-import '../../provider/provider.dart';
-import '../../provider/provider_delegate.dart';
 
 abstract class IThemeProvider extends Provider with ProviderDelegate {
   ThemeMode get themeMode;
 
   Brightness get brightness;
 
-  Locale get currentLocale;
+  Locale get locale;
 
   NumberFormat get format;
 
@@ -21,14 +18,9 @@ abstract class IThemeProvider extends Provider with ProviderDelegate {
 
   Locale? onChangeLocale(Locale? locale, Iterable<Locale> supportedLocales);
 
-  bool get useSystem;
+  void changeLocale(Locale locale);
 
-  static Color colorByTheme({required Color light, required Color dark}) {
-    throw ErrorDescription("Not found Theme Provider");
-  }
-
-  void setStatusBarByTheme(
-   {
+  void setStatusBarByTheme({
     Color? systemNavigationBarColor = Colors.white,
     Color? systemNavigationBarDividerColor,
     bool? systemNavigationBarContrastEnforced,
@@ -44,88 +36,91 @@ class ThemeProvider extends IThemeProvider {
   @override
   String get version => "v0.0.1";
 
-  /// sh1 theme_mode
+  ThemeProvider({ThemeMode themeMode = ThemeMode.light, Locale locale = const Locale('en')}) {
+    _themeMode = themeMode;
+    AsyncStorage.instance.setString(_themeModeKey, _themeMode.name);
+
+    _locale = locale;
+    AsyncStorage.instance.setString(_localeKey, _locale.languageCode);
+  }
+
   String get _themeModeKey => 'fluttering_theme_mode';
 
-  static final IThemeProvider _instance = ThemeProvider._internal();
-  static IThemeProvider get instance => _instance;
-
-  factory ThemeProvider() => _instance as ThemeProvider;
-
-  ThemeProvider._internal();
-
-  ThemeMode _themeMode = ThemeMode.light;
-
+  late ThemeMode _themeMode;
   @override
   ThemeMode get themeMode => _themeMode;
 
   @override
   Brightness get brightness => _themeMode == ThemeMode.dark ? Brightness.dark : Brightness.light;
 
-  Locale _currentLocale = const Locale('en');
+  String get _localeKey => 'fluttering_locale';
+
+  late Locale _locale;
+  @override
+  Locale get locale => _locale;
 
   @override
-  Locale get currentLocale => _currentLocale;
-
-  @override
-  NumberFormat get format => NumberFormat.simpleCurrency(locale: _currentLocale.toString());
-
-  bool _useSystem = true;
-
-  @override
-  bool get useSystem => _useSystem;
-
-  static Color colorByTheme({required Color light, required Color dark}) {
-    return _instance.themeMode == ThemeMode.light ? light : dark;
-  }
+  NumberFormat get format => NumberFormat.simpleCurrency(locale: _locale.toString());
 
   @override
   void onChangePlatformBrightness() {
-    if (!_useSystem) return;
     final brightness = WidgetsBinding.instance.window.platformBrightness;
-    _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
-    Debug.log("============ THEME MODE FROM SYSTEM $themeMode ============");
-    setStatusBarByTheme();
-    notifyListeners();
+    ThemeMode themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+
+    if (themeMode != _themeMode) {
+      _themeMode = themeMode;
+      AsyncStorage.instance.setString(_themeModeKey, _themeMode.name);
+      setStatusBarByTheme();
+      notifyListeners();
+    }
   }
 
   @override
   void changeThemeMode(ThemeMode themeMode) {
-    _themeMode = themeMode;
-    _useSystem = false;
-    AsyncStorage.instance.setString(_themeModeKey, _themeMode.name);
-    setStatusBarByTheme();
-    notifyListeners();
+    if (themeMode != _themeMode) {
+      _themeMode = themeMode;
+      AsyncStorage.instance.setString(_themeModeKey, _themeMode.name);
+      setStatusBarByTheme();
+      notifyListeners();
+    }
   }
 
   @override
   Locale? onChangeLocale(Locale? locale, Iterable<Locale> supportedLocales) {
-    if (locale == null) return _currentLocale;
+    if (locale == null) return _locale;
 
     for (var supportedLocale in supportedLocales) {
       if (supportedLocale.languageCode == locale.languageCode || supportedLocale.countryCode == locale.countryCode) {
-        _currentLocale = supportedLocale;
-        return _currentLocale;
+        _locale = supportedLocale;
+        return _locale;
       }
     }
-    _currentLocale = supportedLocales.firstWhere((supportedLocale) => supportedLocale.languageCode == 'en');
 
-    return _currentLocale;
+    _locale = supportedLocales.firstWhere((supportedLocale) => supportedLocale.languageCode == 'en');
+    AsyncStorage.instance.setString(_localeKey, _locale.languageCode);
+
+    return _locale;
+  }
+
+  @override
+  void changeLocale(Locale locale) {
+    if (_locale != locale) {
+      _locale = locale;
+      AsyncStorage.instance.setString(_localeKey, _locale.languageCode);
+    }
   }
 
   void syncFromStorage([bool notify = false]) {
-    clean();
-
     String? themeMode = AsyncStorage.instance.getString(_themeModeKey);
-    Debug.log("============ THEME MODE FROM ASYNCE STORAGE $themeMode ============");
-
-    if (themeMode == null) return;
-
-    _useSystem = false;
     if (themeMode == ThemeMode.dark.name) {
       _themeMode = ThemeMode.dark;
     } else if (themeMode == ThemeMode.light.name) {
       _themeMode = ThemeMode.light;
+    }
+
+    String? languageCode = AsyncStorage.instance.getString(_localeKey);
+    if (languageCode != null) {
+      _locale = Locale(languageCode);
     }
 
     setStatusBarByTheme();
@@ -135,24 +130,12 @@ class ThemeProvider extends IThemeProvider {
 
   @override
   Future<bool> registered() async {
-    syncFromStorage();
+    syncFromStorage(true);
     return true;
   }
 
-  void clean([bool notify = false]) {
-    _useSystem = false;
-
-    final brightness = WidgetsBinding.instance.window.platformBrightness;
-    _themeMode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
-
-    setStatusBarByTheme();
-
-    if (notify) notifyListeners();
-  }
-
   @override
-  void setStatusBarByTheme(
-   {
+  void setStatusBarByTheme({
     Color? systemNavigationBarColor = Colors.white,
     Color? systemNavigationBarDividerColor,
     bool? systemNavigationBarContrastEnforced,
