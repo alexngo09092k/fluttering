@@ -17,6 +17,7 @@ import 'package:path/path.dart' as path;
 import 'package:http_parser/http_parser.dart';
 
 import './logs.dart';
+import './internet.dart';
 
 class ClientResponse<T> {
   ClientResponse({
@@ -139,6 +140,7 @@ abstract class IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   });
 
   Future<ClientResponse<T>> post<T>(
@@ -148,6 +150,7 @@ abstract class IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   });
 
   Future<ClientResponse<T>> postMultipart<T>(
@@ -158,6 +161,7 @@ abstract class IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   });
 
   Future<ClientResponse<T>> put<T>(
@@ -167,6 +171,7 @@ abstract class IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   });
 
   Future<ClientResponse<T>> patch<T>(
@@ -176,6 +181,7 @@ abstract class IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   });
 
   Future<ClientResponse<T>> delete<T>(
@@ -203,6 +209,7 @@ class ClientHttp extends IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   }) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -212,7 +219,10 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus ?? (_) => true,
+      validateStatus: (_) => true,
+    ).copyWith(
+      responseType: responseType,
+      validateStatus: validateStatus,
     ));
 
     Response response = await client.get(uriParse.path, queryParameters: query);
@@ -230,6 +240,7 @@ class ClientHttp extends IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   }) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -239,7 +250,10 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus ?? (_) => true,
+      validateStatus: (_) => true,
+    ).copyWith(
+      responseType: responseType,
+      validateStatus: validateStatus,
     ));
 
     Debug.log('====> API Data: $data');
@@ -264,6 +278,7 @@ class ClientHttp extends IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   }) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -273,7 +288,10 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus ?? (_) => true,
+      validateStatus: (_) => true,
+    ).copyWith(
+      responseType: responseType,
+      validateStatus: validateStatus,
     ));
 
     final formData = FormData();
@@ -326,6 +344,7 @@ class ClientHttp extends IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   }) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -335,7 +354,10 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus ?? (_) => true,
+      validateStatus: (_) => true,
+    ).copyWith(
+      responseType: responseType,
+      validateStatus: validateStatus,
     ));
 
     Debug.log('====> API Data: $data');
@@ -359,6 +381,7 @@ class ClientHttp extends IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   }) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -368,7 +391,10 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus ?? (_) => true,
+      validateStatus: (_) => true,
+    ).copyWith(
+      responseType: responseType,
+      validateStatus: validateStatus,
     ));
 
     Debug.log('====> API Data: $data');
@@ -391,6 +417,7 @@ class ClientHttp extends IClientHttp {
     Map<String, String>? headers,
     Duration? timeout,
     bool Function(int?)? validateStatus,
+    ResponseType? responseType,
   }) async {
     final Uri uriParse = Uri.parse(url);
 
@@ -400,7 +427,10 @@ class ClientHttp extends IClientHttp {
       baseUrl: uriParse.origin,
       connectTimeout: timeout?.inMilliseconds,
       headers: headers,
-      validateStatus: validateStatus ?? (_) => true,
+      validateStatus: (_) => true,
+    ).copyWith(
+      responseType: responseType,
+      validateStatus: validateStatus,
     ));
 
     Debug.log('====> API Data: $data');
@@ -440,4 +470,21 @@ extension ProxyIClientHttp on IClientHttp {
   }
 
   Future<ProxySetting> get proxySetting => NativeProxyReader.proxySetting;
+}
+
+extension NetworkTracking on IClientHttp {
+  Future<bool> safeEnvironment() async {
+    final bool hasInternet = InternetConnection.instance.hasConnection;
+    Debug.log("==========> INTERNET: $hasInternet");
+
+    if (!hasInternet) return false;
+
+    final bool vpnActive = await isVpnActive();
+    Debug.log("==========> VPN: $vpnActive");
+
+    final bool proxyEnabled = await isProxyEnabled();
+    Debug.log("==========> PROXY: $proxyEnabled");
+
+    return !(vpnActive || proxyEnabled);
+  }
 }
