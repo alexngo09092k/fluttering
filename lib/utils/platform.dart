@@ -5,6 +5,7 @@
 library fluttering;
 
 import 'package:flutter/foundation.dart' as foundation;
+import 'device_info.dart';
 
 class CurrentPlatform {
   static final CurrentPlatform _instance = CurrentPlatform._internal();
@@ -19,4 +20,5 @@ class CurrentPlatform {
   bool get isAndroid => foundation.defaultTargetPlatform == foundation.TargetPlatform.android;
   bool get isMacOS => foundation.defaultTargetPlatform == foundation.TargetPlatform.macOS;
   bool get isMobile => isIos || isAndroid;
+  bool get isHuawei => DeviceInfo.instance.android != null && (DeviceInfo.instance.android!.manufacturer ?? '').toUpperCase() == 'HUAWEI';
 }
