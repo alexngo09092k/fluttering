@@ -42,12 +42,12 @@ class AwesomeApp {
   }
 
   void run() async {
-    Debug.debugMode = debugMode;
+    WidgetsFlutterBinding.ensureInitialized();
 
     runZonedGuarded(() async {
-      try {
-        WidgetsFlutterBinding.ensureInitialized();
+      Debug.debugMode = debugMode;
 
+      try {
         if (onWillInitialize != null) await onWillInitialize!();
 
         await _initialize();
