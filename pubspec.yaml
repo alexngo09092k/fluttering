@@ -21,6 +21,7 @@ dependencies:
   native_flutter_proxy: ^0.1.15
   mime_type: ^1.0.0
   in_app_review: ^2.0.6
+  flutter_hms_gms_availability: ^3.0.0
 
 dev_dependencies:
   flutter_test:

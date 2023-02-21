@@ -5,6 +5,7 @@
 library fluttering;
 
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:flutter_hms_gms_availability/flutter_hms_gms_availability.dart';
 import 'device_info.dart';
 
 class CurrentPlatform {
@@ -21,4 +22,7 @@ class CurrentPlatform {
   bool get isMacOS => foundation.defaultTargetPlatform == foundation.TargetPlatform.macOS;
   bool get isMobile => isIos || isAndroid;
   bool get isHuawei => DeviceInfo.instance.android != null && (DeviceInfo.instance.android!.manufacturer ?? '').toUpperCase() == 'HUAWEI';
+
+  Future<bool> get isGmsAvailable =>  FlutterHmsGmsAvailability.isGmsAvailable;
+  Future<bool> get isHmsAvailable => FlutterHmsGmsAvailability.isHmsAvailable;
 }
