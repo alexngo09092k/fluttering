@@ -42,8 +42,6 @@ class AwesomeApp {
   }
 
   void run() async {
-    WidgetsFlutterBinding.ensureInitialized();
-
     runZonedGuarded(() async {
       Debug.debugMode = debugMode;
 
