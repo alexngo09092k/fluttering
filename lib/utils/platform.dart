@@ -29,7 +29,7 @@ class CurrentPlatform {
     if(isIos) return false;
     try {
       final int resultCode = await (HmsApiAvailability()).isHMSAvailable();
-      return isHuawei || resultCode != 0;
+      return isHuawei || resultCode == 0;
     }catch(error) {
       Debug.log(error);
     }
