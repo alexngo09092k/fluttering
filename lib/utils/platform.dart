@@ -33,6 +33,6 @@ class CurrentPlatform {
     }catch(error) {
       Debug.log(error);
     }
-    return false;
+    return isHuawei;
   }
 }
