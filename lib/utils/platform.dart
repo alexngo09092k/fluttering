@@ -5,7 +5,7 @@
 library fluttering;
 
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:flutter_hms_gms_availability/flutter_hms_gms_availability.dart';
+import 'package:huawei_hmsavailability/huawei_hmsavailability.dart';
 import 'device_info.dart';
 
 class CurrentPlatform {
@@ -23,6 +23,10 @@ class CurrentPlatform {
   bool get isMobile => isIos || isAndroid;
   bool get isHuawei => DeviceInfo.instance.android != null && (DeviceInfo.instance.android!.manufacturer ?? '').toUpperCase() == 'HUAWEI';
 
-  Future<bool> get isGmsAvailable =>  FlutterHmsGmsAvailability.isGmsAvailable;
-  Future<bool> get isHmsAvailable => FlutterHmsGmsAvailability.isHmsAvailable;
+  Future<bool> get isGmsAvailable async => isMobile && !isHuawei;
+  Future<bool> get isHmsAvailable async {
+    if(isIos) return false;
+    final int resultCode = await (HmsApiAvailability()).isHMSAvailable();
+    return isHuawei || resultCode != 0;
+  }
 }
