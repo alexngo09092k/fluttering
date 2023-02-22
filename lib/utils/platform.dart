@@ -28,6 +28,12 @@ class CurrentPlatform {
   Future<bool> get isHmsAvailable async {
     if(isIos) return false;
     try {
+    // 0: HMS Core (APK) is available.
+    // 1: No HMS Core (APK) is found on device.
+    // 2: HMS Core (APK) installed is out of date.
+    // 3: HMS Core (APK) installed on the device is unavailable.
+    // 9: HMS Core (APK) installed on the device is not the official version.
+    // 21: The device is too old to support HMS Core (APK).
       final int resultCode = await (HmsApiAvailability()).isHMSAvailable();
       return isHuawei || resultCode == 0;
     }catch(error) {
