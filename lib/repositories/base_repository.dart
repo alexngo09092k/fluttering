@@ -6,5 +6,5 @@ abstract class BaseRepository<T extends BaseResponse> {
 
   IClientHttp get client => ClientHttp.instance;
 
-  T handleResponse<Q, R>(ClientResponse<R?> response, {Q? Function(R?)? fromData});
+  T handleResponse<R, Q>(ClientResponse<R?> response, {Q Function(R)? fromData});
 }
