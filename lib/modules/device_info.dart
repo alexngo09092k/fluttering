@@ -5,7 +5,7 @@
 library fluttering;
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:fluttering/utils/platform.dart';
+import 'package:fluttering/modules/platform.dart';
 import './logs.dart';
 
 /// ================== DEVICE INFO ================

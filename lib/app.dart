@@ -9,8 +9,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import './services/in_app_review/index.dart';
-import 'utils/index.dart';
+import 'modules/index.dart';
 import 'provider/index.dart';
 
 class AwesomeApp {

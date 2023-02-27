@@ -7,7 +7,6 @@ library fluttering;
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:fluttering/fluttering.dart';
 import 'package:huawei_hmsavailability/huawei_hmsavailability.dart';
-import 'device_info.dart';
 
 class CurrentPlatform {
   static final CurrentPlatform _instance = CurrentPlatform._internal();

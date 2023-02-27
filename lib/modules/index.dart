@@ -6,3 +6,4 @@ export 'permission.dart';
 export 'platform.dart';
 export 'async_storage.dart';
 export 'logs.dart';
+export 'in_app_review/index.dart';

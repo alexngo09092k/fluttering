@@ -1,5 +1,5 @@
-import '../../utils/async_storage.dart';
-import '../../utils/logs.dart';
+import '../async_storage.dart';
+import '../logs.dart';
 import 'package:in_app_review/in_app_review.dart';
 
 class InAppReviewManager {

@@ -6,7 +6,9 @@ library fluttering;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttering/fluttering.dart';
+import '../provider/index.dart';
+import '../modules/index.dart';
+import '../app.dart';
 
 abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
