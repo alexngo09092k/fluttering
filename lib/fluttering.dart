@@ -8,6 +8,7 @@ library fluttering;
 export 'provider/index.dart';
 export 'modules/index.dart';
 export 'widgets/index.dart';
+export 'repositories/index.dart';
 
 /// Library
 export 'package:path_provider/path_provider.dart';
@@ -18,6 +19,7 @@ export 'package:permission_handler/permission_handler.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:mime_type/mime_type.dart';
+
 
 /// Awesome App
 export 'app.dart';
