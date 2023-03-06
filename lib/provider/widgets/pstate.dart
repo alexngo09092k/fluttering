@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import '../manager_provider.dart';
 import '../provider.dart';
 
-abstract class ProviderStateless<T extends StatelessWidget, R extends IProvider> {
-  ProviderStateless({String? version}):super() {
+abstract class ProviderStateless<R extends IProvider> extends StatelessWidget {
+  ProviderStateless({super.key, String? version}){
     _provider = ManagerProvider.of<R>(version);
   }
 
