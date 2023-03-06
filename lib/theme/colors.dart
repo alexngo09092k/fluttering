@@ -16,8 +16,8 @@ class FlutteringColors {
   /// LIGHT MODE
   Color get lightBackground => white;/// background
   Color get lightSurface => white; /// card or block with shadow to user see different between background and block
-  Color get lightPrimary => const Color.fromRGBO(98, 0, 38, 1); /// theme mode (button, title)
-  Color get lightSecondary => const Color.fromRGBO(56, 0, 179, 1); /// theme mode (button, title)
+  Color get lightPrimary => const Color.fromRGBO(109, 124, 238, 1); /// theme mode (button, title)
+  Color get lightSecondary => const Color.fromRGBO(113, 184, 205, 1); /// theme mode (button, title)
   Color get lightOnBackground => const Color.fromRGBO(5, 5, 5, 1); /// text on background
   Color get lightOnSurface => const Color.fromRGBO(11, 11, 11, 1); /// text on card or block
   Color get lightOnPrimary => const Color.fromRGBO(235, 235, 235, 1); /// text on theme mode
@@ -28,13 +28,13 @@ class FlutteringColors {
   /// DARK MODE
   Color get darkBackground => gray00db; /// background
   Color get darkSurface => gray01db; /// card or block
-  Color get darkPrimary => const Color.fromRGBO(187, 134, 152, 1); /// theme mode (button, title)
-  Color get darkSecondary => const Color.fromRGBO(3, 218, 198, 1); /// theme mode (button, title)
+  Color get darkPrimary => const Color.fromRGBO(109, 124, 238, 1); /// theme mode (button, title)
+  Color get darkSecondary => const Color.fromRGBO(113, 184, 205, 1); /// theme mode (button, title)
   Color get darkOnBackground => const Color.fromRGBO(213, 213, 213, 1); /// text on background
   Color get darkOnSurface => const Color.fromRGBO(224, 224, 224, 1); /// text on card or block
   Color get darkOnPrimary => black; /// text on theme mode
   Color get darkOnSecondary => black; /// text on theme mode
-  Color get darkError => const Color.fromARGB(255, 213, 37, 37); /// warning, error, failed
+  Color get darkError => const Color.fromARGB(255, 195, 7, 7); /// warning, error, failed
   Color get darkOnError => darkOnPrimary; /// text on warning, error, failed
 
   /// BASE
