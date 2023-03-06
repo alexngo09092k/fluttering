@@ -11,14 +11,14 @@ class FlutteringColors {
   // 8. On Secondary
 
   /// LIGHT MODE
-  static Color get lightBackground => white;
-  static Color get lightSurface => white; /// with shadow to user see different between background and block
-  static Color get lightPrimary => const Color.fromRGBO(98, 0, 38, 1); /// background
-  static Color get lightSecondary => const Color.fromRGBO(56, 0, 179, 1); /// card or block
-  static Color get lightOnBackground => const Color.fromRGBO(5, 5, 5, 1); /// theme mode (button, title)
-  static Color get lightOnSurface => const Color.fromRGBO(11, 11, 11, 1); /// theme mode (button, title)
-  static Color get lightOnPrimary => const Color.fromRGBO(235, 235, 235, 1); /// text on background
-  static Color get lightOnSecondary => const Color.fromRGBO(235, 235, 235, 1); /// text on card or block
+  static Color get lightBackground => white;/// background
+  static Color get lightSurface => white; /// card or block with shadow to user see different between background and block
+  static Color get lightPrimary => const Color.fromRGBO(98, 0, 38, 1); /// theme mode (button, title)
+  static Color get lightSecondary => const Color.fromRGBO(56, 0, 179, 1); /// theme mode (button, title)
+  static Color get lightOnBackground => const Color.fromRGBO(5, 5, 5, 1); /// text on background
+  static Color get lightOnSurface => const Color.fromRGBO(11, 11, 11, 1); /// text on card or block
+  static Color get lightOnPrimary => const Color.fromRGBO(235, 235, 235, 1); /// text on theme mode
+  static Color get lightOnSecondary => const Color.fromRGBO(235, 235, 235, 1); /// text on theme mode
   
   /// DARK MODE
   static Color get darkBackground => gray00db; /// background
