@@ -91,9 +91,9 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     );
   }
 
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? snack(SnackBar snackBar) {
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? snack({required SnackBar Function(BuildContext) builder}) {
     if (navigatorKey.currentContext == null) return null;
-    return ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(snackBar);
+    return ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(builder(navigatorKey.currentContext!));
   }
 
   static dimiss() {
