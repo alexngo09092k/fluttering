@@ -22,7 +22,7 @@ class FlutteringColors {
   Color get lightOnSurface => const Color.fromRGBO(11, 11, 11, 1); /// text on card or block
   Color get lightOnPrimary => const Color.fromRGBO(235, 235, 235, 1); /// text on theme mode
   Color get lightOnSecondary => const Color.fromRGBO(235, 235, 235, 1); /// text on theme mode
-  Color get lightError => const Color.fromARGB(255, 195, 7, 7); /// warning, error, failed
+  Color get lightError => const Color.fromARGB(255, 195, 7, 1); /// warning, error, failed
   Color get lightOnError => lightOnPrimary; /// text on warning, error, failed
 
   /// DARK MODE
@@ -34,7 +34,7 @@ class FlutteringColors {
   Color get darkOnSurface => const Color.fromRGBO(224, 224, 224, 1); /// text on card or block
   Color get darkOnPrimary => black; /// text on theme mode
   Color get darkOnSecondary => black; /// text on theme mode
-  Color get darkError => const Color.fromARGB(255, 195, 7, 7); /// warning, error, failed
+  Color get darkError => const Color.fromARGB(255, 195, 7, 1); /// warning, error, failed
   Color get darkOnError => darkOnPrimary; /// text on warning, error, failed
 
   /// BASE
