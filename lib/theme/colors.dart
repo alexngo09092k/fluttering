@@ -23,7 +23,7 @@ class FlutteringColors {
   Color get lightOnPrimary => const Color.fromRGBO(235, 235, 235, 1); /// text on theme mode
   Color get lightOnSecondary => const Color.fromRGBO(235, 235, 235, 1); /// text on theme mode
   Color get lightError => const Color.fromARGB(255, 195, 7, 7); /// warning, error, failed
-  Color get lightOnError => const Color.fromRGBO(235, 235, 235, 1); /// text on warning, error, failed
+  Color get lightOnError => lightOnPrimary; /// text on warning, error, failed
 
   /// DARK MODE
   Color get darkBackground => gray00db; /// background
@@ -35,7 +35,7 @@ class FlutteringColors {
   Color get darkOnPrimary => black; /// text on theme mode
   Color get darkOnSecondary => black; /// text on theme mode
   Color get darkError => const Color.fromARGB(255, 213, 37, 37); /// warning, error, failed
-  Color get darkOnError => black; /// text on warning, error, failed
+  Color get darkOnError => darkOnPrimary; /// text on warning, error, failed
 
   /// BASE
   Color get black => const Color.fromRGBO(0, 0, 0, 1);
