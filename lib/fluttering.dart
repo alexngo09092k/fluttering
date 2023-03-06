@@ -9,6 +9,7 @@ export 'provider/index.dart';
 export 'modules/index.dart';
 export 'widgets/index.dart';
 export 'repositories/index.dart';
+export 'theme/index.dart';
 
 /// Library
 export 'package:path_provider/path_provider.dart';

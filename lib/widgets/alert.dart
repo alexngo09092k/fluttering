@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../provider/index.dart';
+import '../theme/index.dart';
 
 class AwesomeAlert extends StatelessWidget {
   const AwesomeAlert({super.key, required this.buttons, required this.content, required this.title});
