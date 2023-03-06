@@ -100,6 +100,7 @@ class ThemeProvider extends IThemeProvider {
 
     _locale = supportedLocales.firstWhere((supportedLocale) => supportedLocale.languageCode == 'en');
     AsyncStorage.instance.setString(_localeKey, _locale.languageCode);
+    notifyListeners();
 
     return _locale;
   }
@@ -109,6 +110,7 @@ class ThemeProvider extends IThemeProvider {
     if (_locale != locale) {
       _locale = locale;
       AsyncStorage.instance.setString(_localeKey, _locale.languageCode);
+      notifyListeners();
     }
   }
 
