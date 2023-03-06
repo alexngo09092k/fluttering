@@ -61,6 +61,12 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     screen = Size(physicalSizeWidth / devicePixelRatio, physicalSizeHeight / devicePixelRatio);
   }
 
+
+  static T? useContext<T>({T Function(BuildContext?)? callback}) {
+    if (navigatorKey.currentContext == null || callback == null) return null;
+    return callback(navigatorKey.currentContext);
+  }
+
   static Future<T?> dialog<T>({
     required Widget Function(BuildContext) builder,
     bool barrierDismissible = true,
@@ -71,26 +77,28 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     RouteSettings? routeSettings,
     Offset? anchorPoint,
   }) async {
-    if (navigatorKey.currentContext != null) {
-      return showDialog<T>(
-        context: navigatorKey.currentContext!,
-        builder: builder,
-        barrierDismissible: barrierDismissible,
-        barrierColor: barrierColor,
-        barrierLabel: barrierLabel,
-        useRootNavigator: useRootNavigator,
-        useSafeArea: useSafeArea,
-        routeSettings: routeSettings,
-        anchorPoint: anchorPoint,
-      );
-    }
-    return null;
+    if (navigatorKey.currentContext == null) return null;
+    return showDialog<T>(
+      context: navigatorKey.currentContext!,
+      builder: builder,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+      barrierLabel: barrierLabel,
+      useRootNavigator: useRootNavigator,
+      useSafeArea: useSafeArea,
+      routeSettings: routeSettings,
+      anchorPoint: anchorPoint,
+    );
+  }
+
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? snack(SnackBar snackBar) {
+    if (navigatorKey.currentContext == null) return null;
+    return ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(snackBar);
   }
 
   static dimiss() {
-    if (navigatorKey.currentContext != null) {
-      Navigator.of(navigatorKey.currentContext!).pop();
-    }
+    if (navigatorKey.currentContext == null) return;
+    Navigator.of(navigatorKey.currentContext!).pop();
   }
 
   @override
