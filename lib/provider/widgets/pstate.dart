@@ -46,7 +46,7 @@ abstract class ProviderStateful<T extends StatefulWidget, R extends IProvider> e
   }
 }
 
-abstract class ProviderStateObserver<T extends StatefulWidget, R extends IProvider> extends ProviderState<T, R> with WidgetsBindingObserver {
+abstract class ProviderStateObserver<T extends StatefulWidget, R extends IProvider> extends ProviderStateful<T, R> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
