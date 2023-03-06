@@ -62,7 +62,7 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
   }
 
 
-  static Future<T?> useContext<T>({Future<T> Function(BuildContext)? callback}) async {
+  static Future<T?> useContext<T>({Future<T?> Function(BuildContext)? callback}) async {
     if (navigatorKey.currentContext == null || callback == null) return null;
     return callback(navigatorKey.currentContext!);
   }
