@@ -9,16 +9,26 @@ import 'package:flutter/material.dart';
 import '../manager_provider.dart';
 import '../provider.dart';
 
-abstract class ProviderState<T extends StatefulWidget, R extends IProvider> extends State<T> {
-  late R provider;
+abstract class ProviderStateless<T extends StatelessWidget, R extends IProvider> {
+  ProviderStateless({String? version}):super() {
+    _provider = ManagerProvider.of<R>(version);
+  }
+
+  late final R _provider;
+  R get provider => _provider;
+}
+
+abstract class ProviderStateful<T extends StatefulWidget, R extends IProvider> extends State<T> {
+  late final R _provider;
+  R get provider => _provider;
   
   bool listen() => false;
   
   @override
   void initState() {
-    provider = ManagerProvider.of<R>();
+    _provider = ManagerProvider.of<R>();
     if(listen()) {
-      provider.addListener(_listenChanged);
+      _provider.addListener(_listenChanged);
     }
     super.initState();
   }
@@ -30,7 +40,7 @@ abstract class ProviderState<T extends StatefulWidget, R extends IProvider> exte
   @override
   void dispose() {
     if(listen()) {
-      provider.removeListener(_listenChanged);
+      _provider.removeListener(_listenChanged);
     }
     super.dispose();
   }
