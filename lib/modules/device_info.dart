@@ -77,7 +77,7 @@ class DeviceInfo extends IDeviceInfo {
       _web = await deviceInfoPlugin.webBrowserInfo;
       Debug.log('device info web $web');
     }
-    _info = (await deviceInfoPlugin.deviceInfo).toMap();
+    _info = (await deviceInfoPlugin.deviceInfo).data;
 
     return true;
   }

@@ -78,8 +78,6 @@ class AsyncStorage extends IAsyncStorage {
   static final IAsyncStorage _instance = AsyncStorage._internal();
   static IAsyncStorage get instance => _instance;
 
-  factory AsyncStorage() => _instance as AsyncStorage;
-
   SharedPreferences? _sharedPreferences;
 
   late StreamController<AsyncStorageEvent> _streamController;

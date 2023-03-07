@@ -8,20 +8,21 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  intl: ^0.17.0
+  intl:
   flutter:
     sdk: flutter
 
-  device_info_plus: ^4.1.2
-  connectivity_plus: ^2.3.7
-  permission_handler: ^10.0.0
-  shared_preferences: ^2.0.15
-  path_provider: ^2.0.11
-  dio: ^4.0.6
-  native_flutter_proxy: ^0.1.15
-  mime_type: ^1.0.0
-  in_app_review: ^2.0.6
-  huawei_hmsavailability: ^6.6.0+300
+  device_info_plus: 
+  connectivity_plus: 
+  permission_handler: 
+  shared_preferences: 
+  path_provider:
+  dio: 
+  native_flutter_proxy: 
+  mime_type:
+  in_app_review: 
+  huawei_hmsavailability:
+  version_comparator:
 
 dev_dependencies:
   flutter_test:

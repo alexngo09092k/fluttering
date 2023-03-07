@@ -12,8 +12,6 @@ class CurrentPlatform {
   static final CurrentPlatform _instance = CurrentPlatform._internal();
   static CurrentPlatform get instance => _instance;
 
-  factory CurrentPlatform() => _instance;
-
   CurrentPlatform._internal();
 
   bool get kIsWeb => foundation.kIsWeb;
@@ -21,7 +19,7 @@ class CurrentPlatform {
   bool get isAndroid => foundation.defaultTargetPlatform == foundation.TargetPlatform.android;
   bool get isMacOS => foundation.defaultTargetPlatform == foundation.TargetPlatform.macOS;
   bool get isMobile => isIos || isAndroid;
-  bool get isHuawei => DeviceInfo.instance.android != null && (DeviceInfo.instance.android!.manufacturer ?? '').toUpperCase() == 'HUAWEI';
+  bool get isHuawei => DeviceInfo.instance.android != null && (DeviceInfo.instance.android!.manufacturer).toUpperCase() == 'HUAWEI';
 
   Future<bool> get isGmsAvailable async => isMobile && !isHuawei;
   Future<bool> get isHmsAvailable async {

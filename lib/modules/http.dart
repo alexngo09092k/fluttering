@@ -198,8 +198,6 @@ class ClientHttp extends IClientHttp {
   static final IClientHttp _instance = ClientHttp._internal();
   static IClientHttp get instance => _instance;
 
-  factory ClientHttp() => _instance as ClientHttp;
-
   ClientHttp._internal();
 
   @override
@@ -217,7 +215,7 @@ class ClientHttp extends IClientHttp {
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
-      connectTimeout: timeout?.inMilliseconds,
+      connectTimeout: timeout,
       headers: headers,
       validateStatus: (_) => true,
     ).copyWith(
@@ -248,7 +246,7 @@ class ClientHttp extends IClientHttp {
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
-      connectTimeout: timeout?.inMilliseconds,
+      connectTimeout: timeout,
       headers: headers,
       validateStatus: (_) => true,
     ).copyWith(
@@ -286,7 +284,7 @@ class ClientHttp extends IClientHttp {
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
-      connectTimeout: timeout?.inMilliseconds,
+      connectTimeout: timeout,
       headers: headers,
       validateStatus: (_) => true,
     ).copyWith(
@@ -352,7 +350,7 @@ class ClientHttp extends IClientHttp {
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
-      connectTimeout: timeout?.inMilliseconds,
+      connectTimeout: timeout,
       headers: headers,
       validateStatus: (_) => true,
     ).copyWith(
@@ -389,7 +387,7 @@ class ClientHttp extends IClientHttp {
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
-      connectTimeout: timeout?.inMilliseconds,
+      connectTimeout: timeout,
       headers: headers,
       validateStatus: (_) => true,
     ).copyWith(
@@ -425,7 +423,7 @@ class ClientHttp extends IClientHttp {
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
-      connectTimeout: timeout?.inMilliseconds,
+      connectTimeout: timeout,
       headers: headers,
       validateStatus: (_) => true,
     ).copyWith(

@@ -28,8 +28,6 @@ class InternetConnection extends IInternetConnection {
 
   InternetConnection._internal();
 
-  static InternetConnection getInstance() => _instance as InternetConnection;
-
   bool _hasConnection = true;
 
   @override

@@ -25,10 +25,8 @@ abstract class IUserPermission {
 }
 
 class UserPermission extends IUserPermission {
-  static final UserPermission _instance = UserPermission._internal();
-  static UserPermission get instance => _instance;
-
-  factory UserPermission() => _instance;
+  static final IUserPermission _instance = UserPermission._internal();
+  static IUserPermission get instance => _instance;
 
   UserPermission._internal();
 
