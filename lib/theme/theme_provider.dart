@@ -22,16 +22,7 @@ abstract class IThemeProvider extends Provider with ProviderDelegate {
 
   void changeLocale(Locale locale);
 
-  void setStatusBarByTheme({
-    Color? systemNavigationBarColor = Colors.white,
-    Color? systemNavigationBarDividerColor,
-    bool? systemNavigationBarContrastEnforced,
-    Color statusBarColor = Colors.transparent,
-    Brightness? statusBarBrightness,
-    Brightness? statusBarIconBrightness,
-    bool? systemStatusBarContrastEnforced,
-    Brightness? systemNavigationBarIconBrightness,
-  });
+  void setStatusBarByTheme(ThemeMode themeMode);
 }
 
 class ThemeProvider extends IThemeProvider {
@@ -72,7 +63,7 @@ class ThemeProvider extends IThemeProvider {
     if (themeMode != _themeMode) {
       _themeMode = themeMode;
       AsyncStorage.instance.setString(_themeModeKey, _themeMode.name);
-      setStatusBarByTheme();
+      setStatusBarByTheme(_themeMode);
       notifyListeners();
     }
   }
@@ -82,7 +73,7 @@ class ThemeProvider extends IThemeProvider {
     if (themeMode != _themeMode) {
       _themeMode = themeMode;
       AsyncStorage.instance.setString(_themeModeKey, _themeMode.name);
-      setStatusBarByTheme();
+      setStatusBarByTheme(_themeMode);
       notifyListeners();
     }
   }
@@ -127,7 +118,7 @@ class ThemeProvider extends IThemeProvider {
       _locale = Locale(languageCode);
     }
 
-    setStatusBarByTheme();
+    setStatusBarByTheme(_themeMode);
 
     if (notify) notifyListeners();
   }
@@ -139,44 +130,13 @@ class ThemeProvider extends IThemeProvider {
   }
 
   @override
-  void setStatusBarByTheme({
-    Color? systemNavigationBarColor,
-    Color? systemNavigationBarDividerColor,
-    bool? systemNavigationBarContrastEnforced,
-    Color statusBarColor = Colors.transparent,
-    Brightness? statusBarBrightness,
-    Brightness? statusBarIconBrightness,
-    bool? systemStatusBarContrastEnforced,
-    Brightness? systemNavigationBarIconBrightness,
-  }) {
-    switch (_themeMode) {
+  void setStatusBarByTheme(ThemeMode themeMode) {
+    switch (themeMode) {
       case ThemeMode.light:
-        SystemChrome.setSystemUIOverlayStyle(
-          SystemUiOverlayStyle.dark.copyWith(
-            systemNavigationBarColor: systemNavigationBarColor,
-            systemNavigationBarDividerColor: systemNavigationBarDividerColor,
-            systemNavigationBarContrastEnforced: systemNavigationBarContrastEnforced,
-            statusBarColor: statusBarColor,
-            statusBarIconBrightness: statusBarIconBrightness,
-            statusBarBrightness: statusBarBrightness,
-            systemStatusBarContrastEnforced: systemStatusBarContrastEnforced,
-            systemNavigationBarIconBrightness: systemNavigationBarIconBrightness,
-          ),
-        );
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
         break;
       case ThemeMode.dark:
-        SystemChrome.setSystemUIOverlayStyle(
-          SystemUiOverlayStyle.light.copyWith(
-            systemNavigationBarColor: systemNavigationBarColor,
-            systemNavigationBarDividerColor: systemNavigationBarDividerColor,
-            systemNavigationBarContrastEnforced: systemNavigationBarContrastEnforced,
-            statusBarColor: statusBarColor,
-            statusBarIconBrightness: statusBarIconBrightness,
-            statusBarBrightness: statusBarBrightness,
-            systemStatusBarContrastEnforced: systemStatusBarContrastEnforced,
-            systemNavigationBarIconBrightness: systemNavigationBarIconBrightness,
-          ),
-        );
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
         break;
       default:
     }
