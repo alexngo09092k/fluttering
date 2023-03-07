@@ -140,7 +140,7 @@ class ThemeProvider extends IThemeProvider {
 
   @override
   void setStatusBarByTheme({
-    Color? systemNavigationBarColor = Colors.white,
+    Color? systemNavigationBarColor,
     Color? systemNavigationBarDividerColor,
     bool? systemNavigationBarContrastEnforced,
     Color statusBarColor = Colors.transparent,
