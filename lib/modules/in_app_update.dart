@@ -1,6 +1,14 @@
 import 'package:version_comparator/version_comparator.dart';
 
-abstract class IInAppUpdateVersion {}
+abstract class IInAppUpdateVersion {
+  Future<UpdateVersion?> checkUpdateVersion({
+    RemoteDataService? dataService,
+    String? androidId,
+    String? iosId,
+    String? huaweiId,
+    String? customLocalVersion,
+  });
+}
 
 class InAppUpdateVersion extends IInAppUpdateVersion {
   static final IInAppUpdateVersion _instance = InAppUpdateVersion._internal();
@@ -8,6 +16,7 @@ class InAppUpdateVersion extends IInAppUpdateVersion {
 
   InAppUpdateVersion._internal();
 
+  @override
   Future<UpdateVersion?> checkUpdateVersion({
     RemoteDataService? dataService,
     String? androidId,
