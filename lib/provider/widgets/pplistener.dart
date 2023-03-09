@@ -41,7 +41,12 @@ class _BasePropConsumerState<T extends IProvider, R> extends State<BasePropConsu
 
   _listen() {
     R value = widget.select(widget.listenable);
-    if (_r.value != value) {
+    if (
+      _r.value != value || 
+      ((R is List) && !listEquals(_r.value as List, value as List)) ||
+      ((R is Set) && !setEquals(_r.value as Set, value as Set)) ||
+      ((R is Map) && !mapEquals(_r.value as Map, value as Map))
+      ) {
       if (widget.debugMode) {
         Debug.log("=====> value of $T changed from ${_r.value} to $value");
       }
