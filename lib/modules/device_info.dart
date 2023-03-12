@@ -67,15 +67,15 @@ class DeviceInfo extends IDeviceInfo {
   Future<bool> initial() async {
     if (CurrentPlatform.instance.isIos) {
       _ios = await deviceInfoPlugin.iosInfo;
-      Debug.log('device info ios $ios');
+      Debug.log('DEVICE INFO IOS $ios');
     }
     if (CurrentPlatform.instance.isAndroid) {
       _android = await deviceInfoPlugin.androidInfo;
-      Debug.log('device info android $android');
+      Debug.log('DEVICE INFO ANDROID $android');
     }
     if (CurrentPlatform.instance.kIsWeb) {
       _web = await deviceInfoPlugin.webBrowserInfo;
-      Debug.log('device info web $web');
+      Debug.log('DEVICE INFO WEB $web');
     }
     _info = (await deviceInfoPlugin.deviceInfo).data;
 

@@ -49,7 +49,7 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
         inAppReviewService.monitor(config: AwesomeApp.instance!.inAppReview);
       }
     }catch(error){
-      Debug.log('shouldEnablednAppReview $error');
+      Debug.log('SHOULD ENABLE APP REVIEW $error');
     }
   }
 

@@ -57,7 +57,7 @@ class UserPermission extends IUserPermission {
     Function? onHasPermisson,
     Function? onNoPermisson,
   }) {
-    Debug.log('Permission $status');
+    Debug.log('PERMISSION $status');
     switch (status) {
 
       /// The user denied access to the requested feature.

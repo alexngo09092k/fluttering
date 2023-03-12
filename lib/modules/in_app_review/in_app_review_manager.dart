@@ -30,7 +30,7 @@ class InAppReviewManager {
 
   Future<bool> showRateDialogIfMeetsConditions() async {
     bool isMeetsConditions = await _shouldShowRateDialog();
-    Debug.log("In App Review show $isMeetsConditions");
+    Debug.log("IN APP REVIEW SHOW $isMeetsConditions");
     if (isMeetsConditions) {
       _showDialog();
     }
