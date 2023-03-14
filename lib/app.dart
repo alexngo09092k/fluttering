@@ -77,7 +77,7 @@ class AwesomeApp {
 
     if (onDidInitialize != null) result.add(await onDidInitialize!());
 
-    ManagerProvider.registerProviders(
+    await ManagerProvider.registerProviders(
       providers: providers,
       lazyProviders: lazyProviders,
     );
