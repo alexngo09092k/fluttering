@@ -12,12 +12,10 @@ export 'repositories/index.dart';
 export 'theme/index.dart';
 
 /// Library
-export 'package:path_provider/path_provider.dart';
 export 'package:device_info_plus/device_info_plus.dart';
 export 'package:dio/dio.dart';
 export 'package:native_flutter_proxy/native_proxy_reader.dart';
 export 'package:permission_handler/permission_handler.dart';
-export 'package:shared_preferences/shared_preferences.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:mime_type/mime_type.dart';
 
