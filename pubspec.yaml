@@ -21,7 +21,7 @@ dependencies:
   mime_type: ^1.0.0
   in_app_review: ^2.0.6
   huawei_hmsavailability: ^6.6.0+300
-  version_comparator: ^1.0.1
+  version_comparator: ^1.0.0
 
 dev_dependencies:
   flutter_test:
