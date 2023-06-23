@@ -1,27 +1,27 @@
 name: fluttering
 description: bootstrap for flutter app.
-version: 1.0.4
+version: 1.0.5
 homepage:
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=3.0.5 <4.0.0'
   flutter: ">=2.5.0"
 
 dependencies:
-  intl: ^0.17.0
+  intl:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  device_info_plus: ^8.2.0
-  connectivity_plus: ^3.0.4
-  permission_handler: ^10.2.0
-  shared_preferences: ^2.1.0
-  dio: ^5.1.1
+  device_info_plus: ^9.0.2
+  connectivity_plus: ^4.0.1
+  permission_handler: ^10.3.0
+  shared_preferences: ^2.1.2
+  dio: ^5.2.1+1
   native_flutter_proxy: ^0.1.15
   mime_type: ^1.0.0
   in_app_review: ^2.0.6
   huawei_hmsavailability: ^6.6.0+300
-  version_comparator: ^1.0.0
+  version_comparator: ^1.0.1
 
 dev_dependencies:
   flutter_test:
