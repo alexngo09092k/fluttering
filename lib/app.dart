@@ -42,8 +42,6 @@ class AwesomeApp {
 
   void run() async {
     
-    WidgetsFlutterBinding.ensureInitialized();
-
     runZonedGuarded(() async {
       Debug.debugMode = debugMode;
 
@@ -58,6 +56,8 @@ class AwesomeApp {
           providers: providers,
           lazyProviders: lazyProviders,
         );
+
+        WidgetsFlutterBinding.ensureInitialized();
 
         runApp(app);
       } catch (error) {
@@ -96,11 +96,12 @@ class AwesomeApp {
 
   Future<bool> _initialize() async {
     List<bool> result = [];
-    result.add(await DeviceInfo.instance.initial());
+    
+    await DeviceInfo.instance.initial().then((_) => result.add(_)).catchError((_) => result.add(false));
 
-    result.add(await AsyncStorage.instance.initial());
+    await AsyncStorage.instance.initial().then((_) => result.add(_)).catchError((_) => result.add(false));
 
-    result.add(await InternetConnection.instance.initial('google.com'));
+    await InternetConnection.instance.initial('google.com').then((_) => result.add(_)).catchError((_) => result.add(false));
 
     return !result.contains(false);
   }
