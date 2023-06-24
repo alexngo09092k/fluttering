@@ -2,6 +2,8 @@
 /// Author: Brennan Ngo
 ///
 /// Copyright (c) 2022 ThemePlace
+// ignore_for_file: deprecated_member_use
+
 library fluttering;
 
 import 'package:flutter/material.dart';
