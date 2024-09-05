@@ -52,7 +52,7 @@ class InternetConnection extends IInternetConnection {
     _connectionChangeController.close();
   }
 
-  void _connectionChange(ConnectivityResult result) {
+  void _connectionChange(List<ConnectivityResult> results) {
     checkConnection();
   }
 
