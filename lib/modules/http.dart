@@ -211,7 +211,7 @@ class ClientHttp extends IClientHttp {
   }) async {
     final Uri uriParse = Uri.parse(url);
 
-    Debug.log('====> API URL: $url');
+    Debug.log('url: $url');
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
@@ -225,7 +225,7 @@ class ClientHttp extends IClientHttp {
 
     Response response = await client.get(uriParse.path, queryParameters: query);
 
-    Debug.log('====> API Response: $response');
+    Debug.log('response: $response');
 
     return ClientResponse<T>.fromResponse(response);
   }
@@ -242,7 +242,7 @@ class ClientHttp extends IClientHttp {
   }) async {
     final Uri uriParse = Uri.parse(url);
 
-    Debug.log('====> API URL: $url');
+    Debug.log('url: $url');
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
@@ -254,7 +254,7 @@ class ClientHttp extends IClientHttp {
       validateStatus: validateStatus,
     ));
 
-    Debug.log('====> API Data: $data');
+    Debug.log('data: $data');
 
     Response response = await client.post(
       uriParse.path,
@@ -262,7 +262,7 @@ class ClientHttp extends IClientHttp {
       queryParameters: query,
     );
 
-    Debug.log('====> API Response: $response');
+    Debug.log('response: $response');
 
     return ClientResponse<T>.fromResponse(response);
   }
@@ -280,7 +280,7 @@ class ClientHttp extends IClientHttp {
   }) async {
     final Uri uriParse = Uri.parse(url);
 
-    Debug.log('====> API URL: $url');
+    Debug.log('url: $url');
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
@@ -321,7 +321,7 @@ class ClientHttp extends IClientHttp {
       }
     }
 
-    Debug.log('====> API Data: $formData');
+    Debug.log('data: $formData');
 
     Response response = await client.post(
       uriParse.path,
@@ -329,7 +329,7 @@ class ClientHttp extends IClientHttp {
       queryParameters: query,
     );
 
-    Debug.log('====> API Response: $response');
+    Debug.log('response: $response');
 
     return ClientResponse<T>.fromResponse(response);
   }
@@ -346,7 +346,7 @@ class ClientHttp extends IClientHttp {
   }) async {
     final Uri uriParse = Uri.parse(url);
 
-    Debug.log('====> API URL: $url');
+    Debug.log('url: $url');
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
@@ -358,7 +358,7 @@ class ClientHttp extends IClientHttp {
       validateStatus: validateStatus,
     ));
 
-    Debug.log('====> API Data: $data');
+    Debug.log('data: $data');
 
     Response response = await client.put(
       uriParse.path,
@@ -366,7 +366,7 @@ class ClientHttp extends IClientHttp {
       queryParameters: query,
     );
 
-    Debug.log('====> API Response: $response');
+    Debug.log('response: $response');
 
     return ClientResponse<T>.fromResponse(response);
   }
@@ -383,7 +383,7 @@ class ClientHttp extends IClientHttp {
   }) async {
     final Uri uriParse = Uri.parse(url);
 
-    Debug.log('====> API URL: $url');
+    Debug.log('url: $url');
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
@@ -395,14 +395,14 @@ class ClientHttp extends IClientHttp {
       validateStatus: validateStatus,
     ));
 
-    Debug.log('====> API Data: $data');
+    Debug.log('data: $data');
 
     Response response = await client.patch(
       uriParse.path,
       data: jsonEncode(data),
     );
 
-    Debug.log('====> API Response: $response');
+    Debug.log('response: $response');
 
     return ClientResponse<T>.fromResponse(response);
   }
@@ -419,7 +419,7 @@ class ClientHttp extends IClientHttp {
   }) async {
     final Uri uriParse = Uri.parse(url);
 
-    Debug.log('====> API URL: $url');
+    Debug.log('url: $url');
 
     final Dio client = Dio(BaseOptions(
       baseUrl: uriParse.origin,
@@ -431,7 +431,7 @@ class ClientHttp extends IClientHttp {
       validateStatus: validateStatus,
     ));
 
-    Debug.log('====> API Data: $data');
+    Debug.log('data: $data');
 
     Response response = await client.delete(
       uriParse.path,
@@ -439,7 +439,7 @@ class ClientHttp extends IClientHttp {
       queryParameters: query,
     );
 
-    Debug.log('====> API Response: $response');
+    Debug.log('response: $response');
 
     return ClientResponse<T>.fromResponse(response);
   }
@@ -473,15 +473,15 @@ extension ProxyIClientHttp on IClientHttp {
 extension NetworkTracking on IClientHttp {
   Future<bool> safeEnvironment() async {
     final bool hasInternet = InternetConnection.instance.hasConnection;
-    Debug.log("==========> INTERNET: $hasInternet");
+    Debug.log("internet: $hasInternet");
 
     if (!hasInternet) return false;
 
     final bool vpnActive = await isVpnActive();
-    Debug.log("==========> VPN: $vpnActive");
+    Debug.log("vpn: $vpnActive");
 
     final bool proxyEnabled = await isProxyEnabled();
-    Debug.log("==========> PROXY: $proxyEnabled");
+    Debug.log("proxy: $proxyEnabled");
 
     return !(vpnActive || proxyEnabled);
   }

@@ -48,7 +48,7 @@ class _BasePropConsumerState<T extends IProvider, R> extends State<BasePropConsu
       ((R is Map) && !mapEquals(_r.value as Map, value as Map))
       ) {
       if (widget.debugMode) {
-        Debug.log("=====> VALUE OF $T CHANGED FROM ${_r.value} TO $value");
+        Debug.log("value of $T changed from ${_r.value} to $value");
       }
       _r.value = value;
     }
