@@ -13,14 +13,14 @@ import './logs.dart';
 abstract class IUserPermission {
   requestPermission({
     required List<Permission> permission,
-    Function? onHasPermisson,
-    Function? onNoPermisson,
+    Function? onHasPermission,
+    Function? onNoPermission,
   });
 
   bool checkingStatus({
     PermissionStatus? status,
-    Function? onHasPermisson,
-    Function? onNoPermisson,
+    Function? onHasPermission,
+    Function? onNoPermission,
   });
 }
 
@@ -33,8 +33,8 @@ class UserPermission extends IUserPermission {
   @override
   requestPermission({
     required List<Permission> permission,
-    Function? onHasPermisson,
-    Function? onNoPermisson,
+    Function? onHasPermission,
+    Function? onNoPermission,
   }) async {
     Map<Permission, PermissionStatus> statuses = await permission.request();
     final List<bool> _ = [];
@@ -45,17 +45,17 @@ class UserPermission extends IUserPermission {
       }
     }
     if (_.contains(false)) {
-      if (onNoPermisson != null) onNoPermisson();
+      if (onNoPermission != null) onNoPermission();
     } else {
-      if (onHasPermisson != null) onHasPermisson();
+      if (onHasPermission != null) onHasPermission();
     }
   }
 
   @override
   bool checkingStatus({
     PermissionStatus? status,
-    Function? onHasPermisson,
-    Function? onNoPermisson,
+    Function? onHasPermission,
+    Function? onNoPermission,
   }) {
     Debug.log('PERMISSION $status');
     switch (status) {
@@ -73,7 +73,7 @@ class UserPermission extends IUserPermission {
       /// still change the permission status in the settings.
       /// *Only supported on Android.*
       case PermissionStatus.permanentlyDenied:
-        if (onNoPermisson != null) onNoPermisson();
+        if (onNoPermission != null) onNoPermission();
         return false;
 
       /// The user granted access to the requested feature.
@@ -82,7 +82,7 @@ class UserPermission extends IUserPermission {
       ///User has authorized this application for limited access.
       /// *Only supported on iOS (iOS14+).*
       case PermissionStatus.limited:
-        if (onHasPermisson != null) onHasPermisson();
+        if (onHasPermission != null) onHasPermission();
         return true;
       default:
         return false;
