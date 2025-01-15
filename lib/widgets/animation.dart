@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class AwesomeAnimation<T> extends StatefulWidget {
   const AwesomeAnimation({
-    Key? key,
+    super.key,
     this.child,
     this.builder,
     this.onEnd,
     required this.setAnimation,
     this.after,
     this.duration = const Duration(milliseconds: 2000),
-  }) : super(key: key);
+  });
   final Duration duration;
   final Function? onEnd;
   final Animation<T> Function(AnimationController) setAnimation;

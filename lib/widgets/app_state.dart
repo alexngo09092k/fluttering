@@ -27,9 +27,9 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback(onNextFrame);
 
-    _shouldEnablednAppReview();
+    _shouldEnabledAppReview();
 
-    _caculateScreen();
+    _setScreen();
 
     ManagerProvider.willOpenApp();
 
@@ -44,7 +44,7 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
 
   void onNextFrame(Duration timestamp) {}
 
-  _shouldEnablednAppReview() {
+  _shouldEnabledAppReview() {
     try {
       if(AwesomeApp.instance != null && AwesomeApp.instance!.inAppReview.enable) {
         final inAppReviewService = InAppReviewService();
@@ -55,7 +55,7 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     }
   }
 
-  _caculateScreen() {
+  _setScreen() {
     double devicePixelRatio = WidgetsBinding.instance.window.devicePixelRatio;
     double physicalSizeWidth = WidgetsBinding.instance.window.physicalSize.width;
     double physicalSizeHeight = WidgetsBinding.instance.window.physicalSize.height;
@@ -98,7 +98,7 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
     return ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(builder(navigatorKey.currentContext!));
   }
 
-  static dimiss() {
+  static dismiss() {
     if (navigatorKey.currentContext == null) return;
     Navigator.of(navigatorKey.currentContext!).pop();
   }
