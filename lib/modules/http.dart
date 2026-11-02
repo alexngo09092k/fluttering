@@ -12,7 +12,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:mime_type/mime_type.dart';
-import 'package:native_flutter_proxy/native_proxy_reader.dart';
+import 'package:native_flutter_proxy/native_flutter_proxy.dart';
 import 'package:path/path.dart' as path;
 import 'package:http_parser/http_parser.dart';
 
@@ -88,7 +88,8 @@ class ClientResponse<T> {
   ///
   /// ** Attention **: Whether this field is available depends on whether the
   /// implementation of the adapter supports it or not.
-  Uri get realUri => (redirects.isNotEmpty) ? redirects.last.location : requestOptions.uri;
+  Uri get realUri =>
+      (redirects.isNotEmpty) ? redirects.last.location : requestOptions.uri;
 
   /// We are more concerned about `data` field.
   @override
@@ -447,11 +448,21 @@ class ClientHttp extends IClientHttp {
 
 extension VPNIClientHttp on IClientHttp {
   Future<bool> isVpnActive() async {
-    final vpnProtocolsKeysIdentifiers = ["tap", "tun", "ppp", "ipsec", "utun", "pptp"];
+    final vpnProtocolsKeysIdentifiers = [
+      "tap",
+      "tun",
+      "ppp",
+      "ipsec",
+      "utun",
+      "pptp"
+    ];
     bool isVpnActive;
-    List<NetworkInterface> interfaces = await NetworkInterface.list(includeLoopback: false, type: InternetAddressType.any);
+    List<NetworkInterface> interfaces = await NetworkInterface.list(
+        includeLoopback: false, type: InternetAddressType.any);
     interfaces.isNotEmpty
-        ? isVpnActive = interfaces.any((interface) => vpnProtocolsKeysIdentifiers.any((id) => interface.name.contains(id)))
+        ? isVpnActive = interfaces.any((interface) =>
+            vpnProtocolsKeysIdentifiers
+                .any((id) => interface.name.contains(id)))
         : isVpnActive = false;
     return isVpnActive;
   }
