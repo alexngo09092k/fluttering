@@ -4,9 +4,9 @@ description: >
   Provider system, AwesomeApp entry point, theming, networking (Dio), storage,
   device info, permissions, connectivity, in-app review/update, and more.
 version: 4.0.0
-# homepage: https://github.com/alexngo09092k/fluttering
-# repository: https://github.com/alexngo09092k/fluttering
-# issue_tracker: https://github.com/alexngo09092k/fluttering/issues
+homepage: https://github.com/alexngo09092k/fluttering
+repository: https://github.com/alexngo09092k/fluttering
+issue_tracker: https://github.com/alexngo09092k/fluttering/issues
 
 environment:
   sdk: ^3.6.1
