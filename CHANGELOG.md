@@ -1,6 +1,9 @@
-## 3.0.0
+## 4.0.0
 
-* **Public release** ready for pub.dev.
+* Public release on pub.dev.
+* Added explicit dependencies: `path`, `http_parser` (used by HTTP module).
+* Fixed analysis warning in `ManagerProvider` (unnecessary type check).
+* Fixed wildcard variable use in `AwesomeSplashState`.
 * Bootstrap framework for Flutter apps featuring:
   * Lightweight custom Provider system (`IProvider`, `Provider`, `ManagerProvider`).
   * Reactive widgets: `Consumer`, `PropConsumer`, base listeners.
@@ -8,13 +11,11 @@
   * Modules: DeviceInfo, InternetConnection, Permissions, HTTP (Dio), AsyncStorage, Clipboard, Debug logging, In-App Review, In-App Update.
   * Theme system (`ThemeProvider`) with light/dark mode + locale persistence.
   * App state helpers (`AwesomeAppState`, splash, animations).
-* Added comprehensive dartdoc on public APIs.
-* Added unit tests (`test/`).
-* Added working `example/` application.
-* Fixed circular import in platform module.
-* Fixed deprecated `WidgetsBinding.window` usage.
-* Cleaned leftover plugin platform-interface boilerplate.
-* MIT License, proper README, CHANGELOG, topics in pubspec.
+* MIT License, README, topics in pubspec.
+
+## 3.0.0
+
+* Internal pre-release packaging.
 
 ## 0.0.1
 

@@ -23,6 +23,8 @@ dependencies:
   dio: ^5.7.0
   native_flutter_proxy: ^0.3.1
   mime_type: ^1.0.1
+  path: ^1.9.0
+  http_parser: ^4.0.2
   in_app_review: ^2.0.10
   huawei_hmsavailability: ^6.12.0+300
   version_comparator: ^1.0.21
@@ -41,5 +43,4 @@ topics:
   - theming
   - utilities
 
-# The following section is specific to Flutter packages.
 flutter:
