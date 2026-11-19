@@ -56,11 +56,13 @@ abstract class AwesomeAppState<T extends StatefulWidget> extends State<T> with W
   }
 
   _setScreen() {
-    double devicePixelRatio = WidgetsBinding.instance.window.devicePixelRatio;
-    double physicalSizeWidth = WidgetsBinding.instance.window.physicalSize.width;
-    double physicalSizeHeight = WidgetsBinding.instance.window.physicalSize.height;
-
-    screen = Size(physicalSizeWidth / devicePixelRatio, physicalSizeHeight / devicePixelRatio);
+    final view = WidgetsBinding.instance.platformDispatcher.views.first;
+    final devicePixelRatio = view.devicePixelRatio;
+    final physicalSize = view.physicalSize;
+    screen = Size(
+      physicalSize.width / devicePixelRatio,
+      physicalSize.height / devicePixelRatio,
+    );
   }
 
 

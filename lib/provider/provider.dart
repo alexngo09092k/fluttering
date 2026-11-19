@@ -1,3 +1,5 @@
+/// Lightweight state-management primitives inspired by [ChangeNotifier].
+///
 /// Created Date: Sunday, Jan 9th 2022
 /// Author: Brennan Ngo
 ///
@@ -6,14 +8,42 @@ library fluttering;
 
 import 'package:flutter/foundation.dart';
 
+/// Contract that every provider in the Fluttering system must implement.
+///
+/// A provider is a [Listenable] that can notify its listeners and can be
+/// disposed. The [version] string is useful when you need multiple instances
+/// of the same type registered under different versions.
 abstract class IProvider implements Listenable {
+  /// Optional version identifier of this provider instance.
   String get version;
 
+  /// Notifies all registered listeners.
   void notifyListeners();
 
+  /// Releases resources. After calling this the provider must not be used.
   void dispose();
 }
 
+/// Base implementation of [IProvider].
+///
+/// Most of the listener management code is adapted from Flutter's
+/// [ChangeNotifier] for maximum compatibility and performance.
+///
+/// Extend this class to create your own providers:
+/// ```dart
+/// class CounterProvider extends Provider {
+///   @override
+///   String get version => '1.0.0';
+///
+///   int _count = 0;
+///   int get count => _count;
+///
+///   void increment() {
+///     _count++;
+///     notifyListeners();
+///   }
+/// }
+/// ```
 class Provider implements IProvider {
   int _count = 0;
 

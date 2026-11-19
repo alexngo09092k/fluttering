@@ -1,4 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+/// Central registry and lifecycle manager for all [IProvider] instances.
+///
 /// Created Date: Sunday, Jan 9th 2022
 /// Author: Brennan Ngo
 ///
@@ -11,80 +12,67 @@ import 'provider.dart';
 import 'provider_delegate.dart';
 import 'provider_observer.dart';
 
+/// Factory function that creates a provider on demand.
 typedef LazyProviderCallback<T extends IProvider> = T Function();
 
+/// Abstract interface for the provider manager (also acts as a [RouteObserver]).
 abstract class IManagerProvider extends RouteObserver<PageRoute<dynamic>> {
+  /// Retrieves a registered provider of type [T].
   static T of<T extends IProvider>([String? version]) {
     throw ErrorDescription("Not found provider");
   }
 
-  static Future<bool> willSplash() async {
-    return Future.value(true);
-  }
+  static Future<bool> willSplash() async => true;
+  static Future<bool> willCloseApp() async => true;
+  static Future<bool> didSplash() async => true;
 
-  static Future<bool> willCloseApp() async {
-    return Future.value(true);
-  }
-
-  static Future<bool> didSplash() async {
-    return Future.value(true);
-  }
-
-  /// is called when closed app
   void dispose();
 }
 
+/// Singleton manager that holds and provides access to all [IProvider]s.
+///
+/// Use [ManagerProvider.of] to retrieve a provider anywhere in the app.
 class ManagerProvider extends IManagerProvider {
   static final ManagerProvider _instance = ManagerProvider._internal();
   static ManagerProvider get instance => _instance;
   static RouteObserver get observer => _instance;
 
   factory ManagerProvider() => _instance;
-
   ManagerProvider._internal();
 
-  /// Defined your providers are used in app
   final List<IProvider> _providers = [];
-
-  /// create instance for provider;
   final List<IProvider> _activeProviders = [];
-
   final List<LazyProviderCallback> _registeredLazyProviders = [];
-
-  /// Defined your lazy providers are used in app
   final List<LazyProviderCallback> _lazyProviders = [];
 
-  static T of<T extends IProvider>([String? version]) => _instance._of<T>(version);
+  /// Returns the provider of type [T].
+  static T of<T extends IProvider>([String? version]) =>
+      _instance._of<T>(version);
 
   T _of<T extends IProvider>([String? version]) {
-    for (var item in _activeProviders) {
+    for (final item in _activeProviders) {
       if (item is T) {
-        if (version != null && (item.version == version)) {
-          return item;
-        }
+        if (version != null && item.version == version) return item;
         return item;
       }
     }
-    for (var item in _lazyProviders) {
-      if (item is LazyProviderCallback<T> && !_registeredLazyProviders.contains(item)) {
+    for (final item in _lazyProviders) {
+      if (item is LazyProviderCallback<T> &&
+          !_registeredLazyProviders.contains(item)) {
         final p = item();
-        if (version != null && p.version == version) {
-          _registeredLazyProviders.add(item);
-          _activeProviders.add(p);
-          return p;
-        }
         _registeredLazyProviders.add(item);
         _activeProviders.add(p);
+        if (version != null && p.version == version) return p;
         return p;
       }
     }
-    throw ErrorDescription("Not found provider");
+    throw ErrorDescription("Not found provider of type $T");
   }
 
   @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) async {
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
-    for (var item in _activeProviders) {
+    for (final item in _activeProviders) {
       if (item is ProviderObserver) {
         (item as ProviderObserver).didPop(route, previousRoute);
       }
@@ -94,7 +82,7 @@ class ManagerProvider extends IManagerProvider {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    for (var item in _activeProviders) {
+    for (final item in _activeProviders) {
       if (item is ProviderObserver) {
         (item as ProviderObserver).didPush(route, previousRoute);
       }
@@ -102,11 +90,70 @@ class ManagerProvider extends IManagerProvider {
   }
 
   @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didRemove(route, previousRoute);
+    for (final item in _activeProviders) {
+      if (item is ProviderObserver) {
+        (item as ProviderObserver).didRemove(route, previousRoute);
+      }
+    }
+  }
+
+  @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    for (var item in _activeProviders) {
+    for (final item in _activeProviders) {
       if (item is ProviderObserver) {
-        (item as ProviderObserver).didReplace(newRoute: newRoute, oldRoute: oldRoute);
+        (item as ProviderObserver)
+            .didReplace(newRoute: newRoute, oldRoute: oldRoute);
+      }
+    }
+  }
+
+  /// Registers both eager and lazy providers. Called by [AwesomeApp].
+  static Future<bool> registerProviders({
+    List<IProvider> providers = const [],
+    List<LazyProviderCallback> lazyProviders = const [],
+  }) async {
+    return _instance._registerProviders(
+      providers: providers,
+      lazyProviders: lazyProviders,
+    );
+  }
+
+  Future<bool> _registerProviders({
+    List<IProvider> providers = const [],
+    List<LazyProviderCallback> lazyProviders = const [],
+  }) async {
+    _providers
+      ..clear()
+      ..addAll(providers);
+    _lazyProviders
+      ..clear()
+      ..addAll(lazyProviders);
+    _activeProviders
+      ..clear()
+      ..addAll(providers);
+    _registeredLazyProviders.clear();
+
+    final results = <bool>[];
+    await _delegateInLazyProviders();
+
+    for (final item in _activeProviders) {
+      if (item is ProviderDelegate) {
+        results.add(await (item as ProviderDelegate).registered());
+      }
+    }
+    return !results.contains(false);
+  }
+
+  Future<void> _delegateInLazyProviders() async {
+    for (final item in _lazyProviders) {
+      if (item is LazyProviderCallback &&
+          !_registeredLazyProviders.contains(item)) {
+        final p = item();
+        _registeredLazyProviders.add(item);
+        _activeProviders.add(p);
       }
     }
   }
@@ -114,120 +161,74 @@ class ManagerProvider extends IManagerProvider {
   static Future<bool> willOpenApp() => _instance._willOpenApp();
 
   Future<bool> _willOpenApp() async {
-    List<bool> _ = [];
-
-    for (var item in _activeProviders) {
+    final results = <bool>[];
+    for (final item in _activeProviders) {
       if (item is ProviderDelegate) {
-        _.add(await (item as ProviderDelegate).willOpenApp());
+        results.add(await (item as ProviderDelegate).willOpenApp());
       }
     }
-
-    return !_.contains(false);
+    return !results.contains(false);
   }
 
   static Future<bool> willSplash() => _instance._willSplash();
 
   Future<bool> _willSplash() async {
-    List<bool> _ = [];
-
-    for (var item in _activeProviders) {
+    final results = <bool>[];
+    for (final item in _activeProviders) {
       if (item is ProviderDelegate) {
-        _.add(await (item as ProviderDelegate).willSplash());
+        results.add(await (item as ProviderDelegate).willSplash());
       }
     }
-
-    return !_.contains(false);
+    return !results.contains(false);
   }
 
   static Future<bool> willCloseApp() => _instance._willCloseApp();
 
   Future<bool> _willCloseApp() async {
-    List<bool> _ = [];
-
-    for (var item in _activeProviders) {
+    final results = <bool>[];
+    for (final item in _activeProviders) {
       if (item is ProviderDelegate) {
-        _.add(await (item as ProviderDelegate).willCloseApp());
+        results.add(await (item as ProviderDelegate).willCloseApp());
       }
     }
-
-    return !_.contains(false);
+    return !results.contains(false);
   }
 
-  static Future<bool> registerProviders({
-    List<IProvider> providers = const [],
-    List<LazyProviderCallback> lazyProviders = const [],
-  }) async =>
-      _instance._registerProviders(
-        providers: providers,
-        lazyProviders: lazyProviders,
-      );
-
-  Future<bool> _registerProviders({
-    List<IProvider> providers = const [],
-    List<LazyProviderCallback> lazyProviders = const [],
-  }) async {
-    _providers.clear();
-    _providers.addAll(providers);
-
-    _lazyProviders.clear();
-    _lazyProviders.addAll(lazyProviders);
-
-    _activeProviders.clear();
-    _activeProviders.addAll(providers);
-
-    _registeredLazyProviders.clear();
-
-    List<bool> _ = [];
-
-    await _delegateInLazyProviders();
-
-    for (var item in _activeProviders) {
-      if (item is ProviderDelegate) {
-        _.add(await (item as ProviderDelegate).registered());
-      }
-    }
-
-    return !_.contains(false);
-  }
-
-  Future<void> _delegateInLazyProviders() async {
-    for (var item in _lazyProviders) {
-      if (item is LazyProviderCallback<Provider> && !_registeredLazyProviders.contains(item)) {
-        Provider p = item();
-        _registeredLazyProviders.add(item);
-        _activeProviders.add(p);
-      }
-    }
-  }
-
-  static Future<bool> changedAppLifecycleState(AppLifecycleState state) => _instance._changedAppLifecycleState(state);
+  static Future<bool> changedAppLifecycleState(AppLifecycleState state) =>
+      _instance._changedAppLifecycleState(state);
 
   Future<bool> _changedAppLifecycleState(AppLifecycleState state) async {
-    List<bool> _ = [];
-
-    for (var item in _activeProviders) {
+    final results = <bool>[];
+    for (final item in _activeProviders) {
       if (item is ProviderDelegate) {
-        _.add(await (item as ProviderDelegate).changedAppLifecycleState(state));
+        results.add(
+            await (item as ProviderDelegate).changedAppLifecycleState(state));
       }
     }
-
-    return !_.contains(false);
+    return !results.contains(false);
   }
 
-  static void cancelRegistration<T extends IProvider>(T provider, [String? version]) => _instance._cancelRegistration<T>(provider, version);
+  /// Removes a previously registered provider.
+  static void cancelRegistration<T extends IProvider>(T provider,
+      [String? version]) {
+    _instance._cancelRegistration<T>(provider, version);
+  }
 
   void _cancelRegistration<T extends IProvider>(T provider, [String? version]) {
-    /// REMOVE IN RESGISTERED LAZY PROVIDERS
-    _registeredLazyProviders.removeWhere((item) => item is LazyProviderCallback<T> && _registeredLazyProviders.contains(item));
-
-    /// REMOVE IN ACTIVE
-    _activeProviders.removeWhere((item) => item is T && (version == null || item.version == version));
+    _registeredLazyProviders.removeWhere(
+        (item) => item is LazyProviderCallback<T>);
+    _activeProviders.removeWhere(
+        (item) => item is T && (version == null || item.version == version));
   }
 
   @override
   void dispose() {
-    for (var item in _activeProviders) {
+    for (final item in _activeProviders) {
       item.dispose();
     }
+    _activeProviders.clear();
+    _providers.clear();
+    _lazyProviders.clear();
+    _registeredLazyProviders.clear();
   }
 }
