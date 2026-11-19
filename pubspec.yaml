@@ -40,7 +40,5 @@ topics:
   - provider
   - state-management
   - networking
-  - theming
-  - utilities
 
 flutter:
