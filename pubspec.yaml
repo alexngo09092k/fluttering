@@ -3,7 +3,7 @@ description: >
   A complete bootstrap toolkit for Flutter apps. Includes a lightweight custom
   Provider system, AwesomeApp entry point, theming, networking (Dio), storage,
   device info, permissions, connectivity, in-app review/update, and more.
-version: 4.0.0
+version: 4.0.1
 homepage: https://github.com/alexngo09092k/fluttering
 repository: https://github.com/alexngo09092k/fluttering
 issue_tracker: https://github.com/alexngo09092k/fluttering/issues
@@ -15,7 +15,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.19.0
+  intl: any
   device_info_plus: ^10.1.2
   connectivity_plus: ^6.1.1
   permission_handler: ^11.3.1
